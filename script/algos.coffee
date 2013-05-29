@@ -164,6 +164,7 @@ randomDrop = (user, delta, priority, streak = 0, options={}) ->
 #  {direction} 'up' or 'down'
 obj.score = (user, task, direction, options={}) ->
   {gp, hp, exp, lvl} = user.stats
+  resting = obj.flags.rest #gets the flag to determine if user is resting
   {type, value, streak} = task
   [paths, times, cron] = [options.paths || {}, options.times || 1, options.cron || false]
   priority = task.priority or '!'
@@ -209,19 +210,20 @@ obj.score = (user, task, direction, options={}) ->
         (task.history ?= []).push { date: +new Date, value: value }; paths["tasks.#{task.id}.history"] = true
 
     when 'daily'
-      if cron
-        calculateDelta()
-        subtractPoints()
-        task.streak = 0
-      else
-        calculateDelta()
-        addPoints() # obviously for delta>0, but also a trick to undo accidental checkboxes
-        if direction is 'up'
-          streak = if streak then streak + 1 else 1
+      if !resting then #if the user is resting, dailies have no effect
+        if cron
+          calculateDelta()
+          subtractPoints()
+          task.streak = 0
         else
-          streak = if streak then streak - 1 else 0
-        task.streak = streak
-      paths["tasks.#{task.id}.streak"] = true
+          calculateDelta()
+          addPoints() # obviously for delta>0, but also a trick to undo accidental checkboxes
+          if direction is 'up'
+            streak = if streak then streak + 1 else 1
+          else
+            streak = if streak then streak - 1 else 0
+          task.streak = streak
+        paths["tasks.#{task.id}.streak"] = true
 
     when 'todo'
       if cron
