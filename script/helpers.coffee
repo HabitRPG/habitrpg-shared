@@ -55,10 +55,11 @@ module.exports =
       tags: []
 
     if isDerby
-      userSchema.habitIds = []
-      userSchema.dailyIds = []
-      userSchema.todoIds = []
-      userSchema.rewardIds = []
+      userSchema.ids =
+        habits: []
+        dailys: []
+        todos: []
+        rewards: []
       userSchema.tasks = {}
     else
       userSchema.habits = []
@@ -95,7 +96,7 @@ module.exports =
       guid = task.id = uuid()
       if isDerby
         newUser.tasks[guid] = task
-        newUser["#{task.type}Ids"].push guid
+        newUser.ids["#{task.type}s"].push guid
       else
         newUser["#{task.type}s"].push task
 
