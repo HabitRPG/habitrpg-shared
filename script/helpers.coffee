@@ -133,21 +133,26 @@ module.exports =
     str.replace /\s/g, ''
 
   ###
-    Generate the username, since it can be one of many things: their username, their facebook fullname, their manually-set profile name
+    Generate the username, can be one of many things depending on what they used to register with. One-time call typically,
+    and saved to user.profile.name
   ###
-  username: (auth, override) ->
-    #some people define custom profile name in Avatar -> Profile
-    return override if override
+  usernameCandidates: (auth) ->
+    candidate =
+      if auth?.facebook?.displayName?
+        auth.facebook.displayName
+      else if auth?.facebook?
+        fb = auth.facebook
+        if fb._raw then "#{fb.name.givenName} #{fb.name.familyName}" else fb.name
+      else if auth?.local?
+        auth.local.username
+      else
+        undefined
+    candidate
 
-    if auth?.facebook?.displayName?
-      auth.facebook.displayName
-    else if auth?.facebook?
-      fb = auth.facebook
-      if fb._raw then "#{fb.name.givenName} #{fb.name.familyName}" else fb.name
-    else if auth?.local?
-      auth.local.username
-    else
-      'Anonymous'
+  ###
+    Used to dispaly username or "Anonymous" if they never got one on registration, are new users, etc
+  ###
+  username: (name) -> name or 'Anonymous'
 
   ###
     Encode the download link for .ics iCal file
