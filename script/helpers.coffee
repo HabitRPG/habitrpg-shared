@@ -40,11 +40,11 @@ module.exports =
 
   newUser: (isDerby=false) ->
     userSchema =
-    # _id / id handled by Racer
-      stats: { gp: 0, exp: 0, lvl: 1, hp: 50 }
-      invitations: {party:null, guilds: []}
-      items: { weapon: 0, armor: 0, head: 0, shield: 0 }
-      preferences: { gender: 'm', skin: 'white', hair: 'blond', armorSet: 'v1', dayStart:0, showHelm: true }
+      id: uuid()
+      stats: gp: 0, exp: 0, lvl: 1, hp: 50
+      invitations: party:null, guilds: []
+      items: weapon: 0, armor: 0, head: 0, shield: 0
+      preferences: gender: 'm', skin: 'white', hair: 'blond', armorSet: 'v1', dayStart:0, showHelm: true
       apiToken: uuid() # set in newUserObject below
       lastCron: 'new' #this will be replaced with `+new Date` on first run
       balance: 0
@@ -53,19 +53,10 @@ module.exports =
         itemsEnabled: false
         ads: 'show'
       tags: []
-
-    if isDerby
-      userSchema.ids =
-        habits: []
-        dailys: []
-        todos: []
-        rewards: []
-      userSchema.tasks = {}
-    else
-      userSchema.habits = []
-      userSchema.dailys = []
-      userSchema.todos = []
-      userSchema.rewards = []
+      habits: []
+      dailys: []
+      todos: []
+      rewards: []
 
     # deep clone, else further new users get duplicate objects
     newUser = _.cloneDeep userSchema
@@ -93,12 +84,8 @@ module.exports =
     ]
 
     for task in defaultTasks
-      guid = task.id = uuid()
-      if isDerby
-        newUser.tasks[guid] = task
-        newUser.ids["#{task.type}s"].push guid
-      else
-        newUser["#{task.type}s"].push task
+      task.id = uuid()
+      newUser["#{task.type}s"].push task
 
     for tag in defaultTags
       tag.id = uuid()
@@ -268,7 +255,8 @@ module.exports =
       classes += ' color-better'
     else
       classes += ' color-best'
-    return classes
+
+    classes
 
   ###
     Does the user own this pet?
