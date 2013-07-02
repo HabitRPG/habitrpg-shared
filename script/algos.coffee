@@ -335,7 +335,7 @@ obj.cron = (user, options={}) ->
 
   # User is resting at the inn. Used to be we un-checked each daily without performing calculation (see commits before fb29e35)
   # but to prevent abusing the inn (http://goo.gl/GDb9x) we now do *not* calculate dailies, and simply set lastCron to today
-  return if user.flags.rest is true
+  return if user.preferences.resting is true
 
   # Tally each task
   todoTally = 0
