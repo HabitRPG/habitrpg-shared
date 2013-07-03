@@ -314,3 +314,28 @@ module.exports =
     totalDef = (def + items.items.armor[armor].defense + items.items.head[helm].defense + items.items.shield[shield].defense)
   itemText: (type, item=0) -> items.items[type][parseInt(item)].text
   itemStat: (type, item=0) -> if type is 'weapon' then items.items[type][parseInt(item)].strength else items.items[type][parseInt(item)].defense
+
+
+  ###
+    Find Index Helpers
+    We can't always use refLists, but we often still need to get a positional path by id: eg, users.1234.tasks.5678.value
+    For arrays (which use indexes, not id-paths), here's a helper function so we can run indexedPath('users',:user.id,'tasks',:task.id,'value)
+  ###
+  indexedPath: ->
+    _.reduce arguments, (m,v) =>
+      return v if !m #first iteration
+      return "#{m}.#{v}" if _.isString v #string paths
+      return "#{m}." + _.findIndex(@model.get(m),v)
+    , ''
+
+  indexedAt: ->
+    path = module.exports.indexedPath.apply @, arguments
+    return undefined unless @model.at(path).get()?
+    return @model.at(path)
+
+  ###
+    Challenges
+  ###
+  taskInChallenge: (task) ->
+    return undefined unless task?.challenge
+    module.exports.indexedAt.call @, "groups.#{task.group.id}.challenges.#{task.challenge}.#{task.type}s", {id:task.id}
