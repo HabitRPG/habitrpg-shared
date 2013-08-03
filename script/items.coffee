@@ -42,20 +42,20 @@ items = module.exports.items =
   reroll: {type: 'reroll', text: "Re-Roll", classes: 'reroll', notes: "Resets your task values back to 0 (yellow). Useful when everything's red and it's hard to stay alive.", value:0 }
 
   pets: [
-    {text: 'Wolf', name: 'Wolf', value: 3}
-    {text: 'Tiger Cub', name: 'TigerCub', value: 3}
+    {text: 'Wolf', name: 'Wolf', value: 3, adjective: 'loyal'}
+    {text: 'Tiger Cub', name: 'TigerCub', value: 3, adjective: 'fierce'}
     #{text: 'Polar Bear Cub', name: 'PolarBearCub', value: 3} #commented out because there are no polarbear modifiers yet, special drop?
-    {text: 'Panda Cub', name: 'PandaCub', value: 3}
-    {text: 'Lion Cub', name: 'LionCub', value: 3}
-    {text: 'Fox', name: 'Fox', value: 3}
-    {text: 'Flying Pig', name: 'FlyingPig', value: 3}
-    {text: 'Dragon', name: 'Dragon', value: 3}
-    {text: 'Cactus', name: 'Cactus', value: 3}
-    {text: 'Bear Cub', name: 'BearCub', value: 3}
+    {text: 'Panda Cub', name: 'PandaCub', value: 3, adjective: 'gentle'}
+    {text: 'Lion Cub', name: 'LionCub', value: 3, adjective: 'regal'}
+    {text: 'Fox', name: 'Fox', value: 3, adjective: 'wily'}
+    {text: 'Flying Pig', name: 'FlyingPig', value: 3, adjective: 'whimsical'}
+    {text: 'Dragon', name: 'Dragon', value: 3, adjective: 'mighty'}
+    {text: 'Cactus', name: 'Cactus', value: 3, adjective: 'prickly'}
+    {text: 'Bear Cub', name: 'BearCub', value: 3, adjective: 'cuddly'}
   ]
 
   hatchingPotions: [
-    {text: 'Base', name: 'Base', notes: "Hatches your pet in it's base form.", value: 1}
+    {text: 'Base', name: 'Base', notes: "Hatches your pet in its base form.", value: 1}
     {text: 'White', name: 'White', notes: 'Turns your animal into a White pet.', value: 2}
     {text: 'Desert', name: 'Desert', notes: 'Turns your animal into a Desert pet.', value: 2}
     {text: 'Red', name: 'Red', notes: 'Turns your animal into a Red pet.', value: 3}
@@ -71,7 +71,7 @@ items = module.exports.items =
 _.each ['weapon', 'armor', 'head', 'shield'], (key) ->
   _.each items[key], (item) -> item.type = key
 
-_.each items.pets, (pet) -> pet.notes = 'Find a hatching potion to pour on this egg, and it will hatch into a loyal pet.'
+_.each items.pets, (pet) -> pet.notes = "Find a hatching potion to pour on this egg, and it will hatch into a #{pet.adjective} #{pet.text}."
 _.each items.hatchingPotions, (hatchingPotion) -> hatchingPotion.notes = "Pour this on an egg, and it will hatch as a #{hatchingPotion.text} pet."
 
 module.exports.buyItem = (user, type, value, index) ->
