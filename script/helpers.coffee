@@ -150,16 +150,22 @@ module.exports =
   ###
   dotSet: (path, val, obj) ->
     return if ~path.indexOf('undefined')
-    arr = path.split('.')
-    _.reduce arr, (curr, next, index) ->
-      if (arr.length - 1) == index
-        curr[next] = val
-      curr[next]
-    , obj
+    try
+      arr = path.split('.')
+      _.reduce arr, (curr, next, index) ->
+        if (arr.length - 1) == index
+          curr[next] = val
+        (curr[next] ?= {})
+      , obj
+    catch err
+      console.error {err, path, val, _id:obj._id}
 
   dotGet: (path, obj) ->
     return undefined if ~path.indexOf('undefined')
-    _.reduce path.split('.'), ((curr, next) -> curr[next]), obj
+    try
+      _.reduce path.split('.'), ((curr, next) -> curr?[next]), obj
+    catch err
+      console.error {err, path, val, _id:obj._id}
 
   daysSince: daysSince
   startOfWeek: startOfWeek
@@ -254,7 +260,7 @@ module.exports =
   ###
   gold: (num) ->
     if num
-      return (num).toFixed(1).split('.')[0]
+      return Math.floor num
     else
       return "0"
 
@@ -263,7 +269,7 @@ module.exports =
   ###
   silver: (num) ->
     if num
-      (num).toFixed(2).split('.')[1]
+      ("0" + Math.floor (num - Math.floor(num))*100).slice -2
     else
       return "00"
 

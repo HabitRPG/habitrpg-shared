@@ -35,8 +35,12 @@
 .f_skin_orc,
 .f_skin_asian,
 .f_skin_black,
-.f_skin_white
-    background: url("../img/sprites/female_sprites.png") no-repeat
+.f_skin_white,
+.f_skin_ea8349,
+.f_skin_c06534,
+.f_skin_98461a {
+    background: url("../img/sprites/female_sprites.png") no-repeat;
+}
 
 .f_weapon_6 {background-position: 0 0; width: 90px; height: 90px}
 .f_weapon_5 {background-position: -90px 0; width: 90px; height: 90px}
@@ -76,44 +80,6 @@
 .f_skin_asian {background-position: -3150px 0; width: 90px; height: 90px}
 .f_skin_black {background-position: -3240px 0; width: 90px; height: 90px}
 .f_skin_white {background-position: -3330px 0; width: 90px; height: 90px}
-
-
-
-// narrower spriting for customize modal
-.customize-menu
-	// shared option-box styles
-	[class^="f_hair"], [class^="f_skin"], [class^="f_armor"], .f_head_0
-		width: 60px;
-		height: 60px;
-
-	// head
-	.f_head_0
-		background-position: -1917px -9px; 
-	
-	// hair
-	.f_hair_white
-		background-position: -2009px -8px;
-	.f_hair_brown
-		background-position: -2099px -8px;
-	.f_hair_black
-		background-position: -2189px -8px;
-	.f_hair_blond
-		background-position: -2279px -8px;
-		
-	// skin
-	.f_skin_dead
-		background-position: -2997px -20px;
-	.f_skin_orc
-		background-position: -3087px -20px;
-	.f_skin_asian
-		background-position: -3177px -20px;
-	.f_skin_black
-		background-position: -3267px -20px;
-	.f_skin_white
-		background-position: -3357px -20px;
-		
-	// starting armor
-	.f_armor_0_v2
-		background-position: -2819px -38px;
-	.f_armor_0_v1
-		background-position: -2909px -38px;
+.f_skin_ea8349 {background-position: -3420px 0; width: 90px; height: 90px}
+.f_skin_c06534 {background-position: -3510px 0; width: 90px; height: 90px}
+.f_skin_98461a {background-position: -3600px 0; width: 90px; height: 90px}

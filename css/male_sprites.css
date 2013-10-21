@@ -30,8 +30,12 @@
 .m_skin_orc,
 .m_skin_asian,
 .m_skin_black,
-.m_skin_white
-    background: url("../img/sprites/male_sprites.png") no-repeat
+.m_skin_white, 
+.m_skin_ea8349,
+.m_skin_c06534,
+.m_skin_98461a {
+    background: url("../img/sprites/male_sprites.png") no-repeat;
+}
 
 .m_weapon_6 {background-position: 0 0; width: 90px; height: 90px}
 .m_weapon_5 {background-position: -90px 0; width: 90px; height: 90px}
@@ -66,38 +70,6 @@
 .m_skin_asian {background-position: -2700px 0; width: 90px; height: 90px}
 .m_skin_black {background-position: -2790px 0; width: 90px; height: 90px}
 .m_skin_white {background-position: -2880px 0; width: 90px; height: 90px}
-
-
-
-// narrower spriting for customize modal
-.customize-menu
-	// shared option-box styles
-	[class^="m_hair"], [class^="m_skin"], .m_head_0
-		width: 60px;
-		height: 60px;
-
-	// head
-	.m_head_0
-		background-position: -1557px -9px; 
-
-	// hair
-	.m_hair_blond
-		background-position: -1647px -4px;
-	.m_hair_black
-		background-position: -1737px -4px;
-	.m_hair_brown
-		background-position: -1827px -4px;
-	.m_hair_white
-		background-position: -1917px -4px;
-		
-	// skin
-	.m_skin_dead
-		background-position: -2547px -20px;
-	.m_skin_orc
-		background-position: -2637px -20px;
-	.m_skin_asian
-		background-position: -2727px -20px;
-	.m_skin_black
-		background-position: -2817px -20px;
-	.m_skin_white
-		background-position: -2907px -20px;
+.m_skin_ea8349 {background-position: -2970px 0; width: 90px; height: 90px}
+.m_skin_c06534 {background-position: -3060px 0; width: 90px; height: 90px}
+.m_skin_98461a {background-position: -3150px 0; width: 90px; height: 90px}
