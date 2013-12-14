@@ -375,7 +375,7 @@ api.wrap = (user) ->
 
       return cb("?food=__&pet=__ are both required in query, and must be valid") unless pet and food # TODO validation on pet string
       return cb("Can't feed this pet.") if content.specialPets[pet]
-      return cb("You already have that mount") if user.items.mounts[pet] and (userPets[pet] >= 50 or food.name is 'Saddle')
+      return cb("You already have that mount.") if user.items.mounts[pet] and (userPets[pet] >= 50 or food.name is 'Saddle')
 
       userPets = user.items.pets
       message = ''
@@ -383,17 +383,17 @@ api.wrap = (user) ->
         userPets[pet] = 0
         user.items.mounts[pet] = true
         user.items.currentPet = "" if pet is user.items.currentPet
-        message = "You have tamed #{egg}, let's go for a ride!"
+        message = "You have tamed #{egg.text}, let's go for a ride!"
 
       if food.name is 'Saddle'
         evolve()
       else
         if food.target is potion
           userPets[pet] += 5
-          message = "#{egg} really likes the #{food.name}!"
+          message = "#{egg.text} really likes the #{food.text}!"
         else
           userPets[pet] += 2
-          message = "#{egg} eats the #{food.name} but doesn't seem to enjoy it."
+          message = "#{egg.text} eats the #{food.text} but doesn't seem to enjoy it."
         if userPets[pet] >= 50 and !user.items.mounts[pet]
           evolve()
       user.items.food[food.name]--
