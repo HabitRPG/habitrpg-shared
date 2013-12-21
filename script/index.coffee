@@ -610,7 +610,7 @@ api.wrap = (user) ->
           user.preferences.disableClasses = false
           user.autoAllocate = false
         else
-          return cb({code:401,message:"Not enough gems"}) unless user.balance >= .75
+          return cb({code:401,message:"Not enough Gems."}) unless user.balance >= .75
           user.balance -= .75
         _.merge user.stats, {str: 0, con: 0, per: 0, int: 0, points: user.stats.lvl}
         user.flags.classSelected = false
@@ -653,7 +653,7 @@ api.wrap = (user) ->
 
       # If they're trying to purhcase a too-expensive reward, don't allow them to do that.
       if task.value > stats.gp and task.type is 'reward'
-        return cb('Not enough Gold');
+        return cb('Not enough Gold!');
 
       delta = 0
 
@@ -879,7 +879,7 @@ api.wrap = (user) ->
           user.items.food[drop.name] ?= 0
           user.items.food[drop.name]+= 1
           drop.type = 'Food'
-          drop.dialog = "You've found a #{drop.text} Food! #{drop.notes}"
+          drop.dialog = "You've found #{drop.text}! #{drop.notes}"
 
           # Eggs: 30% chance
         else if rarity > .3
