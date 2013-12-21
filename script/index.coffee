@@ -879,7 +879,7 @@ api.wrap = (user) ->
           user.items.food[drop.name] ?= 0
           user.items.food[drop.name]+= 1
           drop.type = 'Food'
-          drop.dialog = "You've found #{drop.text}! #{drop.notes}"
+          drop.dialog = "You've found #{drop.article} #{drop.text}! #{drop.notes}"
 
           # Eggs: 30% chance
         else if rarity > .3
