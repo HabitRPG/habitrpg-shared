@@ -467,6 +467,7 @@ describe 'Cron', ->
       yesterday = shared.startOfDay {now: moment().subtract('d', 1), dayStart}
       now = shared.startOfDay {dayStart: dayStart-1}
       expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 0
+      yesterday = moment().subtract('d', 1).set('h', dayStart)
       now = moment().startOf('day').add('h', dayStart).add('m', 1)
       expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
 
