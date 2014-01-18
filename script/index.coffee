@@ -1204,10 +1204,9 @@ api.wrap = (user, main=true) ->
 
       user.habits.forEach (task) -> # slowly reset 'onlies' value to 0
         if task.up is false or task.down is false
-          if Math.abs(task.value) < 0.1
-            task.value = 0
-          else
-            task.value = task.value / 2
+          task.value =
+            if Math.abs(task.value) < 0.1 then 0
+            else task.value / 2
 
       # Finished tallying
       ((user.history ?= {}).todos ?= []).push { date: now, value: todoTally }
