@@ -5,8 +5,8 @@
  */
 
 angular.module('userServices', []).
-  factory('User', ['$rootScope', '$http', '$location', '$window', 'API_URL', 'STORAGE_USER_ID', 'STORAGE_SETTINGS_ID', 'MOBILE_APP', 'Notification',
-    function($rootScope, $http, $location, $window, API_URL, STORAGE_USER_ID, STORAGE_SETTINGS_ID, MOBILE_APP, Notification) {
+  factory('User', ['$rootScope', '$http', '$location', '$window', 'API_URL', 'STORAGE_USER_ID', 'STORAGE_SETTINGS_ID', 'MOBILE_APP', 'Notification', '$timeout',
+    function($rootScope, $http, $location, $window, API_URL, STORAGE_USER_ID, STORAGE_SETTINGS_ID, MOBILE_APP, Notification, $timeout) {
       var authenticated = false;
       var defaultSettings = {
         auth: { apiId: '', apiToken: ''},
@@ -20,35 +20,29 @@ angular.module('userServices', []).
       var settings = {}; //habit mobile settings (like auth etc.) to be stored here
       var user = {}; // this is stored as a reference accessible to all controllers, that way updates propagate
 
+      var save = function () {
+        localStorage.setItem(STORAGE_USER_ID, JSON.stringify(user));
+        localStorage.setItem(STORAGE_SETTINGS_ID, JSON.stringify(settings));
+      };
+      var load = function () {
+        var stored = localStorage.getItem(STORAGE_USER_ID);
+        if (!stored) return;
+        _.extend(user, _.omit(JSON.parse(stored), ['fns','ops']));
+      };
+
       //first we populate user with schema
       user.apiToken = user._id = ''; // we use id / apitoken to determine if registered
-
-      //than we try to load localStorage
-      if (localStorage.getItem(STORAGE_USER_ID)) {
-        _.extend(user, JSON.parse(localStorage.getItem(STORAGE_USER_ID)));
-      }
+      load();
       user._wrapped = false;
 
       var syncQueue = function (cb) {
-        if (!authenticated) {
-          $window.alert("Not authenticated, can't sync, go to settings first.");
-          return;
-        }
+        if (!authenticated) return $window.alert("Not authenticated, can't sync, go to settings first.");
 
         var queue = settings.sync.queue;
         var sent = settings.sync.sent;
-        if (queue.length === 0) {
-          // Sync: Queue is empty
-          return;
-        }
-        if (settings.fetching) {
-          // Sync: Already fetching
-          return;
-        }
-        if (settings.online!==true) {
-          // Sync: Not online
-          return;
-        }
+
+        // Sync: Queue is empty || Already fetching || Not online
+        if (queue.length===0 || settings.fetching || settings.online!==true) return;
 
         settings.fetching = true;
         // move all actions from queue array to sent array
@@ -100,11 +94,9 @@ angular.module('userServices', []).
             sent.length = 0;
             settings.fetching = false;
             save();
-            if (cb) {
-              cb(false)
-            }
+            if (cb) cb(false);
 
-            syncQueue(); // call syncQueue to check if anyone pushed more actions to the queue while we were talking to server.
+            //syncQueue(); // call syncQueue to check if anyone pushed more actions to the queue while we were talking to server.
           })
           .error(function (data, status, headers, config) {
             // In the case of errors, discard the corrupt queue
@@ -130,11 +122,6 @@ angular.module('userServices', []).
           });
       }
 
-
-      var save = function () {
-        localStorage.setItem(STORAGE_USER_ID, JSON.stringify(user));
-        localStorage.setItem(STORAGE_SETTINGS_ID, JSON.stringify(settings));
-      };
       var userServices = {
         user: user,
         set: function(updates) {
@@ -174,7 +161,28 @@ angular.module('userServices', []).
           return this.settings.auth.apiId !== "";
         },
 
+        undo: function(){
+          load();
+          $timeout.cancel(userServices.undoTimer);
+          userServices.undoTimer = undefined;
+        },
+
+        // send any remaining items in the sync queue. Used in conjunction with undo
+        flush: function(cb){
+          save();
+          syncQueue(cb);
+          userServices.undoTimer = undefined;
+        },
+
         log: function (action, cb) {
+
+          // Undo
+          if (userServices.undoTimer) {
+            $timeout.cancel(userServices.undoTimer);
+            userServices.flush();
+          }
+          userServices.undoTimer = $timeout(userServices.flush, 5000);
+
           //push by one buy one if an array passed in.
           if (_.isArray(action)) {
             action.forEach(function (a) {
@@ -184,8 +192,8 @@ angular.module('userServices', []).
             settings.sync.queue.push(action);
           }
 
-          save();
-          syncQueue(cb);
+          // if they're waiting for a response, don't hold them up with undo (eg, initial load)
+          if (cb) userServices.flush();
         },
 
         sync: function(){
@@ -236,6 +244,8 @@ angular.module('userServices', []).
       } else {
         userServices.authenticate(settings.auth.apiId, settings.auth.apiToken)
       }
+
+      $window.onbeforeunload = userServices.flush;
 
       return userServices;
     }
