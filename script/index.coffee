@@ -1093,6 +1093,7 @@ api.wrap = (user, main=true) ->
         firstDrop = user.fns.randomVal content.eggs
         user.items.eggs[firstDrop.key] ?= 0
         user.items.eggs[firstDrop.key]++
+        user._tmp.firstDrop = firstDrop
       if !user.flags.classSelected and user.stats.lvl >= 10
         user.flags.classSelected
       if !user.flags.rebirthEnabled and (user.stats.lvl >= 50 or user.achievements.ultimateGear or user.achievements.beastMaster)

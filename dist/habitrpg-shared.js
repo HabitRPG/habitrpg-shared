@@ -12432,6 +12432,7 @@ var process=require("__browserify_process");(function() {
             _base[_name] = 0;
           }
           user.items.eggs[firstDrop.key]++;
+          user._tmp.firstDrop = firstDrop;
         }
         if (!user.flags.classSelected && user.stats.lvl >= 10) {
           user.flags.classSelected;
