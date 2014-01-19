@@ -1090,7 +1090,9 @@ api.wrap = (user, main=true) ->
         user.flags.partyEnabled = true
       if !user.flags.dropsEnabled and user.stats.lvl >= 4
         user.flags.dropsEnabled = true
-        if user.items.eggs["Wolf"] > 0 then user.items.eggs["Wolf"]++ else user.items.eggs["Wolf"] = 1
+        firstDrop = user.fns.randomVal content.eggs
+        user.items.eggs[firstDrop.key] ?= 0
+        user.items.eggs[firstDrop.key]++
       if !user.flags.classSelected and user.stats.lvl >= 10
         user.flags.classSelected
       if !user.flags.rebirthEnabled and (user.stats.lvl >= 50 or user.achievements.ultimateGear or user.achievements.beastMaster)
