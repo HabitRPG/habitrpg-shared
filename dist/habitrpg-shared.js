@@ -12429,7 +12429,7 @@ var process=require("__browserify_process");(function() {
         })()]++;
       },
       updateStats: function(stats) {
-        var tnl, _ref;
+        var tnl, _ref, firstDrop, _base, _name;
 
         if (stats.hp <= 0) {
           return user.stats.hp = 0;
@@ -12475,11 +12475,12 @@ var process=require("__browserify_process");(function() {
         }
         if (!user.flags.dropsEnabled && user.stats.lvl >= 4) {
           user.flags.dropsEnabled = true;
-          if (user.items.eggs["Wolf"] > 0) {
-            user.items.eggs["Wolf"]++;
-          } else {
-            user.items.eggs["Wolf"] = 1;
+          firstDrop = user.fns.randomVal(content.eggs);
+          if ((_base = user.items.eggs)[_name = firstDrop.key] == null) {
+            _base[_name] = 0;
           }
+          user.items.eggs[firstDrop.key]++;
+          user._tmp.firstDrop = firstDrop;
         }
         if (!user.flags.classSelected && user.stats.lvl >= 10) {
           user.flags.classSelected;
