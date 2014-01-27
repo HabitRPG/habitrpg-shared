@@ -1191,7 +1191,7 @@ api.wrap = (user, main=true) ->
             when 'daily'
               if task.repeat and api.shouldDo(moment(now).subtract('days',1), task.repeat, user.preferences)
                 perfect = false
-                user.party.quest.progress.down += docPoints()
+                user.party.quest.progress.down += dockPoints(task.id)
 
         switch task.type
           when 'daily'
