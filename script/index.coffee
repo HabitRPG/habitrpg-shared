@@ -1182,6 +1182,7 @@ api.wrap = (user, main=true) ->
 
 
 
+
         # Deduct experience for missed Daily tasks, but not for Todos (just increase todo's value)
         unless task.completed
           dockPoints = ->user.ops.score {params:{id:task.id, direction:'down'}, query:{cron:true}}
@@ -1204,9 +1205,10 @@ api.wrap = (user, main=true) ->
 
       user.habits.forEach (task) -> # slowly reset 'onlies' value to 0
         if task.up is false or task.down is false
-          task.value =
-            if Math.abs(task.value) < 0.1 then 0
-            else task.value / 2
+          if Math.abs(task.value) < 0.1
+            task.value = 0
+          else
+            task.value = task.value / 2
 
       # Finished tallying
       ((user.history ?= {}).todos ?= []).push { date: now, value: todoTally }
