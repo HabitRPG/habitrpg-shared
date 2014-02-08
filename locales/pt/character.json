@@ -75,7 +75,7 @@
 			"allocateIntPop" : "Adicionar um ponto em Inteligência",
     "stats" : "Stats",
       "strength" : "Força",
-        "strengthText" : "Strength reduces task threat (redness), increases the Gold and Experience boost from random \"critical hits\", and helps deal damage to boss monsters.",
+        "strengthText" : "Força reduz a ameaça das tarefas (vermelhidão), aumenta o bônus de Ouro e Experiência de \"Golpes Críticos\" aleatórios e ajuda causar mais dano aos monstros chefes.",
       "constitution" : "Constituição",
         "conText" : "Constitution reduces the damage you take, whether from negative Habits, missed Dailies, or the attacks of boss monsters.",
       "perception" : "Percepção",
