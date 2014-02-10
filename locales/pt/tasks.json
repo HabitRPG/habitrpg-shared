@@ -53,7 +53,7 @@
       "streakText" : "Realizou <%= streaks %> Combo(s) de 21-dias em Tarefas Diárias",
     "perfectName" : " Dia(s) Perfeito(s)",
       "perfectText" : "Realizou <%= perfects %> dia(s) perfeito(s). Com essa conquista você ganha um buff de +level/2 para todos atributos no próximo dia.",
-    "streakerAchievement" : "You have stacked your \"Streaker\" Achievement! Every 21 days of streak, you gain 1 achievement point here.",
+    "streakerAchievement" : "Você acumulou sua Conquista de \"Combos\"! A cada 21 dias de combo, você ganha mais 1 ponto de conquista aqui.",
 
   "_commentfortify" : "FORTIFY",
  		"fortifyName": "Poção de Fortificação",
