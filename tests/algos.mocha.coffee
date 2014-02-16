@@ -6,6 +6,7 @@ expect = require 'expect.js'
 sinon = require 'sinon'
 moment = require 'moment'
 shared = require '../script/index.coffee'
+
 $w = (s)->s.split(' ')
 
 ### Helper Functions ####
@@ -111,14 +112,6 @@ cycle = (array)->
   (seed=0)->
     n++
     return array[n % array.length]
-
-repeatWithoutLastWeekday = ()->
-  repeat = {su:1,m:1,t:1,w:1,th:1,f:1,s:1}
-  if shared.startOfWeek(moment().zone(0)).isoWeekday() == 1 # Monday
-    repeat.su = false
-  else
-    repeat.s = false
-  {repeat: repeat}
 
 ###### Specs ######
 
@@ -479,86 +472,6 @@ describe 'Cron', ->
       expect(after.history.todos).to.have.length 1
 
   describe 'dailies', ->
-
-    describe 'new day', ->
-
-      ###
-      This section runs through a "cron matrix" of all permutations (that I can easily account for). It sets
-      task due days, user custom day start, timezoneOffset, etc - then runs cron, jumps to tomorrow and runs cron,
-      and so on - testing each possible outcome along the way
-      ###
-
-      runCron = (options) ->
-        _.each [480, 240, 0, -120], (timezoneOffset) -> # test different timezones
-          now = shared.startOfWeek({timezoneOffset}).add('hours', options.currentHour||0)
-          {before,after} = beforeAfter({now, timezoneOffset, daysAgo:1, dayStart:options.dayStart||0, limitOne:'daily'})
-          before.dailys[0].repeat = after.dailys[0].repeat = options.repeat if options.repeat
-          before.dailys[0].streak = after.dailys[0].streak = 10
-          before.dailys[0].completed = after.dailys[0].completed = true if options.checked
-          if options.shouldDo
-            expect(shared.shouldDo(now, options.repeat, {timezoneOffset, dayStart:options.dayStart, now})).to.be.ok()
-          after.fns.cron {now}
-          switch options.expect
-            when 'losePoints' then expectLostPoints(before,after,'daily')
-            when 'noChange' then expectNoChange(before,after)
-            when 'noDamage' then expectDayResetNoDamage(before,after)
-          {before,after}
-
-      cronMatrix =
-        steps:
-
-          'due yesterday':
-            defaults: {daysAgo:1, limitOne: 'daily'}
-            steps:
-
-              '(simple)': {expect:'losePoints'}
-
-              'due today':
-                # NOTE: a strange thing here, moment().startOf('week') is Sunday, but moment.zone(myTimeZone).startOf('week') is Monday.
-                defaults: {repeat:{su:1,m:true,t:1,w:1,th:1,f:1,s:1}}
-                steps:
-                  'pre-dayStart':
-                    defaults: {currentHour:3, dayStart:4, shouldDo:true}
-                    steps:
-                      'checked': {checked: true, expect:'noChange'}
-                      'un-checked': {checked: false, expect:'noChange'}
-                  'post-dayStart':
-                    defaults: {currentHour:5, dayStart:4, shouldDo:true}
-                    steps:
-                      'checked': {checked:true, expect:'noDamage'}
-                      'unchecked': {checked:false, expect: 'losePoints'}
-
-              'NOT due today':
-                defaults: {repeat:{su:1,m:false,t:1,w:1,th:1,f:1,s:1}}
-                steps:
-                  'pre-dayStart':
-                    defaults: {currentHour:3, dayStart:4, shouldDo:true}
-                    steps:
-                      'checked': {checked: true, expect:'noChange'}
-                      'un-checked': {checked: false, expect:'noChange'}
-                  'post-dayStart':
-                    defaults: {currentHour:5, dayStart:4, shouldDo:false}
-                    steps:
-                      'checked': {checked:true, expect:'noDamage'}
-                      'unchecked': {checked:false, expect: 'losePoints'}
-
-          'not due yesterday':
-            defaults: repeatWithoutLastWeekday()
-            steps:
-              '(simple)': {expect:'noDamage'}
-              'post-dayStart': {currentHour:5,dayStart:4, expect:'noDamage'}
-              'pre-dayStart': {currentHour:3, dayStart:4, expect:'noChange'}
-
-      recurseCronMatrix = (obj, options={}) ->
-        if obj.steps
-          _.each obj.steps, (step, text) ->
-            o = _.cloneDeep options
-            o.text ?= ''; o.text += " #{text} "
-            recurseCronMatrix step, _.defaults(o,obj.defaults)
-        else
-          it "#{options.text}", -> runCron(_.defaults(obj,options))
-      recurseCronMatrix(cronMatrix)
-
     it 'calculates day differences with dayStart properly', ->
       dayStart = 4
       yesterday = shared.startOfDay {now: moment().subtract('d', 1), dayStart}

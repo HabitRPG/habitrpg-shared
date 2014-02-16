@@ -1153,21 +1153,6 @@ api.wrap = (user, main=true) ->
     ###
     cron: (options={}) ->
       now = +options.now || +new Date
-
-      # They went to a different timezone
-      # FIXME:
-      # (1) This exit-early code isn't taking timezone into consideration!!
-      # (2) Won't switching timezones be handled automatically client-side anyway? (aka, can we just remove this code?)
-      # (3) And if not, is this the correct way to handle switching timezones
-      #  if moment(user.lastCron).isAfter(now)
-      #    user.lastCron = now
-      #    return
-
-      daysMissed = api.daysSince user.lastCron, _.defaults({now}, user.preferences)
-      return unless daysMissed > 0
-
-      user.auth.timestamps.loggedin = new Date()
-
       user.lastCron = now
 
       # Reset the lastDrop count to zero
@@ -1183,9 +1168,7 @@ api.wrap = (user, main=true) ->
 
       # User is resting at the inn. Used to be we un-checked each daily without performing calculation (see commits before fb29e35)
       # but to prevent abusing the inn (http://goo.gl/GDb9x) we now do *not* calculate dailies, and simply set lastCron to today
-      if user.preferences.sleep is true
-        user.stats.buffs = clearBuffs
-        return
+      if (user.preferences.sleep is true) then return user.stats.buffs = clearBuffs
 
       # Tally each task
       todoTally = 0
@@ -1198,28 +1181,26 @@ api.wrap = (user, main=true) ->
         return if (type is 'daily') && !completed && user.stats.buffs.stealth && user.stats.buffs.stealth-- # User "evades" a certain number of uncompleted dailies
 
 
-        # Deduct experience for missed Daily tasks, but not for Todos (just increase todo's value)
-        unless completed
-          scheduleMisses = daysMissed
-          # for dailys which have repeat dates, need to calculate how many they've missed according to their own schedule
-          if (type is 'daily') and repeat
-            scheduleMisses = 0
-            _.times daysMissed, (n) ->
-              thatDay = moment(now).subtract('days', n + 1)
-              scheduleMisses++ if api.shouldDo(thatDay, repeat, user.preferences)
-          if scheduleMisses > 0
-            perfect = false if type is 'daily'
-            delta = user.ops.score({params:{id:task.id, direction:'down'}, query:{times:scheduleMisses, cron:true}});
-            user.party.quest.progress.down += delta if type is 'daily'
 
-        switch type
+
+        # Deduct experience for missed Daily tasks, but not for Todos (just increase todo's value)
+        unless task.completed
+          dockPoints = ->user.ops.score {params:{id:task.id, direction:'down'}, query:{cron:true}}
+          switch task.type
+            when 'todo' then dockPoints()
+            when 'daily'
+              if task.repeat and api.shouldDo(moment(now).subtract('days',1), task.repeat, user.preferences)
+                perfect = false
+                user.party.quest.progress.down += dockPoints(task.id)
+
+        switch task.type
           when 'daily'
             (task.history ?= []).push({ date: +new Date, value: task.value })
             task.completed = false
             _.each task.checklist, ((i)->i.completed=false;true)
           when 'todo'
-          #get updated value
-            absVal = if (completed) then Math.abs(task.value) else task.value
+            #get updated value
+            absVal = if (task.completed) then Math.abs(task.value) else task.value
             todoTally += absVal
 
       user.habits.forEach (task) -> # slowly reset 'onlies' value to 0
@@ -1228,7 +1209,6 @@ api.wrap = (user, main=true) ->
             task.value = 0
           else
             task.value = task.value / 2
-
 
       # Finished tallying
       ((user.history ?= {}).todos ?= []).push { date: now, value: todoTally }
