@@ -495,6 +495,8 @@ api.eggs =
   Cactus:           text: 'Cactus', adjective: 'prickly'
   BearCub:          text: 'Bear Cub',  mountText: 'Bear', adjective: 'cuddly'
   Gryphon:          text: 'Gryphon',  adjective: 'regal', canBuy: false
+  Hedgehog:         text: 'Hedgehog', adjective: 'prickly', canBuy: false
+  
 _.each api.eggs, (egg,key) ->
   _.defaults egg,
     canBuy:true
