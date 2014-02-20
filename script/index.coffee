@@ -1158,7 +1158,7 @@ api.wrap = (user, main=true) ->
         
         # Count number of Daily tasks actually actioned by the user, not just "completed" (greyed-out) because it's a day when they are not active (note: this does NOT count grey-dailies that were actioned anyway).
         # ASSUME a Daily was completed yesterday (i.e., not before yesterday if the user hasn't logged on for a while)
-        actionedDailyTally++ if (type is 'daily') && completed && api.shouldDo(dateLastActioned, task.repeat, {dayStart}))
+        actionedDailyTally++ if (type is 'daily') && completed && api.shouldDo(dateLastActioned, task.repeat, {dayStart})
         
         # Deduct experience for missed Daily tasks, but not for Todos (just increase todo's value)
         unless completed
