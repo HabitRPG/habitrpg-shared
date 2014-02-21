@@ -36,7 +36,7 @@
     "prizePop": "Wenn jemand Deinen Wettbewerb 'gewinnen' kann, dann kannst Du, wenn Du willst, dem Gewinner einen Edelstein-Preis zusprechen. Maximal die Anzahl der Edelsteine die Du hast (+Gilden Edelsteine, wenn Du die dazugehörige Gilde gegründet hast). Beachte: Diese Preise können später nicht mehr geändert werden.",
     "publicChallenges": "Mindestens 1 Edelstein für <strong> öffentliche Wettbewerbe </strong> (Das verhindert Spam. Wirklich).",
     "officialChallenge": "Offizieller HabitRPG Wettbewerb",
-    "by": "von",
+    "by": "von ",
     "participants": "Teilnehmer",
     "join": "Teilnehmen",
     "exportChallengeCSV": "Exportieren nach CSV",
