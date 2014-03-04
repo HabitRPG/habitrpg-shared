@@ -10,7 +10,7 @@
     "accepted": "Acceptée",
     "rejected": "Rejetée",
     "pending": "En attente",
-    "questStart": "Une fois que tous les membres ont soit accepté, soit refusé, la quête commence. Seuls ceux qui ont cliquer sur \"accepter\" pourront participer à la quête et recevoir les récompenses. Si certains membres mettent trop de temps à répondre (peut-être qu'ils sont inactifs ?), vous pouvez commencer sans eux en cliquant sur \"commencer\".",
+    "questStart": "Une fois que tous les membres ont soit accepté, soit refusé, la quête commence. Seuls ceux qui ont cliquer sur \"Accepter\" pourront participer à la quête et recevoir les récompenses. Si certains membres mettent trop de temps à répondre (peut-être qu'ils sont inactifs ?), vous pouvez commencer sans eux en cliquant sur \"Commencer\".",
     "begin": "Commencer",
     "bossHP": "Vie du boss",
     "collected": "Récolté",
@@ -29,5 +29,5 @@
     "mustLevel": "Vous devez être au niveau <%= level %>.",
     "mustLvlQuest": "Vous devez être au niveau <%= level %>  pour acheter cette quête!",
     "sureAbort": "Vous êtes sûr•e de vouloir annuler cette mission ? Elle sera annulée pour toute votre équipe, et toute la progression sera perdue.",
-    "doubleSureAbort": "Êtes-vous sûr•e et certain•e ? Assurez-vous qu'ils ne vont pas vous détester pour le reste de votre vie !"
+    "doubleSureAbort": "Êtes-vous sûr(e) et certain(e) ? Assurez-vous qu'ils ne vont pas vous détester pour le reste de votre vie !"
 }

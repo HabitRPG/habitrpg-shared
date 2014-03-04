@@ -1,7 +1,7 @@
 {
     "settings": "Paramètres",
     "language": "Langage",
-    "showHeaderPop": "Montrer votre avatar, barres de Santé/Expérience, et équipe.",
+    "showHeaderPop": "Montrer votre avatar, barres de Santé / Expérience, et équipe.",
     "stickyHeader": "Bandeau fixe",
     "stickyHeaderPop": "Fixe le bandeau au dessus de l'écran. Décoché signifie qu'il défilera hors de vue.",
     "newTaskEdit": "Ouvrir une nouvelle tâche dans le mode modification ",

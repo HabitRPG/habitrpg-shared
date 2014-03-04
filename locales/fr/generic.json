@@ -1,7 +1,7 @@
 {
     "languageName": "Français",
     "stringNotFound": "Chaîne '<%= string %>' non trouvée",
-    "titleIndex": "HabitRPG | Le RPG de votre vie",
+    "titleIndex": "HabitRPG | Faites de votre vie un jeu",
     "habitica": "Habitica",
     "expandToolbar": "Montrer le menu",
     "collapseToolbar": "Cacher le menu",
@@ -19,7 +19,7 @@
     "all": "Tous",
     "none": "Aucun",
     "or": "Ou",
-    "and": "et",
+    "and": "Et",
     "loginSuccess": "Connexion réussie !",
     "youSure": "Êtes-vous sûr(e) ?",
     "submit": "Poster",
