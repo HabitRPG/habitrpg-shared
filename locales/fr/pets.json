@@ -28,7 +28,7 @@
     "itemDrop": "Vous avez trouvé un objet !",
     "firstDrop": "Vous avez débloqué le système d'objets ! À présent lorsque vous complétez des tâches, vous avez une petite chance de trouver un objet. Vous venez de trouver un <strong><%= eggText %> Œuf </strong>! <%= eggNotes %>",
     "useGems": "Si vous voulez un animal et que vous n'en pouvez plus d'attendre de le trouver, utilisez des Gemmes dans <strong>Options > Inventaire</strong> pour l'acheter !",
-    "hatchAPot": "Faire éclore un <%= potion %> <%= egg %>?",
-    "feedPet": "Donner <%= article %><%= text %> à <%= name %>?",
-    "useSaddle": "Seller <%= pet %>?"
+    "hatchAPot": "Faire éclore un <%= potion %> <%= egg %> ?",
+    "feedPet": "Donner <%= article %><%= text %> à <%= name %> ?",
+    "useSaddle": "Seller <%= pet %> ?"
 }
