@@ -1,14 +1,13 @@
 {
-"_commentlimited" : "LIMITED EDITION STRINGS",
-
-		"limitedEdition" : "Limited Edition",
-			"winterColors" : "Winter Colors",
-	    "annoyingFriends" : "Annoying Friends",
-  		  "annoyingFriendsText" : "Got snowballed <%= snowballs %> times by party members.",
-		  "limited31Jan" : "Available for purchase until January 31st (but permanently in your options if purchased).",
-
- 	"_limitedpets" : "LIMITED EDITION PETS",
- 		"polarBear" : "Polar Bear",
-		"turkey" : "Turkey",
-		"polarBearPup" : "Polar Bear Cub"
+    "limitedEdition": "Édition Limitée",
+    "winterColors": "Couleurs hivernales",
+    "annoyingFriends": "Amis pénibles",
+    "annoyingFriendsText": "Votre équipe vous a lancé <%=snowballs %> boules de neige.",
+    "valentineCard": "Carte de St Valentin",
+    "adoringFriends": "Amis chéris",
+    "adoringFriendsText": "Oooh, toi et tes amis devez beaucoup vous aimer ! Tu as envoyé ou reçu <%= cards %> cartes pour la St Valentin.",
+    "limited31Jan": "Disponible à l'achat jusqu'au 31 Janvier (mais disponible pour toujours une fois acheté).",
+    "polarBear": "Ours polaire",
+    "turkey": "Dindon",
+    "polarBearPup": "Ourson polaire"
 }

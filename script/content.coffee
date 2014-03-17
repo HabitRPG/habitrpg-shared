@@ -10,11 +10,14 @@ moment = require 'moment'
 ###
 
 classes = ['warrior', 'rogue', 'healer', 'wizard']
-gearTypes = ['armor', 'weapon', 'shield', 'head']
+gearTypes = ['armor', 'weapon', 'shield', 'head', 'back']
 
 events =
   winter: {start:'2013-12-31',end:'2014-02-01'}
   birthday: {start:'2013-01-30',end:'2014-02-01'}
+
+mystery =
+  201402: {start:'2014-02-22',end:'2014-02-28'}
 
 gear =
   weapon:
@@ -51,7 +54,7 @@ gear =
       3: twoHanded: true, text: "Iron Staff", notes:'Plated in metal to channel heat, cold, and lightning. Increases INT by 9 and PER by 3.', int: 9, per: 3, value:80
       4: twoHanded: true, text: "Brass Staff", notes:'As powerful as it is heavy. Increases INT by 12 and PER by 5.', int:12, per: 5, value:120
       5: twoHanded: true, text: "Archmage Staff", notes:'Assists in weaving the most complex of spells. Increases INT by 15 and PER by 7.', int: 15, per: 7, value:160
-      6: twoHanded: true, text: "Golden Staff", notes:'Fashioned of orichalcum, the alchemic gold, mighty and rare. Increases INT by 18 and PER by 9.', int: 18, per: 9, value:200, last: true
+      6: twoHanded: true, text: "Golden Staff", notes:'Fashioned of orichalcum, the alchemic gold, mighty and rare. Increases INT by 18 and PER by 10.', int: 18, per: 10, value:200, last: true
     healer:
       0: text: "Novice Rod", notes:'For healers in training. Confers no benefit.', value:0
       1: text: "Acolyte Rod", notes:'Crafted during a healer\'s initiation. Increases INT by 2.', int: 2, value:20
@@ -108,13 +111,14 @@ gear =
       0: text: "Shade Armor",   notes:'Screams when struck, for it feels pain in its wearer\'s place. Increases CON by 20.', con: 20, value:150, canOwn: ((u)-> +u.backer?.tier >= 45)
       1: text: "Crystal Armor", notes:'Its tireless power inures the wearer to mundane discomfort. Increases all attributes by 6.', con: 6, str: 6, per: 6, int: 6, value:170, canOwn: ((u)-> +u.contributor?.level >= 2)
       2: text: "Jean Chalard's Noble Tunic", notes:'Makes you extra fluffy! Increases CON and INT by 25 each.', int: 25, con: 25, value:200, canOwn: ((u)-> +u.backer?.tier >= 300)
-
-      #Winter event
+      # Winter event
       yeti:       event: events.winter, canOwn: ((u)->u.stats.class is 'warrior' ), text: "Yeti-Tamer Robe", notes:'Limited Edition 2013 Winter Gear! Fuzzy and fierce. Increases CON by 9.', con: 9, value:90
       ski:        event: events.winter, canOwn: ((u)->u.stats.class is 'rogue'   ), text: "Ski-sassin Parka", notes:'Limited Edition 2013 Winter Gear! Full of secret daggers and ski trail maps. Increases PER by 15.', per: 15, value:90
       candycane:  event: events.winter, canOwn: ((u)->u.stats.class is 'wizard'  ), text: "Candy Cane Robe", notes:'Limited Edition 2013 Winter Gear! Spun from sugar and silk. Increases INT by 9.', int: 9, value:90
       snowflake:  event: events.winter, canOwn: ((u)->u.stats.class is 'healer'  ), text: "Snowflake Robe", notes:'Limited Edition 2013 Winter Gear! A robe to keep you warm, even in a blizzard. Increases CON by 15.', con: 15, value:90
       birthday:   event: events.birthday, text: "Absurd Party Robes", notes:"As part of the festivities, Absurd Party Robes are available free of charge in the Item Store! Swath yourself in those silly garbs and don your matching hats to celebrate this momentous day.", value: 0
+    mystery:
+      201402: text: 'Messenger Robes', notes: "Shimmering and strong, these robes have many pockets to carry letters.", mystery:mystery['201402'], value: 10
 
   head:
     base:
@@ -139,7 +143,7 @@ gear =
       2: text: "Cornuthaum", notes:'Traditional headgear of the itinerant wizard. Increases PER by 3.', per: 3, value:25
       3: text: "Astrologer Hat", notes:'Adorned with the rings of Saturn. Increases PER by 5.', per: 5, value:40
       4: text: "Archmage Hat", notes:'Focuses the mind for intensive spellcasting. Increases PER by 7.', per: 7, value:60
-      5: text: "Royal Magus Hat", notes:'Shows authority over fortune, weather, and lesser mages. Increases PER by 9.', per: 9, value:80, last: true
+      5: text: "Royal Magus Hat", notes:'Shows authority over fortune, weather, and lesser mages. Increases PER by 10.', per: 10, value:80, last: true
     healer:
       #0: text: "No Circlet", notes:'No headgear.', value:0
       1: text: "Quartz Circlet", notes:'Jeweled headpiece, for focus on the task at hand. Increases INT by 2.', int: 2, value:15
@@ -158,6 +162,9 @@ gear =
       ski:        event: events.winter, canOwn: ((u)->u.stats.class is 'rogue'   ), text: "Ski-sassin Helm", notes:"Limited Edition 2013 Winter Gear! Keeps the wearer's identity secret... and their face toasty. Increases PER by 9.", per: 9, value:60
       candycane:  event: events.winter, canOwn: ((u)->u.stats.class is 'wizard'  ), text: "Candy Cane Hat", notes:"Limited Edition 2013 Winter Gear! This is the most delicious hat in the world. It's also known to appear and disappear mysteriously. Increases PER by 7.", per: 7, value:60
       snowflake:  event: events.winter, canOwn: ((u)->u.stats.class is 'healer'  ), text: "Snowflake Crown", notes:'Limited Edition 2013 Winter Gear! The wearer of this crown is never cold. Increases INT by 7.', int: 7, value:60
+
+    mystery:
+      201402: text: 'Winged Helm', notes: "This winged circlet imbues the wearer with the speed of the wind!", mystery:mystery['201402'], value: 10
 
   shield:
     base:
@@ -196,6 +203,12 @@ gear =
       ski:        event: events.winter, canOwn: ((u)->u.stats.class is 'rogue'   ), text: "Ski-sassin Pole", notes:'Limited Edition 2013 Winter Gear! A weapon capable of destroying hordes of enemies! It also helps the user make very nice parallel turns. Increases STR by 8.', str: 8, value: 90
       snowflake:  event: events.winter, canOwn: ((u)->u.stats.class is 'healer'   ), text: "Snowflake Shield", notes:'Limited Edition 2013 Winter Gear! Every shield is unique. Increases CON by 9.', con: 9, value:70
 
+  back:
+    base:
+      0: text: "No Back Accessory", notes:'No Back Accessory.', value:0, last:true
+    mystery:
+      201402: text: 'Golden Wings', notes: "These shining wings have feathers that glitter in the sun!", mystery:mystery['201402'], value: 10
+
 ###
   The gear is exported as a tree (defined above), and a flat list (eg, {weapon_healer_1: .., shield_special_0: ...}) since
   they are needed in different froms at different points in the app
@@ -205,7 +218,7 @@ api.gear =
   flat: {}
 
 _.each gearTypes, (type) ->
-  _.each classes.concat(['base', 'special']), (klass) ->
+  _.each classes.concat(['base', 'special', 'mystery']), (klass) ->
     # add "type" to each item, so we can reference that as "weapon" or "armor" in the html
     _.each gear[type][klass], (item, i) ->
       key = "#{type}_#{klass}_#{i}"
@@ -217,6 +230,9 @@ _.each gearTypes, (type) ->
         _canOwn = item.canOwn or (->true)
         item.canOwn = (u)->
           _canOwn(u) and (u.items.gear.owned[key]? or (moment().isAfter(item.event.start) and moment().isBefore(item.event.end)))
+
+      if item.mystery
+        item.canOwn = (u)-> u.items.gear.owned[key]?
 
       api.gear.flat[key] = item
 
@@ -487,7 +503,7 @@ api.special = api.spells.special
   ---------------------------------------------------------------
 ###
 
-api.eggs =
+api.dropEggs =
   # value & other defaults set below
   Wolf:             text: 'Wolf', adjective: 'loyal'
   TigerCub:         text: 'Tiger Cub', mountText: 'Tiger', adjective: 'fierce'
@@ -498,8 +514,7 @@ api.eggs =
   Dragon:           text: 'Dragon', adjective: 'mighty'
   Cactus:           text: 'Cactus', adjective: 'prickly'
   BearCub:          text: 'Bear Cub',  mountText: 'Bear', adjective: 'cuddly'
-  Gryphon:          text: 'Gryphon',  adjective: 'regal', canBuy: false
-_.each api.eggs, (egg,key) ->
+_.each api.dropEggs, (egg,key) ->
   _.defaults egg,
     canBuy:true
     value: 3
@@ -507,12 +522,30 @@ _.each api.eggs, (egg,key) ->
     notes: "Find a hatching potion to pour on this egg, and it will hatch into a #{egg.adjective} #{egg.text}."
     mountText: egg.text
 
+api.questEggs =
+  # value & other defaults set below
+  Gryphon:          text: 'Gryphon',  adjective: 'proud', canBuy: false
+  Hedgehog:         text: 'Hedgehog', adjective: 'spiky', canBuy: false
+_.each api.questEggs, (egg,key) ->
+  _.defaults egg,
+    canBuy:false
+    value: 3
+    key: key
+    notes: "Find a hatching potion to pour on this egg, and it will hatch into a #{egg.adjective} #{egg.text}."
+    mountText: egg.text
+
+api.eggs = _.assign(_.cloneDeep(api.dropEggs), api.questEggs)
+
 api.specialPets =
   'Wolf-Veteran':   true
   'Wolf-Cerberus':  true
   'Dragon-Hydra':   true
   'Turkey-Base':    true
   'BearCub-Polar':  true
+
+api.specialMounts =
+  'BearCub-Polar':	true
+  'LionCub-Ethereal':	true
 
 api.hatchingPotions =
   Base:             value: 2, text: 'Base'
@@ -528,7 +561,11 @@ api.hatchingPotions =
 _.each api.hatchingPotions, (pot,key) ->
   _.defaults pot, {key, value: 2, notes: "Pour this on an egg, and it will hatch as a #{pot.text} pet."}
 
-api.pets = _.transform api.eggs, (m, egg) ->
+api.pets = _.transform api.dropEggs, (m, egg) ->
+  _.defaults m, _.transform api.hatchingPotions, (m2, pot) ->
+    m2[egg.key + "-" + pot.key] = true
+
+api.questPets = _.transform api.questEggs, (m, egg) ->
   _.defaults m, _.transform api.hatchingPotions, (m2, pot) ->
     m2[egg.key + "-" + pot.key] = true
 
@@ -561,7 +598,7 @@ api.food =
   # Tests hack, put honey last so the faux random picks it up in unit tests
   Honey:            text: 'Honey', target: 'Golden', article: ''
 
-  Saddle:           text: 'Saddle', value: 5, notes: 'Instantly raises your pet into a mount.'
+  Saddle:           text: 'Saddle', value: 5, notes: 'Instantly raises one of your pets into a mount.'
 _.each api.food, (food,key) ->
   _.defaults food, {value: 1, key, notes: "Feed this to a pet and it may grow into a sturdy steed.", canBuy:true}
 
@@ -605,6 +642,7 @@ api.quests =
   gryphon:
     text: "The Fiery Gryphon"
     notes: 'The grand beastmaster, @baconsaur, has come to your party seeking help. "Please, adventurers, you must help me! My prized gryphon has broken free and is terrorizing Habit City! If you can stop her, I could reward you with some of her eggs!"'
+    completion: 'Defeated, the mighty beast ashamedly slinks back to its master."My word! Well done, adventurers!" @baconsaur exclaims, "Please, have some of the gryphon\'s eggs. I am sure you will raise these young ones well!'
     value: 4 # Gem cost to buy, GP sell-back
     boss:
       name: "Fiery Gryphon" # name of the boss himself (eg, Vice)
@@ -614,14 +652,32 @@ api.quests =
       items: [
         {type: 'eggs', key: 'Gryphon', text: "Gryphon (Egg)"}
         {type: 'eggs', key: 'Gryphon', text: "Gryphon (Egg)"}
+        {type: 'eggs', key: 'Gryphon', text: "Gryphon (Egg)"}
       ]
       gp: 25
+      exp: 125
+      
+  hedgehog:
+    text: "The Hedgebeast"
+    notes: 'Hedgehogs are a funny group of animals. They are some of the most affectionate pets a Habiteer could own. But rumor has it, if you feed them milk after midnight, they grow quite irritable. And fifty times their size. And @Inventrix did just that. Oops.'
+    completion: 'Your party successfully calmed down the hedgehog! After shrinking down to a normal size, she hobbles away to her eggs. She returns squeeking and nudging some of her eggs along towards your party. Hopefully, these hedgehogs like milk better!'
+    value: 4 # Gem cost to buy, GP sell-back
+    boss:
+      name: "Hedgebeast" # name of the boss himself (eg, Vice)
+      hp: 400
+      str: 1.25 # Multiplier of users' missed dailies
+    drop:
+      items: [
+        {type: 'eggs', key: 'Hedgehog', text: "Hedgehog (Egg)"}
+        {type: 'eggs', key: 'Hedgehog', text: "Hedgehog (Egg)"}
+        {type: 'eggs', key: 'Hedgehog', text: "Hedgehog (Egg)"}
+      ]
+      gp: 30
       exp: 125
 
   vice1:
     text: "Free Yourself of the Dragon's Influence"
     notes: "<p>They say there lies a terrible evil in the caverns of Mt. Habitica. A monster whose presence twists the wills of the strong heroes of the land, turning them towards bad habits and laziness! The beast is a grand dragon of immense power and comprised of the shadows themselves. Vice, the treacherous Shadow Wyrm. Brave Habiteers, stand up and defeat this foul beast once and for all, but only if you believe you can stand against its immense power. </p><h3>Vice Part 1: </h3><p>How can you expect to the fight the beast if it already has control over you? Don't fall victim to laziness and vice! Work hard to fight against the dragon's dark influence and dispel his hold on you! </p>"
-    #completion: "The shadows dissipate from the cavern and a steely silence falls. My word, you've done it! You have defeated Vice! You and your party may finally breath a sigh of relief. Enjoy your victory, brave Habiteers, but take the lessons you've learned from battling Vice and move forward. There are still habits to be done and potentially worse evils to conquer!"
     value: 4
     lvl: 30
     boss:
@@ -679,19 +735,19 @@ _.each api.quests, (v,key) ->
 repeat = {m:true,t:true,w:true,th:true,f:true,s:true,su:true}
 api.userDefaults =
   habits: [
-    {type: 'habit', text: '1h Productive Work', notes: 'When you create a new Habit, you can click the Edit icon and choose for it to represent a positive habit, a negative habit, or both. For some Habits, like this one, it only makes sense to gain points.', value: 0, up: true, down: false }
-    {type: 'habit', text: 'Eat Junk Food', notes: 'For others, it only makes sense to *lose* points.', value: 0, up: false, down: true}
-    {type: 'habit', text: 'Take The Stairs', notes: 'For the rest, both + and - make sense (stairs = gain, elevator = lose).', value: 0, up: true, down: true}
+    {type: 'habit', text: '1h Productive Work', notes: 'When you create a new Habit, you can click the Edit icon and choose for it to represent a positive habit, a negative habit, or both. For some Habits, like this one, it only makes sense to gain points.', value: 0, up: true, down: false, attribute: 'per' }
+    {type: 'habit', text: 'Eat Junk Food', notes: 'For others, it only makes sense to *lose* points.', value: 0, up: false, down: true, attribute: 'con'}
+    {type: 'habit', text: 'Take The Stairs', notes: 'For the rest, both + and - make sense (stairs = gain, elevator = lose).', value: 0, up: true, down: true, attribute: 'str'}
   ]
 
   dailys: [
-    {type: 'daily', text: '1h Personal Project', notes: 'All tasks default to yellow when they are created. This means you will take only moderate damage when they are missed and will gain only a moderate reward when they are completed.', value: 0, completed: false, repeat: repeat }
-    {type: 'daily', text: 'Exercise', notes: 'Dailies you complete consistently will turn from yellow to green to blue, helping you track your progress. The higher you move up the ladder, the less damage you take for missing and less reward you receive for completing the goal.', value: 3, completed: false, repeat: repeat }
-    {type: 'daily', text: '45m Reading', notes: 'If you miss a daily frequently, it will turn darker shades of orange and red. The redder the task is, the more experience and gold it grants for success and the more damage you take for failure. This encourages you to focus on your shortcomings, the reds.', value: -10, completed: false, repeat: repeat }
+    {type: 'daily', text: '1h Personal Project', notes: 'All tasks default to yellow when they are created. This means you will take only moderate damage when they are missed and will gain only a moderate reward when they are completed.', value: 0, completed: false, repeat: repeat, attribute: 'per' }
+    {type: 'daily', text: 'Exercise', notes: 'Dailies you complete consistently will turn from yellow to green to blue, helping you track your progress. The higher you move up the ladder, the less damage you take for missing and less reward you receive for completing the goal.', value: 3, completed: false, repeat: repeat, attribute: 'str' }
+    {type: 'daily', text: '45m Reading', notes: 'If you miss a daily frequently, it will turn darker shades of orange and red. The redder the task is, the more experience and gold it grants for success and the more damage you take for failure. This encourages you to focus on your shortcomings, the reds.', value: -10, completed: false, repeat: repeat, attribute: 'int' }
   ]
 
   todos: [
-    {type: 'todo', text: 'Call Mom', notes: 'While not completing a to-do in a set period of time will not hurt you, they will gradually change from yellow to red, thus becoming more valuable. This will encourage you to wrap up stale To-Dos.', value: -3, completed: false }
+    {type: 'todo', text: 'Call Mom', notes: 'While not completing a to-do in a set period of time will not hurt you, they will gradually change from yellow to red, thus becoming more valuable. This will encourage you to wrap up stale To-Dos.', value: -3, completed: false, attribute: 'per' }
   ]
 
   rewards: [

@@ -129,7 +129,7 @@ api.updateStore = (user) ->
     true
   # Add special items (contrib gear, backer gear, etc)
   changes = changes.concat _.filter content.gear.flat, (v) ->
-    v.klass is 'special' and !user.items.gear.owned[v.key] and v.canOwn?(user)
+    v.klass in ['special','mystery'] and !user.items.gear.owned[v.key] and v.canOwn?(user)
   changes.push content.potion
   # Return sorted store (array)
   _.sortBy changes, (item) ->
@@ -138,8 +138,9 @@ api.updateStore = (user) ->
       when 'armor'  then 2
       when 'head'   then 3
       when 'shield' then 4
-      when 'potion' then 5
-      else               6
+      when 'back'   then 5
+      when 'potion' then 6
+      else               7
 
 ###
 ------------------------------------------------------
@@ -301,8 +302,16 @@ api.appliedTags = (userTags, taskTags) ->
 
 api.countPets = (originalCount, pets) ->
   count = if originalCount? then originalCount else _.size(pets)
+  for pet of content.questPets
+    count-- if pets[pet]
   for pet of content.specialPets
     count-- if pets[pet]
+  count
+
+api.countMounts= (originalCount, mounts) ->
+  count = if originalCount? then originalCount else _.size(mounts)
+  for mount of content.specialMounts
+    count-- if mounts[mount]
   count
 
 ###
@@ -406,7 +415,7 @@ api.wrap = (user, main=true) ->
         user.preferences.costume = false
         cb? null, user
 
-      reroll: (req, cb) ->
+      reroll: (req, cb, ga) ->
         if user.balance < 1
           return cb? {code:401,message: "Not enough gems."}
         user.balance--
@@ -415,8 +424,9 @@ api.wrap = (user, main=true) ->
             task.value = 0
         user.stats.hp = 50
         cb? null, user
+        ga?.event('purchase', 'reroll').send()
 
-      rebirth: (req, cb) ->
+      rebirth: (req, cb, ga) ->
         # Cost is 8 Gems ($2)
         if user.balance < 2
           return cb? {code:401,message: "Not enough gems."}
@@ -466,6 +476,7 @@ api.wrap = (user, main=true) ->
           user.achievements.rebirths++
           user.achievements.rebirthLevel = lvl
         cb? null, user
+        ga?.event('purchase', 'Rebirth').send()
 
       allocateNow: (req, cb) ->
         _.times user.stats.points, user.fns.autoAllocate
@@ -587,7 +598,7 @@ api.wrap = (user, main=true) ->
         cb? {code:200, message}, userPets[pet]
 
       # buy is for gear, purchase is for gem-purchaseables (i know, I know...)
-      purchase: (req, cb) ->
+      purchase: (req, cb, ga) ->
         {type,key}  = req.params
         return cb?({code:404,message:":type must be in [hatchingPotions,eggs,food,quests,special]"},req) unless type in ['eggs','hatchingPotions','food','quests','special']
         item = content[type][key]
@@ -597,10 +608,12 @@ api.wrap = (user, main=true) ->
         user.items[type][key]++
         user.balance -= (item.value / 4)
         cb? null, _.pick(user,$w 'items balance')
+        ga?.event('purchase', key).send()
 
       # buy is for gear, purchase is for gem-purchaseables (i know, I know...)
       buy: (req, cb) ->
         {key} = req.params
+
         item = if key is 'potion' then content.potion else content.gear.flat[key]
         return cb?({code:404, message:"Item '#{key} not found (see https://github.com/HabitRPG/habitrpg-shared/blob/develop/script/content.coffee)"}) unless item
         return cb?({code:401, message:'Not enough gold.'}) if user.stats.gp < item.value
@@ -649,7 +662,7 @@ api.wrap = (user, main=true) ->
         user.items.hatchingPotions[hatchingPotion]--
         cb? {code:200, message:"Your egg hatched! Visit your stable to equip your pet."}, user.items
 
-      unlock: (req, cb) ->
+      unlock: (req, cb, ga) ->
         {path} = req.query
         fullSet = ~path.indexOf(",")
         cost = if fullSet then 1.25 else 0.5 # 5G per set, 2G per individual
@@ -667,12 +680,13 @@ api.wrap = (user, main=true) ->
         user.balance -= cost
         user.markModified? 'purchased'
         cb? null, _.pick(user,$w 'purchased preferences')
+        ga?.event('purchase', path).send()
 
       # ------
       # Classes
       # ------
 
-      changeClass: (req, cb) ->
+      changeClass: (req, cb, ga) ->
         klass = req.query?.class
         if klass in ['warrior','rogue','wizard','healer']
           user.stats.class = klass
@@ -705,6 +719,7 @@ api.wrap = (user, main=true) ->
             user.balance -= .75
           _.merge user.stats, {str: 0, con: 0, per: 0, int: 0, points: user.stats.lvl}
           user.flags.classSelected = false
+          ga?.event('purchase', 'changeClass').send()
           #'stats.points': this is handled on the server
         cb? null, _.pick(user,$w 'stats flags items preferences')
 
@@ -724,6 +739,11 @@ api.wrap = (user, main=true) ->
           user.stats.points--
           user.stats.mp++ if stat is 'int' #increase their MP along with their max MP
         cb? null, _.pick(user,$w 'stats')
+
+      readValentine: (req,cb) ->
+        user.items.special.valentineReceived.shift()
+        user.markModified? 'items.special.valentineReceived'
+        cb? null, 'items.special'
 
       # ------
       # Score
@@ -773,21 +793,19 @@ api.wrap = (user, main=true) ->
 
             unless task.type is 'reward'
               if (user.preferences.automaticAllocation is true and user.preferences.allocationMode is 'taskbased' and !(task.type is 'todo' and direction is 'down')) then user.stats.training[task.attribute] += nextDelta
-              adjustAmt = nextDelta
               # ===== STRENGTH =====
               # (Only for up-scoring, ignore up-onlies and rewards)
               # Note, we create a new val (adjustAmt) to add to task.value, since delta will be used in Exp & GP calculations - we don't want STR to bonus that
-              # TODO STR Improves the amount by which Dailies and +/- Habits decrease in threat when scored, by .25% per point.
-              if direction is 'up' and task.type != 'reward' and !(task.type is 'habit' and !task.down)
-                adjustAmt = nextDelta * (1 + user._statsComputed.str * .004)
+              if direction is 'up' and !(task.type is 'habit' and !task.down)
                 user.party.quest.progress.up = user.party.quest.progress.up || 0;
-                user.party.quest.progress.up += adjustAmt if task.type in ['daily','todo']
-              task.value += adjustAmt
+                user.party.quest.progress.up += (nextDelta * (1 + (user._statsComputed.str / 200))) if task.type in ['daily','todo']
+              task.value += nextDelta
             delta += nextDelta
 
         addPoints = ->
           # ===== CRITICAL HITS =====
-          _crit = user.fns.crit()
+          # allow critical hit only when checking off a task, not when unchecking it:
+          _crit = (if delta > 0 then user.fns.crit() else 1)
           # if there was a crit, alert the user via notification
           user._tmp.crit = _crit if _crit > 1
 
@@ -922,7 +940,8 @@ api.wrap = (user, main=true) ->
       x - Math.floor(x)
 
     crit: (stat='str', chance=.03) ->
-      if user.fns.predictableRandom() <= chance then 1.5 + (.02*user._statsComputed[stat])
+      #console.log("Crit Chance:"+chance*(1+user._statsComputed[stat]/100))
+      if user.fns.predictableRandom() <= chance*(1+user._statsComputed[stat]/100) then 1.5 + (.02*user._statsComputed[stat])
       else 1
 
     ###
@@ -961,23 +980,31 @@ api.wrap = (user, main=true) ->
       {task} = modifiers
 
       # % chance of getting a drop
-      bonus =
-        Math.abs(task.value) *            # + Task Redness
-        task.priority +                   # * Task Priority
-        (task.streak or 0) +              # + Streak bonus
-        (user._statsComputed.per * .5)    # + Perception
-      bonus /= 100                        # /100 (as a percent)
-      chance = api.diminishingReturns(bonus, 1, 0.5) # see HabitRPG/habitrpg#1922 for details
-      #console.log "Drop Equation: Bonus(#{bonus.toFixed(3)}), Modified Chance(#{chance.toFixed(3)})\n"
+
+      chance = _.min([Math.abs(task.value - 21.27),37.5])/150+.02   # Base drop chance is a percentage based on task value. Typical fresh task: 15%. Very ripe task: 25%. Very blue task: 2%.
+
+      chance *=
+        task.priority *                                 # Task priority: +50% for Medium, +100% for Hard
+        (1 + (task.streak / 100 or 0)) *                # Streak bonus: +1% per streak
+        (1 + (user._statsComputed.per / 100)) *         # PERception: +1% per point
+        (1 + (user.contributor.level / 20 or 0)) *      # Contrib levels: +5% per level
+        (1 + (user.achievements.rebirths / 20 or 0)) *  # Rebirths: +5% per achievement
+        (1 + (user.achievements.streak / 200 or 0)) *   # Streak achievements: +0.5% per achievement
+        (user._tmp.crit or 1) *                         # Use the crit multiplier if we got one
+        (1 + .5*(_.reduce(task.checklist,((m,i)->m+(if i.completed then 1 else 0)),0) or 0)) # +50% per checklist item complete. TODO: make this into X individual drop chances instead
+
+      chance = api.diminishingReturns(chance, 0.75)
+
+      #console.log("Drop chance: " + chance)
 
       quest = content.quests[user.party.quest?.key]
-      if quest?.collect and user.fns.predictableRandom(user.stats.gp) < bonus # NOTE: < bonus, higher chance than drops
+      if quest?.collect and user.fns.predictableRandom(user.stats.gp) < (chance * 2) # 2x as likely to get a collection quest drop as a pet item drop
         dropK = user.fns.randomVal quest.collect, {key:true}
         user.party.quest.progress.collect[dropK]++
         user.markModified? 'party.quest.progress'
         #console.log {progress:user.party.quest.progress}
 
-      return if (api.daysSince(user.items.lastDrop.date, user.preferences) is 0) and (user.items.lastDrop.count >= 5)
+      return if (api.daysSince(user.items.lastDrop.date, user.preferences) is 0) and (user.items.lastDrop.count >= 5 + Math.floor(user._statsComputed.per / 25))
       if user.flags?.dropsEnabled and user.fns.predictableRandom(user.stats.exp) < chance
 
         # current breakdown - 1% (adjustable) chance on drop
@@ -1004,7 +1031,7 @@ api.wrap = (user, main=true) ->
         else
           acceptableDrops =
           # Very Rare: 10% (of 30%)
-            if rarity < .03 then ['Golden']
+            if rarity < .02 then ['Golden']
               # Rare: 20% (of 30%)
             else if rarity < .09 then ['Zombie', 'CottonCandyPink', 'CottonCandyBlue']
               # Uncommon: 30% (of 30%)
@@ -1177,8 +1204,8 @@ api.wrap = (user, main=true) ->
         {id, type, completed, repeat} = task
 
         return if (type is 'daily') && !completed && user.stats.buffs.stealth && user.stats.buffs.stealth-- # User "evades" a certain number of uncompleted dailies
-        
-        
+
+
         # Deduct experience for missed Daily tasks, but not for Todos (just increase todo's value)
         unless completed
           scheduleMisses = daysMissed

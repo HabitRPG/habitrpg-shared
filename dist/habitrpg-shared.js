@@ -9168,7 +9168,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
 },{}],5:[function(require,module,exports){
 (function() {
-  var api, classes, diminishingReturns, events, gear, gearTypes, moment, repeat, _;
+  var api, classes, diminishingReturns, events, gear, gearTypes, moment, mystery, repeat, _;
 
   _ = require('lodash');
 
@@ -9186,7 +9186,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 
   classes = ['warrior', 'rogue', 'healer', 'wizard'];
 
-  gearTypes = ['armor', 'weapon', 'shield', 'head'];
+  gearTypes = ['armor', 'weapon', 'shield', 'head', 'back'];
 
   events = {
     winter: {
@@ -9196,6 +9196,13 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     birthday: {
       start: '2013-01-30',
       end: '2014-02-01'
+    }
+  };
+
+  mystery = {
+    201402: {
+      start: '2014-02-22',
+      end: '2014-02-28'
     }
   };
 
@@ -9347,9 +9354,9 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         6: {
           twoHanded: true,
           text: "Golden Staff",
-          notes: 'Fashioned of orichalcum, the alchemic gold, mighty and rare. Increases INT by 18 and PER by 9.',
+          notes: 'Fashioned of orichalcum, the alchemic gold, mighty and rare. Increases INT by 18 and PER by 10.',
           int: 18,
-          per: 9,
+          per: 10,
           value: 200,
           last: true
         }
@@ -9729,6 +9736,14 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           notes: "As part of the festivities, Absurd Party Robes are available free of charge in the Item Store! Swath yourself in those silly garbs and don your matching hats to celebrate this momentous day.",
           value: 0
         }
+      },
+      mystery: {
+        201402: {
+          text: 'Messenger Robes',
+          notes: "Shimmering and strong, these robes have many pockets to carry letters.",
+          mystery: mystery['201402'],
+          value: 10
+        }
       }
     },
     head: {
@@ -9832,8 +9847,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         },
         5: {
           text: "Royal Magus Hat",
-          notes: 'Shows authority over fortune, weather, and lesser mages. Increases PER by 9.',
-          per: 9,
+          notes: 'Shows authority over fortune, weather, and lesser mages. Increases PER by 10.',
+          per: 10,
           value: 80,
           last: true
         }
@@ -9954,6 +9969,14 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           notes: 'Limited Edition 2013 Winter Gear! The wearer of this crown is never cold. Increases INT by 7.',
           int: 7,
           value: 60
+        }
+      },
+      mystery: {
+        201402: {
+          text: 'Winged Helm',
+          notes: "This winged circlet imbues the wearer with the speed of the wind!",
+          mystery: mystery['201402'],
+          value: 10
         }
       }
     },
@@ -10134,6 +10157,24 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           value: 70
         }
       }
+    },
+    back: {
+      base: {
+        0: {
+          text: "No Back Accessory",
+          notes: 'No Back Accessory.',
+          value: 0,
+          last: true
+        }
+      },
+      mystery: {
+        201402: {
+          text: 'Golden Wings',
+          notes: "These shining wings have feathers that glitter in the sun!",
+          mystery: mystery['201402'],
+          value: 10
+        }
+      }
     }
   };
 
@@ -10149,7 +10190,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   };
 
   _.each(gearTypes, function(type) {
-    return _.each(classes.concat(['base', 'special']), function(klass) {
+    return _.each(classes.concat(['base', 'special', 'mystery']), function(klass) {
       return _.each(gear[type][klass], function(item, i) {
         var key, _canOwn;
 
@@ -10170,6 +10211,11 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           });
           item.canOwn = function(u) {
             return _canOwn(u) && ((u.items.gear.owned[key] != null) || (moment().isAfter(item.event.start) && moment().isBefore(item.event.end)));
+          };
+        }
+        if (item.mystery) {
+          item.canOwn = function(u) {
+            return u.items.gear.owned[key] != null;
           };
         }
         return api.gear.flat[key] = item;
@@ -10548,7 +10594,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
   */
 
 
-  api.eggs = {
+  api.dropEggs = {
     Wolf: {
       text: 'Wolf',
       adjective: 'loyal'
@@ -10588,15 +10634,10 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
       text: 'Bear Cub',
       mountText: 'Bear',
       adjective: 'cuddly'
-    },
-    Gryphon: {
-      text: 'Gryphon',
-      adjective: 'regal',
-      canBuy: false
     }
   };
 
-  _.each(api.eggs, function(egg, key) {
+  _.each(api.dropEggs, function(egg, key) {
     return _.defaults(egg, {
       canBuy: true,
       value: 3,
@@ -10606,12 +10647,42 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     });
   });
 
+  api.questEggs = {
+    Gryphon: {
+      text: 'Gryphon',
+      adjective: 'proud',
+      canBuy: false
+    },
+    Hedgehog: {
+      text: 'Hedgehog',
+      adjective: 'spiky',
+      canBuy: false
+    }
+  };
+
+  _.each(api.questEggs, function(egg, key) {
+    return _.defaults(egg, {
+      canBuy: false,
+      value: 3,
+      key: key,
+      notes: "Find a hatching potion to pour on this egg, and it will hatch into a " + egg.adjective + " " + egg.text + ".",
+      mountText: egg.text
+    });
+  });
+
+  api.eggs = _.assign(_.cloneDeep(api.dropEggs), api.questEggs);
+
   api.specialPets = {
     'Wolf-Veteran': true,
     'Wolf-Cerberus': true,
     'Dragon-Hydra': true,
     'Turkey-Base': true,
     'BearCub-Polar': true
+  };
+
+  api.specialMounts = {
+    'BearCub-Polar': true,
+    'LionCub-Ethereal': true
   };
 
   api.hatchingPotions = {
@@ -10665,7 +10736,13 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     });
   });
 
-  api.pets = _.transform(api.eggs, function(m, egg) {
+  api.pets = _.transform(api.dropEggs, function(m, egg) {
+    return _.defaults(m, _.transform(api.hatchingPotions, function(m2, pot) {
+      return m2[egg.key + "-" + pot.key] = true;
+    }));
+  });
+
+  api.questPets = _.transform(api.questEggs, function(m, egg) {
     return _.defaults(m, _.transform(api.hatchingPotions, function(m2, pot) {
       return m2[egg.key + "-" + pot.key] = true;
     }));
@@ -10785,7 +10862,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     Saddle: {
       text: 'Saddle',
       value: 5,
-      notes: 'Instantly raises your pet into a mount.'
+      notes: 'Instantly raises one of your pets into a mount.'
     }
   };
 
@@ -10854,6 +10931,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
     gryphon: {
       text: "The Fiery Gryphon",
       notes: 'The grand beastmaster, @baconsaur, has come to your party seeking help. "Please, adventurers, you must help me! My prized gryphon has broken free and is terrorizing Habit City! If you can stop her, I could reward you with some of her eggs!"',
+      completion: 'Defeated, the mighty beast ashamedly slinks back to its master."My word! Well done, adventurers!" @baconsaur exclaims, "Please, have some of the gryphon\'s eggs. I am sure you will raise these young ones well!',
       value: 4,
       boss: {
         name: "Fiery Gryphon",
@@ -10870,9 +10948,43 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
             type: 'eggs',
             key: 'Gryphon',
             text: "Gryphon (Egg)"
+          }, {
+            type: 'eggs',
+            key: 'Gryphon',
+            text: "Gryphon (Egg)"
           }
         ],
         gp: 25,
+        exp: 125
+      }
+    },
+    hedgehog: {
+      text: "The Hedgebeast",
+      notes: 'Hedgehogs are a funny group of animals. They are some of the most affectionate pets a Habiteer could own. But rumor has it, if you feed them milk after midnight, they grow quite irritable. And fifty times their size. And @Inventrix did just that. Oops.',
+      completion: 'Your party successfully calmed down the hedgehog! After shrinking down to a normal size, she hobbles away to her eggs. She returns squeeking and nudging some of her eggs along towards your party. Hopefully, these hedgehogs like milk better!',
+      value: 4,
+      boss: {
+        name: "Hedgebeast",
+        hp: 400,
+        str: 1.25
+      },
+      drop: {
+        items: [
+          {
+            type: 'eggs',
+            key: 'Hedgehog',
+            text: "Hedgehog (Egg)"
+          }, {
+            type: 'eggs',
+            key: 'Hedgehog',
+            text: "Hedgehog (Egg)"
+          }, {
+            type: 'eggs',
+            key: 'Hedgehog',
+            text: "Hedgehog (Egg)"
+          }
+        ],
+        gp: 30,
         exp: 125
       }
     },
@@ -10989,21 +11101,24 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         notes: 'When you create a new Habit, you can click the Edit icon and choose for it to represent a positive habit, a negative habit, or both. For some Habits, like this one, it only makes sense to gain points.',
         value: 0,
         up: true,
-        down: false
+        down: false,
+        attribute: 'per'
       }, {
         type: 'habit',
         text: 'Eat Junk Food',
         notes: 'For others, it only makes sense to *lose* points.',
         value: 0,
         up: false,
-        down: true
+        down: true,
+        attribute: 'con'
       }, {
         type: 'habit',
         text: 'Take The Stairs',
         notes: 'For the rest, both + and - make sense (stairs = gain, elevator = lose).',
         value: 0,
         up: true,
-        down: true
+        down: true,
+        attribute: 'str'
       }
     ],
     dailys: [
@@ -11013,21 +11128,24 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         notes: 'All tasks default to yellow when they are created. This means you will take only moderate damage when they are missed and will gain only a moderate reward when they are completed.',
         value: 0,
         completed: false,
-        repeat: repeat
+        repeat: repeat,
+        attribute: 'per'
       }, {
         type: 'daily',
         text: 'Exercise',
         notes: 'Dailies you complete consistently will turn from yellow to green to blue, helping you track your progress. The higher you move up the ladder, the less damage you take for missing and less reward you receive for completing the goal.',
         value: 3,
         completed: false,
-        repeat: repeat
+        repeat: repeat,
+        attribute: 'str'
       }, {
         type: 'daily',
         text: '45m Reading',
         notes: 'If you miss a daily frequently, it will turn darker shades of orange and red. The redder the task is, the more experience and gold it grants for success and the more damage you take for failure. This encourages you to focus on your shortcomings, the reds.',
         value: -10,
         completed: false,
-        repeat: repeat
+        repeat: repeat,
+        attribute: 'int'
       }
     ],
     todos: [
@@ -11036,7 +11154,8 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         text: 'Call Mom',
         notes: 'While not completing a to-do in a set period of time will not hurt you, they will gradually change from yellow to red, thus becoming more valuable. This will encourage you to wrap up stale To-Dos.',
         value: -3,
-        completed: false
+        completed: false,
+        attribute: 'per'
       }
     ],
     rewards: [
@@ -11288,7 +11407,9 @@ var process=require("__browserify_process");(function() {
       return true;
     });
     changes = changes.concat(_.filter(content.gear.flat, function(v) {
-      return v.klass === 'special' && !user.items.gear.owned[v.key] && (typeof v.canOwn === "function" ? v.canOwn(user) : void 0);
+      var _ref;
+
+      return ((_ref = v.klass) === 'special' || _ref === 'mystery') && !user.items.gear.owned[v.key] && (typeof v.canOwn === "function" ? v.canOwn(user) : void 0);
     }));
     changes.push(content.potion);
     return _.sortBy(changes, function(item) {
@@ -11301,10 +11422,12 @@ var process=require("__browserify_process");(function() {
           return 3;
         case 'shield':
           return 4;
-        case 'potion':
+        case 'back':
           return 5;
-        default:
+        case 'potion':
           return 6;
+        default:
+          return 7;
       }
     });
   };
@@ -11601,8 +11724,25 @@ var process=require("__browserify_process");(function() {
     var count, pet;
 
     count = originalCount != null ? originalCount : _.size(pets);
+    for (pet in content.questPets) {
+      if (pets[pet]) {
+        count--;
+      }
+    }
     for (pet in content.specialPets) {
       if (pets[pet]) {
+        count--;
+      }
+    }
+    return count;
+  };
+
+  api.countMounts = function(originalCount, mounts) {
+    var count, mount;
+
+    count = originalCount != null ? originalCount : _.size(mounts);
+    for (mount in content.specialMounts) {
+      if (mounts[mount]) {
         count--;
       }
     }
@@ -11738,7 +11878,7 @@ var process=require("__browserify_process");(function() {
           user.preferences.costume = false;
           return typeof cb === "function" ? cb(null, user) : void 0;
         },
-        reroll: function(req, cb) {
+        reroll: function(req, cb, ga) {
           if (user.balance < 1) {
             return typeof cb === "function" ? cb({
               code: 401,
@@ -11752,9 +11892,12 @@ var process=require("__browserify_process");(function() {
             }
           });
           user.stats.hp = 50;
-          return typeof cb === "function" ? cb(null, user) : void 0;
+          if (typeof cb === "function") {
+            cb(null, user);
+          }
+          return ga != null ? ga.event('purchase', 'reroll').send() : void 0;
         },
-        rebirth: function(req, cb) {
+        rebirth: function(req, cb, ga) {
           var flags, gear, lvl, stats;
 
           if (user.balance < 2) {
@@ -11829,7 +11972,10 @@ var process=require("__browserify_process");(function() {
             user.achievements.rebirths++;
             user.achievements.rebirthLevel = lvl;
           }
-          return typeof cb === "function" ? cb(null, user) : void 0;
+          if (typeof cb === "function") {
+            cb(null, user);
+          }
+          return ga != null ? ga.event('purchase', 'Rebirth').send() : void 0;
         },
         allocateNow: function(req, cb) {
           _.times(user.stats.points, user.fns.autoAllocate);
@@ -12034,7 +12180,7 @@ var process=require("__browserify_process");(function() {
             message: message
           }, userPets[pet]) : void 0;
         },
-        purchase: function(req, cb) {
+        purchase: function(req, cb, ga) {
           var item, key, type, _ref;
 
           _ref = req.params, type = _ref.type, key = _ref.key;
@@ -12062,7 +12208,10 @@ var process=require("__browserify_process");(function() {
           }
           user.items[type][key]++;
           user.balance -= item.value / 4;
-          return typeof cb === "function" ? cb(null, _.pick(user, $w('items balance'))) : void 0;
+          if (typeof cb === "function") {
+            cb(null, _.pick(user, $w('items balance')));
+          }
+          return ga != null ? ga.event('purchase', key).send() : void 0;
         },
         buy: function(req, cb) {
           var item, key, message;
@@ -12176,7 +12325,7 @@ var process=require("__browserify_process");(function() {
             message: "Your egg hatched! Visit your stable to equip your pet."
           }, user.items) : void 0;
         },
-        unlock: function(req, cb) {
+        unlock: function(req, cb, ga) {
           var alreadyOwns, cost, fullSet, k, path, split, v;
 
           path = req.query.path;
@@ -12208,9 +12357,12 @@ var process=require("__browserify_process");(function() {
           if (typeof user.markModified === "function") {
             user.markModified('purchased');
           }
-          return typeof cb === "function" ? cb(null, _.pick(user, $w('purchased preferences'))) : void 0;
+          if (typeof cb === "function") {
+            cb(null, _.pick(user, $w('purchased preferences')));
+          }
+          return ga != null ? ga.event('purchase', path).send() : void 0;
         },
-        changeClass: function(req, cb) {
+        changeClass: function(req, cb, ga) {
           var klass, _ref;
 
           klass = (_ref = req.query) != null ? _ref["class"] : void 0;
@@ -12253,6 +12405,9 @@ var process=require("__browserify_process");(function() {
               points: user.stats.lvl
             });
             user.flags.classSelected = false;
+            if (ga != null) {
+              ga.event('purchase', 'changeClass').send();
+            }
           }
           return typeof cb === "function" ? cb(null, _.pick(user, $w('stats flags items preferences'))) : void 0;
         },
@@ -12277,6 +12432,13 @@ var process=require("__browserify_process");(function() {
             }
           }
           return typeof cb === "function" ? cb(null, _.pick(user, $w('stats'))) : void 0;
+        },
+        readValentine: function(req, cb) {
+          user.items.special.valentineReceived.shift();
+          if (typeof user.markModified === "function") {
+            user.markModified('items.special.valentineReceived');
+          }
+          return typeof cb === "function" ? cb(null, 'items.special') : void 0;
         },
         score: function(req, cb) {
           var addPoints, calculateDelta, delta, direction, id, mpDelta, multiplier, num, options, stats, subtractPoints, task, th, _ref, _ref1, _ref2;
@@ -12308,7 +12470,7 @@ var process=require("__browserify_process");(function() {
           delta = 0;
           calculateDelta = function() {
             return _.times(options.times, function() {
-              var adjustAmt, currVal, nextDelta, _ref2, _ref3;
+              var currVal, nextDelta, _ref2, _ref3;
 
               currVal = task.value < -47.27 ? -47.27 : task.value > 21.27 ? 21.27 : task.value;
               nextDelta = Math.pow(0.9747, currVal) * (direction === 'down' ? -1 : 1);
@@ -12328,15 +12490,13 @@ var process=require("__browserify_process");(function() {
                 if (user.preferences.automaticAllocation === true && user.preferences.allocationMode === 'taskbased' && !(task.type === 'todo' && direction === 'down')) {
                   user.stats.training[task.attribute] += nextDelta;
                 }
-                adjustAmt = nextDelta;
-                if (direction === 'up' && task.type !== 'reward' && !(task.type === 'habit' && !task.down)) {
-                  adjustAmt = nextDelta * (1 + user._statsComputed.str * .004);
+                if (direction === 'up' && !(task.type === 'habit' && !task.down)) {
                   user.party.quest.progress.up = user.party.quest.progress.up || 0;
                   if ((_ref3 = task.type) === 'daily' || _ref3 === 'todo') {
-                    user.party.quest.progress.up += adjustAmt;
+                    user.party.quest.progress.up += nextDelta * (1 + (user._statsComputed.str / 200));
                   }
                 }
-                task.value += adjustAmt;
+                task.value += nextDelta;
               }
               return delta += nextDelta;
             });
@@ -12344,7 +12504,7 @@ var process=require("__browserify_process");(function() {
           addPoints = function() {
             var afterStreak, gpMod, intBonus, perBonus, streakBonus, _crit;
 
-            _crit = user.fns.crit();
+            _crit = (delta > 0 ? user.fns.crit() : 1);
             if (_crit > 1) {
               user._tmp.crit = _crit;
             }
@@ -12513,7 +12673,7 @@ var process=require("__browserify_process");(function() {
         if (chance == null) {
           chance = .03;
         }
-        if (user.fns.predictableRandom() <= chance) {
+        if (user.fns.predictableRandom() <= chance * (1 + user._statsComputed[stat] / 100)) {
           return 1.5 + (.02 * user._statsComputed[stat]);
         } else {
           return 1;
@@ -12560,14 +12720,16 @@ var process=require("__browserify_process");(function() {
         }), user);
       },
       randomDrop: function(modifiers) {
-        var acceptableDrops, bonus, chance, drop, dropK, quest, rarity, task, _base, _base1, _base2, _name, _name1, _name2, _ref, _ref1, _ref2, _ref3, _ref4;
+        var acceptableDrops, chance, drop, dropK, quest, rarity, task, _base, _base1, _base2, _name, _name1, _name2, _ref, _ref1, _ref2, _ref3, _ref4;
 
         task = modifiers.task;
-        bonus = Math.abs(task.value) * task.priority + (task.streak || 0) + (user._statsComputed.per * .5);
-        bonus /= 100;
-        chance = api.diminishingReturns(bonus, 1, 0.5);
+        chance = _.min([Math.abs(task.value - 21.27), 37.5]) / 150 + .02;
+        chance *= task.priority * (1 + (task.streak / 100 || 0)) * (1 + (user._statsComputed.per / 100)) * (1 + (user.contributor.level / 20 || 0)) * (1 + (user.achievements.rebirths / 20 || 0)) * (1 + (user.achievements.streak / 200 || 0)) * (user._tmp.crit || 1) * (1 + .5 * (_.reduce(task.checklist, (function(m, i) {
+          return m + (i.completed ? 1 : 0);
+        }), 0) || 0));
+        chance = api.diminishingReturns(chance, 0.75);
         quest = content.quests[(_ref = user.party.quest) != null ? _ref.key : void 0];
-        if ((quest != null ? quest.collect : void 0) && user.fns.predictableRandom(user.stats.gp) < bonus) {
+        if ((quest != null ? quest.collect : void 0) && user.fns.predictableRandom(user.stats.gp) < (chance * 2)) {
           dropK = user.fns.randomVal(quest.collect, {
             key: true
           });
@@ -12576,7 +12738,7 @@ var process=require("__browserify_process");(function() {
             user.markModified('party.quest.progress');
           }
         }
-        if ((api.daysSince(user.items.lastDrop.date, user.preferences) === 0) && (user.items.lastDrop.count >= 5)) {
+        if ((api.daysSince(user.items.lastDrop.date, user.preferences) === 0) && (user.items.lastDrop.count >= 5 + Math.floor(user._statsComputed.per / 25))) {
           return;
         }
         if (((_ref1 = user.flags) != null ? _ref1.dropsEnabled : void 0) && user.fns.predictableRandom(user.stats.exp) < chance) {
@@ -12602,7 +12764,7 @@ var process=require("__browserify_process");(function() {
             drop.type = 'Egg';
             drop.dialog = "You've found a " + drop.text + " Egg! " + drop.notes;
           } else {
-            acceptableDrops = rarity < .03 ? ['Golden'] : rarity < .09 ? ['Zombie', 'CottonCandyPink', 'CottonCandyBlue'] : rarity < .18 ? ['Red', 'Shade', 'Skeleton'] : ['Base', 'White', 'Desert'];
+            acceptableDrops = rarity < .02 ? ['Golden'] : rarity < .09 ? ['Zombie', 'CottonCandyPink', 'CottonCandyBlue'] : rarity < .18 ? ['Red', 'Shade', 'Skeleton'] : ['Base', 'White', 'Desert'];
             drop = user.fns.randomVal(_.pick(content.hatchingPotions, (function(v, k) {
               return __indexOf.call(acceptableDrops, k) >= 0;
             })));
