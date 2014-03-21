@@ -1,7 +1,7 @@
 moment = require('moment')
 _ = require('lodash')
 content = require('./content.coffee')
-
+fs = require('fs')
 api = module.exports = {}
 
 # little helper for large arrays of strings. %w"this that another" equivalent from Rails, I really miss that function
@@ -666,16 +666,16 @@ api.wrap = (user, main=true) ->
         {path} = req.query
         fullSet = ~path.indexOf(",")
         cost = if fullSet then 1.25 else 0.5 # 5G per set, 2G per individual
-        alreadyOwns = !fullSet and user.fns.dotGet("purchased." + path) is true
+        alreadyOwns = user.fns.dotGet(path,"purchased.") is true
         return cb?({code:401, message: "Not enough gems"}) if user.balance < cost and !alreadyOwns
+        if alreadyOwns
+          split = path.split('.');v=split.pop();k=split.join('.')
+          user.fns.dotSet("preferences.#{k}",v)
+          return cb? null, req
         if fullSet
           _.each path.split(","), (p) ->
             user.fns.dotSet("purchased.#{p}", true);true
         else
-          if alreadyOwns
-            split = path.split('.');v=split.pop();k=split.join('.')
-            user.fns.dotSet("preferences.#{k}",v)
-            return cb? null, req
           user.fns.dotSet "purchased." + path, true
         user.balance -= cost
         user.markModified? 'purchased'
@@ -967,8 +967,11 @@ api.wrap = (user, main=true) ->
         (curr[next] ?= {})
       , user
 
-    dotGet: (path) ->
-      _.reduce path.split('.'), ((curr, next) => curr?[next]), user
+    dotGet: (path,prepend_string = null) ->
+      _.every _.map path.split(','), (curr_path) =>
+        if prepend_string
+          curr_path = prepend_string + curr_path
+        _.reduce curr_path.split('.'), ((curr, next) => curr?[next]), user
 
 
 
