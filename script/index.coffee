@@ -1,7 +1,6 @@
 moment = require('moment')
 _ = require('lodash')
 content = require('./content.coffee')
-fs = require('fs')
 api = module.exports = {}
 
 # little helper for large arrays of strings. %w"this that another" equivalent from Rails, I really miss that function
