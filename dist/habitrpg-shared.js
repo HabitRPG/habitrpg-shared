@@ -9510,7 +9510,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'rogue',
           text: 'Hook Claws',
-          notes: 'Great for scaling tall buildings, and also for shredding carpets. Limited Edition 2014 Spring Gear.',
+          notes: 'Great for scaling tall buildings, and also for shredding carpets. Adds 8 points to STR. Limited Edition 2014 Spring Gear.',
           value: 80,
           str: 8
         },
@@ -9518,15 +9518,16 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'warrior',
           text: 'Carrot Sword',
-          notes: 'This mighty sword can slice foes with ease! It also makes a delicious mid-battle snack. Limited Edition 2014 Spring Gear.',
+          notes: 'This mighty sword can slice foes with ease! It also makes a delicious mid-battle snack. Adds 15 points to STR. Limited Edition 2014 Spring Gear.',
           value: 90,
           str: 15
         },
         springMage: {
           event: events.spring,
           specialClass: 'wizard',
+          twoHanded: true,
           text: 'Swiss Cheese Staff',
-          notes: 'Only the most powerful rodents can brave their hunger to wield this potent staff. Limited Edition 2014 Spring Gear.',
+          notes: 'Only the most powerful rodents can brave their hunger to wield this potent staff. Adds 15 points to INT and 7 points to PER. Limited Edition 2014 Spring Gear.',
           value: 160,
           int: 15,
           per: 7
@@ -9535,7 +9536,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'healer',
           text: 'Lovely Bone',
-          notes: 'FETCH! Limited Edition 2014 Spring Gear.',
+          notes: 'FETCH! Adds 9 points to INT. Limited Edition 2014 Spring Gear.',
           value: 90,
           int: 9
         }
@@ -9761,7 +9762,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'rogue',
           text: 'Sleek Cat Suit',
-          notes: 'Impeccably groomed. Limited Edition 2014 Spring Gear.',
+          notes: 'Impeccably groomed. Adds 15 points to PER. Limited Edition 2014 Spring Gear.',
           value: 90,
           per: 15
         },
@@ -9769,7 +9770,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'warrior',
           text: 'Clover-steel Armor',
-          notes: 'Soft as clover, strong as steel! Limited Edition 2014 Spring Gear.',
+          notes: 'Soft as clover, strong as steel! Adds 9 points to CON. Limited Edition 2014 Spring Gear.',
           value: 90,
           con: 9
         },
@@ -9777,7 +9778,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'wizard',
           text: 'Rodentia Robes',
-          notes: 'Mice are nice! Limited Edition 2014 Spring Gear.',
+          notes: 'Mice are nice! Adds 9 points to INT. Limited Edition 2014 Spring Gear.',
           value: 90,
           int: 9
         },
@@ -9785,7 +9786,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'healer',
           text: 'Fuzzy Puppy Robes',
-          notes: 'Warm and snuggly, but protects its owner from harm. Limited Edition 2014 Spring Gear.',
+          notes: 'Warm and snuggly, but protects its owner from harm. Adds 15 points to CON. Limited Edition 2014 Spring Gear.',
           value: 90,
           con: 15
         }
@@ -10019,7 +10020,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'rogue',
           text: 'Stealthy Kitty Mask',
-          notes: 'Nobody will EVER guess that you are a cat burglar! Limited Edition 2014 Spring Gear.',
+          notes: 'Nobody will EVER guess that you are a cat burglar! Adds 9 points to PER. Limited Edition 2014 Spring Gear.',
           value: 40,
           per: 9
         },
@@ -10027,15 +10028,15 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'warrior',
           text: 'Clover-steel Helmet',
-          notes: 'Welded from sweet meadow clover, this helmet can resist even the mightiest blow. Limited Edition 2014 Spring Gear.',
+          notes: 'Welded from sweet meadow clover, this helmet can resist even the mightiest blow. Adds 9 points to STR. Limited Edition 2014 Spring Gear.',
           value: 40,
-          per: 9
+          str: 9
         },
         springMage: {
           event: events.spring,
           specialClass: 'wizard',
           text: 'Swiss Cheese Hat',
-          notes: 'This hat stores lots of powerful magic! Try not to nibble it. Limited Edition 2014 Spring Gear.',
+          notes: 'This hat stores lots of powerful magic! Try not to nibble it. Adds 7 points to PER. Limited Edition 2014 Spring Gear.',
           value: 40,
           per: 7
         },
@@ -10043,7 +10044,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'healer',
           text: 'Crown of Friendship',
-          notes: "This crown symbolizes loyalty and companionship. A dog is an adventurer's best friend, after all! Limited Edition 2014 Spring Gear.",
+          notes: "This crown symbolizes loyalty and companionship. A dog is an adventurer's best friend, after all! Adds 7 points to INT. Limited Edition 2014 Spring Gear.",
           value: 40,
           int: 7
         }
@@ -10230,27 +10231,24 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
         springRogue: {
           event: events.spring,
           specialClass: 'rogue',
-          specialClass: 'rogue',
           text: 'Hook Claws',
-          notes: 'Great for scaling tall buildings, and also for shredding carpets. Limited Edition 2014 Spring Gear.',
+          notes: 'Great for scaling tall buildings, and also for shredding carpets. Adds 8 points to STR. Limited Edition 2014 Spring Gear.',
           value: 80,
           str: 8
         },
         springWarrior: {
           event: events.spring,
           specialClass: 'warrior',
-          specialClass: 'warrior',
           text: 'Egg Shield',
-          notes: "This shield never cracks, no matter how hard you hit it! Limited Edition 2014 Spring Gear.",
+          notes: "This shield never cracks, no matter how hard you hit it! Adds 7 points to CON. Limited Edition 2014 Spring Gear.",
           value: 70,
           con: 7
         },
         springHealer: {
           event: events.spring,
           specialClass: 'healer',
-          specialClass: 'healer',
           text: 'Squeaky Ball of Ultimate Protection',
-          notes: "Lets out an obnoxious, continuous squeak when bitten, driving enemies away. Limited Edition 2014 Spring Gear.",
+          notes: "Lets out an obnoxious, continuous squeak when bitten, driving enemies away. Adds 9 points to CON. Limited Edition 2014 Spring Gear.",
           value: 70,
           con: 9
         }
@@ -10287,28 +10285,28 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
           event: events.spring,
           specialClass: 'rogue',
           text: "Purple Cat Ears",
-          notes: "These feline ears twitch to detect incoming threats. Limited Edition 2014 Spring Gear.",
+          notes: "These feline ears twitch to detect incoming threats. Confers no stat bonus. Limited Edition 2014 Spring Gear.",
           value: 20
         },
         springWarrior: {
           event: events.spring,
           specialClass: 'warrior',
           text: 'Green Bunny Ears',
-          notes: "Bunny ears that keenly detect every crunch of a carrot. Limited Edition 2014 Spring Gear.",
+          notes: "Bunny ears that keenly detect every crunch of a carrot. Confers no status bonus. Limited Edition 2014 Spring Gear.",
           value: 20
         },
         springMage: {
           event: events.spring,
           specialClass: 'wizard',
           text: 'Blue Mouse Ears',
-          notes: 'These round mouse ears are silky-soft. Limited Edition 2014 Spring Gear.',
+          notes: 'These round mouse ears are silky-soft. Confers no stat bonus. Limited Edition 2014 Spring Gear.',
           value: 20
         },
         springHealer: {
           event: events.spring,
           specialClass: 'healer',
           text: 'Yellow Dog Ears',
-          notes: 'Floppy but cute. Wanna play? Limited Edition 2014 Spring Gear.',
+          notes: 'Floppy but cute. Wanna play? Confers no stat bonus. Limited Edition 2014 Spring Gear.',
           value: 20
         }
       }
@@ -12908,7 +12906,7 @@ var process=require("__browserify_process");(function() {
         }), 0) || 0));
         chance = api.diminishingReturns(chance, 0.75);
         quest = content.quests[(_ref = user.party.quest) != null ? _ref.key : void 0];
-        if ((quest != null ? quest.collect : void 0) && user.fns.predictableRandom(user.stats.gp) < (chance * 2)) {
+        if ((quest != null ? quest.collect : void 0) && user.fns.predictableRandom(user.stats.gp) < chance) {
           dropK = user.fns.randomVal(quest.collect, {
             key: true
           });
