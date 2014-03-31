@@ -435,7 +435,10 @@ api.wrap = (user, main=true) ->
         if user.stats.lvl < 100
           user.balance -= 2
         # Save off user's level, for calculating achievement eligibility later
-        lvl = user.stats.lvl
+        if user.stats.lvl < 100
+          lvl = user.stats.lvl
+        else
+          lvl = 100
         # Turn tasks yellow, zero out streaks
         _.each user.tasks, (task) ->
           unless task.type is 'reward'
@@ -1102,31 +1105,23 @@ api.wrap = (user, main=true) ->
       user.stats.gp = if stats.gp >= 0 then stats.gp else 0
 
       tnl = api.tnl(user.stats.lvl)
-      # if we're at level 100, turn xp to gold
-      if user.stats.lvl >= 100
-        stats.gp += stats.exp / 15
-        stats.exp = 0
-        user.stats.lvl = 100
-      else
-        # level up & carry-over exp
-        if stats.exp >= tnl
-          #silent = true # push through the negative xp silently
-          user.stats.exp = stats.exp # push normal + notification
-          while stats.exp >= tnl and user.stats.lvl < 100 # keep levelling up
-            stats.exp -= tnl
-            user.stats.lvl++
-            tnl = api.tnl(user.stats.lvl)
+      # level up & carry-over exp
+      if stats.exp >= tnl
+        #silent = true # push through the negative xp silently
+        user.stats.exp = stats.exp # push normal + notification
+        while stats.exp >= tnl and user.stats.lvl < 100 # keep levelling up
+          stats.exp -= tnl
+          user.stats.lvl++
+          tnl = api.tnl(user.stats.lvl)
 
-            # Auto-allocate a point, or give them a new manual point
+          # Auto-allocate a point, or give them a new manual point
+          if user.stats.lvl <= 100
             if user.preferences.automaticAllocation
               user.fns.autoAllocate()
             else
               # add new allocatable points. We could do user.stats.points++, but this does a fail-safe just in case
-              user.stats.points = user.stats.lvl - (user.stats.con + user.stats.str + user.stats.per + user.stats.int);
+                user.stats.points = user.stats.lvl - (user.stats.con + user.stats.str + user.stats.per + user.stats.int);
 
-          if user.stats.lvl == 100
-            stats.exp = 0
-          user.stats.hp = 50
       user.stats.exp = stats.exp
 
       # Set flags when they unlock features
@@ -1152,6 +1147,8 @@ api.wrap = (user, main=true) ->
           dialog: "You've found the quest \"#{content.quests.vice1.text}\"!"
       if !user.flags.rebirthEnabled and (user.stats.lvl >= 50 or user.achievements.ultimateGear or user.achievements.beastMaster)
         user.flags.rebirthEnabled = true
+      if !user.flags.freeRebirth = true and user.stats.lvl >= 100
+        user.flags.freeRebirth = true
 
     ###
       ------------------------------------------------------
