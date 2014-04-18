@@ -1330,7 +1330,10 @@ api.wrap = (user, main=true) ->
             else
               +val[stat] or 0
         , 0
-        m[stat] += (user.stats.lvl - 1) / 2
+        if user.stats.lvl < 100:
+          m[stat] += (user.stats.lvl - 1) / 2
+        else
+          m[stat] += 50
         m
       , {}
       computed.maxMP = computed.int*2 + 30
