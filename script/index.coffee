@@ -1258,7 +1258,9 @@ api.wrap = (user, main=true) ->
         if perfect
           user.achievements.perfect ?= 0
           user.achievements.perfect++
-          lvlDiv2 = Math.ceil(user.stats.lvl/2)
+          if user.stats.lvl < 100
+            lvlDiv2 = Math.ceil(user.stats.lvl/2)
+          else lvlDiv2 = 50
           {str:lvlDiv2,int:lvlDiv2,per:lvlDiv2,con:lvlDiv2,stealth:0,streaks:false}
         else clearBuffs
 
