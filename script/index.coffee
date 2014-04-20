@@ -1340,7 +1340,7 @@ api.wrap = (user, main=true) ->
             else
               +val[stat] or 0
         , 0
-        if user.stats.lvl < 100:
+        if user.stats.lvl < 100
           m[stat] += (user.stats.lvl - 1) / 2
         else
           m[stat] += 50
