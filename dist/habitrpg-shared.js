@@ -14080,7 +14080,8 @@ api.wrap = function(user, main) {
         return;
       }
       user.auth.timestamps.loggedin = new Date();
-      user.lastCron = now;
+      // user.lastCron = now
+      user.lastCron = dayStart; //Ideally switching to dayStart will cause any drifting problems to not occur
       if (user.items.lastDrop.count > 0) {
         user.items.lastDrop.count = 0;
       }
