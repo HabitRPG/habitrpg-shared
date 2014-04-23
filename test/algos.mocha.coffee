@@ -640,3 +640,13 @@ describe 'Helper', ->
     mounts = { "Wolf-Base": 2, "BearCub-Polar": 1}
     expect(shared.countMounts(null, mounts)).to.eql 1
     expect(shared.countMounts(_.size(mounts), mounts)).to.eql 1
+
+  it 'Checks daysSince', ->
+    now = new Date(2014, 0, 1, 5)
+    dayStart = 4
+    yesterday = new Date(2014, 0, 1, 2)
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 0
+
+
+
+
