@@ -645,7 +645,7 @@ describe 'Helper', ->
     now = new Date(2014, 0, 1, 5)
     dayStart = 4
     yesterday = new Date(2014, 0, 1, 2)
-    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 0
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
 
 
 
