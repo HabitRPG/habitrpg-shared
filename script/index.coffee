@@ -49,9 +49,12 @@ api.dayMapping = {0:'su',1:'m',2:'t',3:'w',4:'th',5:'f',6:'s'}
 ###
   Absolute diff from "yesterday" till now
 ###
-api.daysSince = (yesterday, options = {}) ->
+api.daysSince = (yesterday, options = {}, HourSet) ->
+  #add = 0
   o = sanitizeOptions options
+  #if HourSet < o.dayStart then add = 1
   Math.abs api.startOfDay(_.defaults {now:yesterday}, o).diff(o.now, 'days')
+  #+add
 
 ###
   Should the user do this taks on this date, given the task's repeat options and user.preferences.dayStart?
