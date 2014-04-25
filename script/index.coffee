@@ -53,7 +53,7 @@ api.daysSince = (yesterday, options = {}) ->
   o = sanitizeOptions options
   ReturnValue = Math.abs api.startOfDay(_.defaults {now:yesterday}, o).diff(o.now, 'days')
   HourCheck = moment(yesterday).zone(o.timezoneOffset)
-  if HourCheck.hour() < o.dayStart then ReturnValue++
+  if HourCheck.hour() < o.dayStart and o.now.hour() >= o.dayStart then ReturnValue++
   return ReturnValue
 
 ###
@@ -142,7 +142,7 @@ api.updateStore = (user) ->
       !user.items.gear.owned[item.key]
     changes.push(found) if found
     true
-  # Add special items (contrib gear, backer # gear, etc)
+  # Add special items (contrib gear, backer gear, etc)
   changes = changes.concat _.filter content.gear.flat, (v) ->
     v.klass in ['special','mystery'] and !user.items.gear.owned[v.key] and v.canOwn?(user)
   changes.push content.potion
