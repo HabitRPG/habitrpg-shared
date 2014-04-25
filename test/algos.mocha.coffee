@@ -583,8 +583,9 @@ describe 'Cron', ->
       expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 0
       now = moment().startOf('day').add('h', dayStart).add('m', 1)
       expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
-      yesterday = shared.startOfDay {now: moment().subtract('h', 3), dayStart}
-      expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
+      #now = moment().startOf('day').add('h', dayStart).add('h', 1)
+      #yesterday = shared.startOfDay {now: moment().subtract('h', 3), dayStart}
+      #expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
 
 describe 'Helper', ->
   it 'calculates gold coins', ->
@@ -643,7 +644,11 @@ describe 'Helper', ->
     expect(shared.countMounts(null, mounts)).to.eql 1
     expect(shared.countMounts(_.size(mounts), mounts)).to.eql 1
 
-
+  it 'QuickCheck', ->
+    now = new Date(2014, 2, 1, 5)
+    dayStart = 4
+    yesterday = new Date(2014, 2, 1, 2)
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
 
 
 
