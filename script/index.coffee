@@ -49,12 +49,12 @@ api.dayMapping = {0:'su',1:'m',2:'t',3:'w',4:'th',5:'f',6:'s'}
 ###
   Absolute diff from "yesterday" till now
 ###
-api.daysSince = (yesterday, options = {}, HourSet) ->
-  #add = 0
+api.daysSince = (yesterday, options = {}) ->
   o = sanitizeOptions options
-  #if HourSet < o.dayStart then add = 1
-  Math.abs api.startOfDay(_.defaults {now:yesterday}, o).diff(o.now, 'days')
-  #+add
+  ReturnValue = Math.abs api.startOfDay(_.defaults {now:yesterday}, o).diff(o.now, 'days')
+  HourCheck = moment(yesterday).zone(o.timezoneOffset)
+  if HourCheck.hour() < o.dayStart then ReturnValue++
+  return ReturnValue
 
 ###
   Should the user do this taks on this date, given the task's repeat options and user.preferences.dayStart?
@@ -142,7 +142,7 @@ api.updateStore = (user) ->
       !user.items.gear.owned[item.key]
     changes.push(found) if found
     true
-  # Add special items (contrib gear, backer gear, etc)
+  # Add special items (contrib gear, backer # gear, etc)
   changes = changes.concat _.filter content.gear.flat, (v) ->
     v.klass in ['special','mystery'] and !user.items.gear.owned[v.key] and v.canOwn?(user)
   changes.push content.potion
