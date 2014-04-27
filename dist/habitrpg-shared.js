@@ -12426,9 +12426,12 @@ api.daysSince = function(yesterday, options) {
     options = {};
   }
   o = sanitizeOptions(options);
-  return Math.abs(api.startOfDay(_.defaults({
-    now: yesterday
-  }, o)).diff(o.now, 'days'));
+  var ReturnValue = Math.abs(api.startOfDay(_.defaults({now: yesterday}, o)).diff(o.now, 'days'))
+  var HourCheck = moment(yesterday).zone(o.timezoneOffset)
+  if (HourCheck.hour() < o.dayStart && o.now.hour() >= o.dayStart){
+      ReturnValue++
+  }
+  return ReturnValue;
 };
 
 
@@ -14080,8 +14083,7 @@ api.wrap = function(user, main) {
         return;
       }
       user.auth.timestamps.loggedin = new Date();
-      // user.lastCron = now
-      user.lastCron = dayStart; //Ideally switching to dayStart will limit drifting problems from occuring
+      user.lastCron = now
       if (user.items.lastDrop.count > 0) {
         user.items.lastDrop.count = 0;
       }
