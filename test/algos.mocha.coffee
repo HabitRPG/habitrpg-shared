@@ -644,10 +644,25 @@ describe 'Helper', ->
     expect(shared.countMounts(null, mounts)).to.eql 1
     expect(shared.countMounts(_.size(mounts), mounts)).to.eql 1
 
-  it 'QuickCheck', ->
-    now = new Date(2014, 2, 1, 5)
-    dayStart = 4
+  it 'Checks Same Day Yesterday before dayStart today after', ->
+    now = new Date(2014, 2, 1, 8)
+    dayStart = 6
     yesterday = new Date(2014, 2, 1, 2)
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
+  it 'Checks Same Day Yesterday after dayStart today before', ->
+    yesterday = new Date(2014, 2, 1, 8)
+    dayStart = 6
+    now = new Date(2014, 2, 2, 3)
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 0
+  it 'Checks One Day Apart Yesterday after dayStart today after', ->
+    yesterday = new Date(2014, 2, 1, 8)
+    dayStart = 6
+    now = new Date(2014, 2, 2, 8)
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
+  it 'Checks One Day Apart Yesterday before dayStart today before', ->
+    yesterday = new Date(2014, 2, 1, 4)
+    dayStart = 6
+    now = new Date(2014, 2, 2, 4)
     expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
 
 
