@@ -654,6 +654,11 @@ describe 'Helper', ->
     dayStart = 6
     now = new Date(2014, 2, 2, 3)
     expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 0
+  it 'Checks Same Day Yesterday before dayStart today before', ->
+    yesterday = new Date(2014, 2, 1, 4)
+    dayStart = 6
+    now = new Date(2014, 2, 2, 3)
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 0
   it 'Checks One Day Apart Yesterday after dayStart today after', ->
     yesterday = new Date(2014, 2, 1, 8)
     dayStart = 6
@@ -664,6 +669,21 @@ describe 'Helper', ->
     dayStart = 6
     now = new Date(2014, 2, 2, 4)
     expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
+  it 'Checks Two days Apart Yesterday two days ago after dayStart today before', ->
+    yesterday = new Date(2014, 2, 4, 8)
+    dayStart = 6
+    now = new Date(2014, 2, 6, 3)
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
+  it 'Check Two days apart yesterday two days ago before dayStart today before', ->
+    yesterday = new Date(2014, 2, 4, 2)
+    dayStart = 6
+    now = new Date(2014, 2, 6, 3)
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 2
+  it 'Check two days apart yesterday two days ago before dayStart today after', ->
+    yesterday = new Date(2014, 2, 4, 3)
+    dayStart = 6
+    now = new Date(2014, 2, 6, 8)
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 3
 
 
 
