@@ -54,6 +54,7 @@ api.daysSince = (yesterday, options = {}) ->
   ReturnValue = Math.abs api.startOfDay(_.defaults {now:yesterday}, o).diff(o.now, 'days')
   HourCheck = moment(yesterday).zone(o.timezoneOffset)
   if HourCheck.hour() < o.dayStart and o.now.hour() >= o.dayStart then ReturnValue++
+  if HourCheck.hour() < o.dayStart and o.now.hour() < o.dayStart and HourCheck.diff(o.now,'d') != 0 then ReturnValue++
   return ReturnValue
 
 ###
