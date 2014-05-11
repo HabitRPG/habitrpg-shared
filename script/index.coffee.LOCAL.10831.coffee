@@ -66,7 +66,8 @@ api.shouldDo = (day, repeat, options={}) ->
 ###
 
 api.tnl = (lvl) ->
-  Math.round(((Math.pow(lvl, 2) * 0.25) + (10 * lvl) + 139.75) / 10) * 10
+  if lvl >= 100 then 0
+  else Math.round(((Math.pow(lvl, 2) * 0.25) + (10 * lvl) + 139.75) / 10) * 10
   # round to nearest 10?
 
 ###
@@ -1105,7 +1106,7 @@ api.wrap = (user, main=true) ->
       if stats.exp >= tnl
         #silent = true # push through the negative xp silently
         user.stats.exp = stats.exp # push normal + notification
-        while stats.exp >= tnl # keep levelling up
+        while stats.exp >= tnl and user.stats.lvl < 100 # keep levelling up
           stats.exp -= tnl
           user.stats.lvl++
           tnl = api.tnl(user.stats.lvl)

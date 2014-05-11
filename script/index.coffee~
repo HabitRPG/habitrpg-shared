@@ -1105,7 +1105,7 @@ api.wrap = (user, main=true) ->
       if stats.exp >= tnl
         #silent = true # push through the negative xp silently
         user.stats.exp = stats.exp # push normal + notification
-        while stats.exp >= tnl # keep levelling up
+        while stats.exp >= tnl and user.stats.lvl < 100 # keep levelling up
           stats.exp -= tnl
           user.stats.lvl++
           tnl = api.tnl(user.stats.lvl)

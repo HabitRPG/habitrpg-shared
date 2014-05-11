@@ -11997,11 +11997,7 @@ api.shouldDo = function(day, repeat, options) {
  */
 
 api.tnl = function(lvl) {
-  if (lvl >= 100) {
-    return 0;
-  } else {
-    return Math.round(((Math.pow(lvl, 2) * 0.25) + (10 * lvl) + 139.75) / 10) * 10;
-  }
+  return Math.round(((Math.pow(lvl, 2) * 0.25) + (10 * lvl) + 139.75) / 10) * 10;
 };
 
 
@@ -13512,7 +13508,7 @@ api.wrap = function(user, main) {
       tnl = api.tnl(user.stats.lvl);
       if (stats.exp >= tnl) {
         user.stats.exp = stats.exp;
-        while (stats.exp >= tnl && user.stats.lvl < 100) {
+        while (stats.exp >= tnl) {
           stats.exp -= tnl;
           user.stats.lvl++;
           tnl = api.tnl(user.stats.lvl);
