@@ -53,16 +53,6 @@ process.browser = true;
 process.env = {};
 process.argv = [];
 
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
 }
@@ -13835,5 +13825,5 @@ api.wrap = function(user, main) {
 };
 
 
-}).call(this,require("JkpR2F"))
-},{"./content.coffee":5,"./i18n.coffee":6,"JkpR2F":2,"lodash":3,"moment":4}]},{},[1])
+}).call(this,require("/home/ryan/Repos/habitrpg/node_modules/habitrpg-shared/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"./content.coffee":5,"./i18n.coffee":6,"/home/ryan/Repos/habitrpg/node_modules/habitrpg-shared/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":2,"lodash":3,"moment":4}]},{},[1])
