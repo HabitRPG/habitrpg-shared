@@ -1181,30 +1181,27 @@ api.backgrounds =
 
 repeat = {m:true,t:true,w:true,th:true,f:true,s:true,su:true}
 api.userDefaults =
-  habits: [
-    {type: 'habit', text: t('defaultHabit1Text'), notes: t('defaultHabit1Notes'), value: 0, up: true, down: false, attribute: 'per' }
-    {type: 'habit', text: t('defaultHabit2Text'), notes: t('defaultHabit2Notes'), value: 0, up: false, down: true, attribute: 'con'}
-    {type: 'habit', text: t('defaultHabit3Text'), notes: t('defaultHabit3Notes'), value: 0, up: true, down: true, attribute: 'str'}
-  ]
-
-  dailys: [
-    {type: 'daily', text: t('defaultDaily1Text'), notes: t('defaultDaily1Notes'), value: 0, completed: false, repeat: repeat, attribute: 'per' }
-    {type: 'daily', text: t('defaultDaily2Text'), notes: t('defaultDaily2Notes'), value: 3, completed: false, repeat: repeat, attribute: 'con' }
-    {type: 'daily', text: t('defaultDaily3Text'), notes: t('defaultDaily3Notes'), value: -10, completed: false, repeat: repeat, attribute: 'int' }
-    {type: 'daily', text: t('defaultDaily4Text'), notes: t('defaultDaily4Notes'), checklist: [{completed: true, text: t('defaultDaily4Checklist1') }, {completed: false, text: t('defaultDaily4Checklist2')}, {completed: false, text: t('defaultDaily4Checklist3')}], completed: false, repeat: repeat, attribute: 'str' }
-  ]
-
-  todos: [
-    {type: 'todo', text: t('defaultTodo1Text'), notes: t('defaultTodo1Notes'), completed: false, attribute: 'int' }
-    {type: 'todo', text: t('defaultTodo2Text'), notes: t('defaultTodo2Notes'), completed: false, attribute: 'int' }
-    {type: 'todo', text: t('defaultTodo3Text'), notes: t('defaultTodo3Notes'), value: -3, completed: false, attribute: 'per' }
-  ]
-
-  rewards: [
-    {type: 'reward', text: t('defaultReward1Text'), notes: t('defaultReward1Notes'), value: 20 }
-    {type: 'reward', text: t('defaultReward2Text'), notes: t('defaultReward2Notes'), value: 10 }
-  ]
-
+  tasks:
+    habits: [
+      {type: 'habit', text: t('defaultHabit1Text'), notes: t('defaultHabit1Notes'), sort: 0, value: 0, up: true, down: false, attribute: 'per'}
+      {type: 'habit', text: t('defaultHabit2Text'), notes: t('defaultHabit2Notes'), sort: 1, value: 0, up: false, down: true, attribute: 'con'}
+      {type: 'habit', text: t('defaultHabit3Text'), notes: t('defaultHabit3Notes'), sort: 2, value: 0, up: true, down: true, attribute: 'str'}
+    ]
+    dailys: [
+      {type: 'daily', text: t('defaultDaily1Text'), notes: t('defaultDaily1Notes'), sort: 0, value: 0, completed: false, repeat: repeat, attribute: 'per'}
+      {type: 'daily', text: t('defaultDaily2Text'), notes: t('defaultDaily2Notes'), sort: 1, value: 3, completed: false, repeat: repeat, attribute: 'con'}
+      {type: 'daily', text: t('defaultDaily3Text'), notes: t('defaultDaily3Notes'), sort: 2, value: -10, completed: false, repeat: repeat, attribute: 'int'}
+      {type: 'daily', text: t('defaultDaily4Text'), notes: t('defaultDaily4Notes'), sort: 3, checklist: [{completed: true, text: t('defaultDaily4Checklist1') }, {completed: false, text: t('defaultDaily4Checklist2')}, {completed: false, text: t('defaultDaily4Checklist3')}], completed: false, repeat: repeat, attribute: 'str'}
+    ]
+    todos: [
+      {type: 'todo', text: t('defaultTodo1Text'), notes: t('defaultTodo1Notes'), sort: 0, completed: false, attribute: 'int'}
+      {type: 'todo', text: t('defaultTodo2Text'), notes: t('defaultTodo2Notes'), sort: 1, completed: false, attribute: 'int'}
+      {type: 'todo', text: t('defaultTodo3Text'), notes: t('defaultTodo3Notes'), sort: 2, value: -3, completed: false, attribute: 'per'}
+    ]
+    rewards:[
+      {type: 'reward', text: t('defaultReward1Text'), notes: t('defaultReward1Notes'), sort: 0, value: 20}
+      {type: 'reward', text: t('defaultReward2Text'), notes: t('defaultReward2Notes'), sort: 1, value: 10}
+    ]
   tags: [
     {name: t('defaultTag1')}
     {name: t('defaultTag2')}

@@ -13204,114 +13204,128 @@ repeat = {
 };
 
 api.userDefaults = {
-  habits: [
-    {
-      type: 'habit',
-      text: t('defaultHabit1Text'),
-      notes: t('defaultHabit1Notes'),
-      value: 0,
-      up: true,
-      down: false,
-      attribute: 'per'
-    }, {
-      type: 'habit',
-      text: t('defaultHabit2Text'),
-      notes: t('defaultHabit2Notes'),
-      value: 0,
-      up: false,
-      down: true,
-      attribute: 'con'
-    }, {
-      type: 'habit',
-      text: t('defaultHabit3Text'),
-      notes: t('defaultHabit3Notes'),
-      value: 0,
-      up: true,
-      down: true,
-      attribute: 'str'
-    }
-  ],
-  dailys: [
-    {
-      type: 'daily',
-      text: t('defaultDaily1Text'),
-      notes: t('defaultDaily1Notes'),
-      value: 0,
-      completed: false,
-      repeat: repeat,
-      attribute: 'per'
-    }, {
-      type: 'daily',
-      text: t('defaultDaily2Text'),
-      notes: t('defaultDaily2Notes'),
-      value: 3,
-      completed: false,
-      repeat: repeat,
-      attribute: 'con'
-    }, {
-      type: 'daily',
-      text: t('defaultDaily3Text'),
-      notes: t('defaultDaily3Notes'),
-      value: -10,
-      completed: false,
-      repeat: repeat,
-      attribute: 'int'
-    }, {
-      type: 'daily',
-      text: t('defaultDaily4Text'),
-      notes: t('defaultDaily4Notes'),
-      checklist: [
-        {
-          completed: true,
-          text: t('defaultDaily4Checklist1')
-        }, {
-          completed: false,
-          text: t('defaultDaily4Checklist2')
-        }, {
-          completed: false,
-          text: t('defaultDaily4Checklist3')
-        }
-      ],
-      completed: false,
-      repeat: repeat,
-      attribute: 'str'
-    }
-  ],
-  todos: [
-    {
-      type: 'todo',
-      text: t('defaultTodo1Text'),
-      notes: t('defaultTodo1Notes'),
-      completed: false,
-      attribute: 'int'
-    }, {
-      type: 'todo',
-      text: t('defaultTodo2Text'),
-      notes: t('defaultTodo2Notes'),
-      completed: false,
-      attribute: 'int'
-    }, {
-      type: 'todo',
-      text: t('defaultTodo3Text'),
-      notes: t('defaultTodo3Notes'),
-      value: -3,
-      completed: false,
-      attribute: 'per'
-    }
-  ],
-  rewards: [
-    {
-      type: 'reward',
-      text: t('defaultReward1Text'),
-      notes: t('defaultReward1Notes'),
-      value: 20
-    }, {
-      type: 'reward',
-      text: t('defaultReward2Text'),
-      notes: t('defaultReward2Notes'),
-      value: 10
-    }
-  ],
+  tasks: {
+    habits: [
+      {
+        type: 'habit',
+        text: t('defaultHabit1Text'),
+        notes: t('defaultHabit1Notes'),
+        sort: 0,
+        value: 0,
+        up: true,
+        down: false,
+        attribute: 'per'
+      }, {
+        type: 'habit',
+        text: t('defaultHabit2Text'),
+        notes: t('defaultHabit2Notes'),
+        sort: 1,
+        value: 0,
+        up: false,
+        down: true,
+        attribute: 'con'
+      }, {
+        type: 'habit',
+        text: t('defaultHabit3Text'),
+        notes: t('defaultHabit3Notes'),
+        sort: 2,
+        value: 0,
+        up: true,
+        down: true,
+        attribute: 'str'
+      }
+    ],
+    dailys: [
+      {
+        type: 'daily',
+        text: t('defaultDaily1Text'),
+        notes: t('defaultDaily1Notes'),
+        sort: 0,
+        value: 0,
+        completed: false,
+        repeat: repeat,
+        attribute: 'per'
+      }, {
+        type: 'daily',
+        text: t('defaultDaily2Text'),
+        notes: t('defaultDaily2Notes'),
+        sort: 1,
+        value: 3,
+        completed: false,
+        repeat: repeat,
+        attribute: 'con'
+      }, {
+        type: 'daily',
+        text: t('defaultDaily3Text'),
+        notes: t('defaultDaily3Notes'),
+        sort: 2,
+        value: -10,
+        completed: false,
+        repeat: repeat,
+        attribute: 'int'
+      }, {
+        type: 'daily',
+        text: t('defaultDaily4Text'),
+        notes: t('defaultDaily4Notes'),
+        sort: 3,
+        checklist: [
+          {
+            completed: true,
+            text: t('defaultDaily4Checklist1')
+          }, {
+            completed: false,
+            text: t('defaultDaily4Checklist2')
+          }, {
+            completed: false,
+            text: t('defaultDaily4Checklist3')
+          }
+        ],
+        completed: false,
+        repeat: repeat,
+        attribute: 'str'
+      }
+    ],
+    todos: [
+      {
+        type: 'todo',
+        text: t('defaultTodo1Text'),
+        notes: t('defaultTodo1Notes'),
+        sort: 0,
+        completed: false,
+        attribute: 'int'
+      }, {
+        type: 'todo',
+        text: t('defaultTodo2Text'),
+        notes: t('defaultTodo2Notes'),
+        sort: 1,
+        completed: false,
+        attribute: 'int'
+      }, {
+        type: 'todo',
+        text: t('defaultTodo3Text'),
+        notes: t('defaultTodo3Notes'),
+        sort: 2,
+        value: -3,
+        completed: false,
+        attribute: 'per'
+      }
+    ],
+    rewards: [
+      {
+        type: 'reward',
+        text: t('defaultReward1Text'),
+        notes: t('defaultReward1Notes'),
+        sort: 0,
+        value: 20
+      }, {
+        type: 'reward',
+        text: t('defaultReward2Text'),
+        notes: t('defaultReward2Notes'),
+        sort: 1,
+        value: 10
+      }
+    ]
+  },
   tags: [
     {
       name: t('defaultTag1')
@@ -13370,7 +13384,7 @@ module.exports = {
 
 },{"lodash":3}],7:[function(require,module,exports){
 (function (process){
-var $w, api, content, i18n, moment, preenHistory, sanitizeOptions, sortOrder, _,
+var $i, $w, api, content, i18n, moment, preenHistory, sanitizeOptions, sortOrder, _,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 moment = require('moment');
@@ -13387,6 +13401,13 @@ api.i18n = i18n;
 
 $w = api.$w = function(s) {
   return s.split(' ');
+};
+
+$i = api.$i = function(obj, i) {
+  if (i == null) {
+    i = 0;
+  }
+  return obj[Object.keys(obj)[i]];
 };
 
 api.dotSet = function(obj, path, val) {
@@ -13408,6 +13429,14 @@ api.dotGet = function(obj, path) {
       return curr != null ? curr[next] : void 0;
     };
   })(this)), obj);
+};
+
+api.refMerge = function() {
+  return _.transform(arguments, (function(m, coll) {
+    return _.each(coll, function(v, k) {
+      return m[k] = v;
+    });
+  }), {});
 };
 
 
@@ -13672,6 +13701,7 @@ api.taskDefaults = function(task) {
     priority: 1,
     challenge: {},
     attribute: 'str',
+    sort: 0,
     dateCreated: new Date()
   };
   _.defaults(task, defaults);
@@ -13730,7 +13760,7 @@ api.percent = function(x, y, dir) {
   if (x === 0) {
     x = 1;
   }
-  return roundFn(x / y * 100);
+  return Math.max(0, roundFn(x / y * 100));
 };
 
 
@@ -14039,10 +14069,10 @@ api.wrap = function(user, main) {
       },
       reset: function(req, cb) {
         var gear;
-        user.habits = [];
-        user.dailys = [];
-        user.todos = [];
-        user.rewards = [];
+        user.habits = {};
+        user.dailys = {};
+        user.todos = {};
+        user.rewards = {};
         user.stats.hp = 50;
         user.stats.lvl = 1;
         user.stats.gp = 0;
@@ -14196,9 +14226,8 @@ api.wrap = function(user, main) {
         return typeof cb === "function" ? cb(null, user.todos) : void 0;
       },
       sortTask: function(req, cb) {
-        var from, id, movedTask, task, tasks, to, _ref;
-        id = req.params.id;
-        _ref = req.query, to = _ref.to, from = _ref.from;
+        var from, id, movedTask, task, tasks, to, _ref, _ref1, _ref2;
+        _ref = [req.params, req.query], (_ref1 = _ref[0], id = _ref1.id), (_ref2 = _ref[1], to = _ref2.to, from = _ref2.from);
         task = user.tasks[id];
         if (!task) {
           return typeof cb === "function" ? cb({
@@ -14209,14 +14238,22 @@ api.wrap = function(user, main) {
         if (!((to != null) && (from != null))) {
           return typeof cb === "function" ? cb('?to=__&from=__ are required') : void 0;
         }
-        tasks = user["" + task.type + "s"];
+        tasks = _(user["" + task.type + "s"]).toArray().sortBy('sort').value();
         movedTask = tasks.splice(from, 1)[0];
         if (to === -1) {
           tasks.push(movedTask);
         } else {
           tasks.splice(to, 0, movedTask);
         }
-        return typeof cb === "function" ? cb(null, tasks) : void 0;
+        user["" + task.type + "s"] = _.reduce(arr, (function(m, v, k) {
+          v.sort = k;
+          m[v.id] = v;
+          return m;
+        }), {});
+        if (typeof user.markModified === "function") {
+          user.markModified("" + task.type + "s");
+        }
+        return typeof cb === "function" ? cb(null, user["" + task.type + "s"]) : void 0;
       },
       updateTask: function(req, cb) {
         var task, _ref;
@@ -14230,13 +14267,16 @@ api.wrap = function(user, main) {
         if (req.body.checklist) {
           task.checklist = req.body.checklist;
         }
+        if (typeof user.markModified === "function") {
+          user.markModified("" + task.type + "s." + task.id);
+        }
         if (typeof task.markModified === "function") {
           task.markModified('tags');
         }
         return typeof cb === "function" ? cb(null, task) : void 0;
       },
       deleteTask: function(req, cb) {
-        var i, task, _ref;
+        var task, _ref;
         task = user.tasks[(_ref = req.params) != null ? _ref.id : void 0];
         if (!task) {
           return typeof cb === "function" ? cb({
@@ -14244,16 +14284,23 @@ api.wrap = function(user, main) {
             message: i18n.t('messageTaskNotFound', req.language)
           }) : void 0;
         }
-        i = user[task.type + "s"].indexOf(task);
-        if (~i) {
-          user[task.type + "s"].splice(i, 1);
+        delete user["" + task.type + "s"][task.id];
+        if (typeof user.markModified === "function") {
+          user.markModified("" + task.type + "s." + task.id);
         }
         return typeof cb === "function" ? cb(null, {}) : void 0;
       },
       addTask: function(req, cb) {
-        var task;
+        var task, tasks;
         task = api.taskDefaults(req.body);
-        user["" + task.type + "s"].unshift(task);
+        tasks = user["" + task.type + "s"];
+        _.each(tasks, function(t) {
+          return t.sort++;
+        });
+        user["" + task.type + "s"][task.id] = task;
+        if (typeof user.markModified === "function") {
+          user.markModified("" + task.type + "s");
+        }
         if (user.preferences.newTaskEdit) {
           task._editing = true;
         }
@@ -14747,6 +14794,9 @@ api.wrap = function(user, main) {
         var addPoints, calculateDelta, calculateReverseDelta, changeTaskValue, delta, direction, id, mpDelta, multiplier, num, options, stats, subtractPoints, task, th, _ref;
         _ref = req.params, id = _ref.id, direction = _ref.direction;
         task = user.tasks[id];
+        if (typeof user.markModified === "function") {
+          user.markModified("" + task.type + "s." + task.id);
+        }
         options = req.query || {};
         _.defaults(options, {
           times: 1,
@@ -15288,7 +15338,7 @@ api.wrap = function(user, main) {
       if ((_base = user.party.quest.progress).down == null) {
         _base.down = 0;
       }
-      user.todos.concat(user.dailys).forEach(function(task) {
+      _.each(api.refMerge(user.todos, user.dailys), function(task) {
         var absVal, completed, delta, id, repeat, scheduleMisses, type;
         if (!task) {
           return;
@@ -15346,7 +15396,7 @@ api.wrap = function(user, main) {
             return todoTally += absVal;
         }
       });
-      user.habits.forEach(function(task) {
+      _.each(user.habits, function(task) {
         if (task.up === false || task.down === false) {
           if (Math.abs(task.value) < 0.1) {
             return task.value = 0;
@@ -15412,7 +15462,7 @@ api.wrap = function(user, main) {
       if (minHistLen == null) {
         minHistLen = 7;
       }
-      _.each(user.habits.concat(user.dailys), function(task) {
+      _.each(api.refMerge(user.habits, user.dailys), function(task) {
         var _ref;
         if (((_ref = task.history) != null ? _ref.length : void 0) > minHistLen) {
           task.history = preenHistory(task.history);
@@ -15487,9 +15537,7 @@ api.wrap = function(user, main) {
   });
   return Object.defineProperty(user, 'tasks', {
     get: function() {
-      var tasks;
-      tasks = user.habits.concat(user.dailys).concat(user.todos).concat(user.rewards);
-      return _.object(_.pluck(tasks, "id"), tasks);
+      return api.refMerge(user.habits, user.dailys, user.todos, user.rewards);
     }
   });
 };
