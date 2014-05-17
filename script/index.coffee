@@ -581,7 +581,7 @@ api.wrap = (user, main=true) ->
           # changed to -1 to mark "owned" pets
           user.items.mounts[pet] = true
           user.items.currentPet = "" if pet is user.items.currentPet
-          message = i18n.t('messageAlreadyMount', {egg: egg}, req.language)
+          message = i18n.t('messageEvolve', {egg: egg}, req.language)
 
         if food.key is 'Saddle'
           evolve()
@@ -792,7 +792,7 @@ api.wrap = (user, main=true) ->
               if direction is 'down' and task.type is 'daily' and options.cron
                 nextDelta *= (1 - _.reduce(task.checklist,((m,i)->m+(if i.completed then 1 else 0)),0) / task.checklist.length)
               # If To-Do, point-match the TD per checklist item completed
-              if task.type is 'todo' and direction is 'up'
+              if task.type is 'todo'
                 nextDelta *= (1 + _.reduce(task.checklist,((m,i)->m+(if i.completed then 1 else 0)),0))
 
             unless task.type is 'reward'
