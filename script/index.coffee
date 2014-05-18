@@ -588,10 +588,10 @@ api.wrap = (user, main=true) ->
         else
           if food.target is potion
             userPets[pet] += 5
-            message = i18n.t('messageLikesFood', {egg: egg, foodText: food.text(req.language)}, req.language)
+            message = i18n.t('messageLikesFood', {egg: egg.text(req.language), foodText: food.text(req.language)}, req.language)
           else
             userPets[pet] += 2
-            message = i18n.t('messageDontEnjoyFood', {egg: egg, foodText: food.text(req.language)}, req.language)
+            message = i18n.t('messageDontEnjoyFood', {egg: egg.text(req.language), foodText: food.text(req.language)}, req.language)
           if userPets[pet] >= 50 and !user.items.mounts[pet]
             evolve()
         user.items.food[food.key]--

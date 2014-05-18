@@ -12841,13 +12841,13 @@ api.wrap = function(user, main) {
           if (food.target === potion) {
             userPets[pet] += 5;
             message = i18n.t('messageLikesFood', {
-              egg: egg,
+              egg: egg.text(req.language),
               foodText: food.text(req.language)
             }, req.language);
           } else {
             userPets[pet] += 2;
             message = i18n.t('messageDontEnjoyFood', {
-              egg: egg,
+              egg: egg.text(req.language),
               foodText: food.text(req.language)
             }, req.language);
           }
