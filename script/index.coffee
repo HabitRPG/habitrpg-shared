@@ -42,7 +42,7 @@ api.startOfWeek = api.startOfWeek = (options={}) ->
 
 api.startOfDay = (options={}) ->
   o = sanitizeOptions(options)
-  dayStart = moment(o.now).startOf('day').add('h', o.dayStart)
+  moment(o.now).startOf('day').add('h', o.dayStart)
 
 api.dayMapping = {0:'su',1:'m',2:'t',3:'w',4:'th',5:'f',6:'s'}
 
@@ -56,7 +56,6 @@ api.daysSince = (yesterday, options = {}) ->
   if HourCheck.hour() < o.dayStart and o.now.hour() >= o.dayStart then ReturnValue++
   if HourCheck.hour() < o.dayStart and o.now.hour() < o.dayStart and HourCheck.diff(o.now,'d') != 0 then ReturnValue++
   return ReturnValue
-  Math.abs api.startOfDay(_.defaults {now:yesterday}, o).diff(o.now, 'days')
 
 ###
   Should the user do this taks on this date, given the task's repeat options and user.preferences.dayStart?
