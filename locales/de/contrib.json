@@ -14,7 +14,7 @@
     "heroicText": "Das heroische Level ist HabitRPG Mitarbeitern und Mitwirkenden auf dem selben Niveau vorbehalten. Wenn Du diesen Titel hast, wurdest Du dazu ernannt (oder angestellt!).",
     "npcText": "NPCs haben HabitRPG über Kickstarter mitfinanziert. Du kannst ihre Avatare sehen, wie sie über die Features des Spiels wachen.",
     "modalContribAchievement": "Erfolg als Mitwirkender!",
-    "contribModal": "<%= name %>, Du  bistgroßartige! Du bist jetzt ein Level <%= level %> Mitwirkender für Deinen Beitrag auf HabitRPG. Folgende",
+    "contribModal": "<%= name %>, Du bist bistgroßartig! Du bist jetzt ein Level <%= level %> Mitwirkender für Deinen Beitrag auf HabitRPG. Folgende",
     "contribLink": "Preise hast Du für deinen Beitrag verdient!",
     "contribName": "Mitwirkender",
     "contribText": "Hat zu HabitRPG beigetragen (Code, Design, Pixel Art, Rechtsrat, Dokumentationen, etc.). Willst Du dieses Abzeichen auch haben?",

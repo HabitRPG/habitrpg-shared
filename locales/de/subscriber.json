@@ -38,7 +38,7 @@
     "organizationSub": "Private Organisationen",
     "organizationSubText": "Mitglieder der Organisation nehmen außerhalb von HabitRPG teil, das bringt Deinen Teilnehmern einen Konzentrationsvorteil.",
     "hostingType": "Art des Hostings",
-    "hostingTypeText": "Shared hosting bedeutet, Deine Organisation verwendet die selbe Datenbank wie HabitRPG, obwohl Du nicht mit Habitica interagierst. Dedicated bedeutet, Du bekommst Deine eigene Datenbank und Server. Du kannst wählen, ob Du HabitRPG auf Deinem Server oder Datenbank hosten möchtest, oder ob wir es auf unserem Server installieren.",
+    "hostingTypeText": "Shared Hosting bedeutet, Deine Organisation verwendet die selbe Datenbank wie HabitRPG, obwohl Du nicht mit Habitica interagierst. Dedicated bedeutet, Du bekommst Deine eigene Datenbank und Server. Du kannst wählen, ob Du HabitRPG auf Deinem Server oder Datenbank hosten möchtest, oder ob wir es auf unserem Server installieren.",
     "dedicated": "Dedicated",
     "customDomain": "Wählbare Domain",
     "customDomainText": "Wir können Dir wahlweise eine eigene Domain für die Intallation zur Verfügung stellen.",
