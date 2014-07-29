@@ -1,7 +1,7 @@
 {
-    "clearCompleted": "Löschen Erfolgreich",
+    "clearCompleted": "Alte Aufgaben löschen",
     "lotOfToDos": "Erfüllte Aufgaben werden automatisch nach 3 Tagen archiviert. Du kannst auf sie zugreifen unter Optionen > Einstellungen > Dateien Exportieren.",
-    "deleteToDosExplanation": "Wenn Du den unteren Knopf klickst, werden alle Deine erfüllten und archivierten Aufgaben dauerhaft gelöscht. Exportiere sie vorher, wenn Du sie nicht verlieren möchtest.",
+    "deleteToDosExplanation": "Wenn Du diesen Knopf klickst, werden alle Deine erfüllten und archivierten Aufgaben dauerhaft gelöscht. Exportiere sie vorher, wenn Du sie nicht verlieren möchtest.",
     "habits": "Gewohnheiten",
     "newHabit": "Neue Gewohnheit",
     "edit": "Bearbeiten",
