@@ -54,7 +54,7 @@ api.daysSince = (lastCron, options = {}) ->
   o = sanitizeOptions options
   ct = Math.ceil(moment(o.now).diff(lastCron, 'hours') / 24) # Switching from diff('days') to ceil(diff('hours')/24) is the primary fixing change!
   ct = Math.abs ct # In case the switch timezones into the future, gotta figure out how to handle that
-  if 0 < o.now.hour() < o.dayStart then ct--
+  if o.now.isSame(lastCron,'day') or 0 < o.now.hour() < o.dayStart then ct--
   ct=0 if ct < 0
   return ct
 
