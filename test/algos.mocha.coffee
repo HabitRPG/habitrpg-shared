@@ -694,7 +694,13 @@ describe 'Helper', ->
     yesterday = new Date(2014, 2, 4, 3)
     dayStart = 6
     now = new Date(2014, 2, 4, 8)
-    expect(shared.daysSince(yesterday, {now, dayStart, print:true})).to.eql 0
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 0
+  it 'Check next day, though only 2hrs apart', ->
+    yesterday = new Date(2014, 1, 1, 23)
+    dayStart = 0
+    now = new Date(2014, 1, 2, 1)
+    expect(shared.daysSince(yesterday, {now, dayStart, print:true})).to.eql 1
+
 
 
 

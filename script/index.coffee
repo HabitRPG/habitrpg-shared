@@ -52,10 +52,11 @@ api.dayMapping = {0:'su',1:'m',2:'t',3:'w',4:'th',5:'f',6:'s'}
 ###
 api.daysSince = (lastCron, options = {}) ->
   o = sanitizeOptions options
+  return 0 if o.now.format('YYYYMMDD') is moment(lastCron).format('YYYYMMDD') # o.now.isSame(lastCron,'day') # fails under many situations for some reason, moment.js bug?
   ct = Math.ceil(moment(o.now).diff(lastCron, 'hours') / 24) # Switching from diff('days') to ceil(diff('hours')/24) is the primary fixing change!
-  ct = Math.abs ct # In case the switch timezones into the future, gotta figure out how to handle that
-  if o.now.isSame(lastCron,'day') or 0 < o.now.hour() < o.dayStart then ct--
-  ct=0 if ct < 0
+  # ct = Math.abs ct # In case the switch timezones into the future, gotta figure out how to handle that
+  if  0 < o.now.hour() < o.dayStart then ct--
+  # ct=0 if ct < 0 #defnsive coding, is this necessary?
   return ct
 
 ###
