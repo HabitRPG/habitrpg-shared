@@ -90,6 +90,7 @@ expectGainedPoints = (before, after, taskType) ->
   # daily & todo histories handled on cron
 
 expectNoChange = (before,after) ->
+  _.each [before,after],(obj)-> delete obj.stats.buffs
   _.each $w('stats items gear dailys todos rewards flags preferences'), (attr)->
     expect(after[attr]).to.eql before[attr]
 
@@ -668,7 +669,9 @@ describe 'Helper', ->
     yesterday = new Date(2014, 2, 1, 4)
     dayStart = 6
     now = new Date(2014, 2, 2, 4)
-    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 1
+    expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 0
+    # This should be 0. 24 hours have passed, but we haven't yet hit dayStart. Imagine the user has created an account
+    # yesterday at 4am, sets their dayStart to 6, logs in today at 4am - cron shouldn't run yet.
   it 'Checks Two days Apart Yesterday two days ago after dayStart today before', ->
     yesterday = new Date(2014, 2, 4, 8)
     dayStart = 6
@@ -684,6 +687,8 @@ describe 'Helper', ->
     dayStart = 6
     now = new Date(2014, 2, 6, 8)
     expect(shared.daysSince(yesterday, {now, dayStart})).to.eql 3
+    # This is the one that gets me. Shouldn't this be 2? Only 2 full days have passed, assuming a user created an account
+    # on 2/4 and logged in again on 2/6
 
 
 

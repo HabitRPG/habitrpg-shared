@@ -30,9 +30,10 @@ api.dotGet = (obj,path)->
   {now} is also passed in for various purposes, one example being the test scripts scripts testing different "now" times
 ###
 sanitizeOptions = (o) ->
-  dayStart = if (!_.isNaN(+o.dayStart) and 0 <= +o.dayStart <= 24) then +o.dayStart else 0
-  timezoneOffset = if o.timezoneOffset then +(o.timezoneOffset) else +moment().zone()
-  now = if o.now then moment(o.now).zone(timezoneOffset) else moment(+new Date).zone(timezoneOffset)
+  # Removing some unecessary sanitization, as values are sanitized before they hit the database
+  dayStart = if 0 <= +o.dayStart <= 24 then +o.dayStart else 0
+  timezoneOffset = if o.timezoneOffset then +o.timezoneOffset else +moment().zone()
+  now = if o.now then moment(o.now).zone(timezoneOffset) else moment(new Date).zone(timezoneOffset)
   # return a new object, we don't want to add "now" to user object
   {dayStart, timezoneOffset, now}
 
@@ -49,13 +50,13 @@ api.dayMapping = {0:'su',1:'m',2:'t',3:'w',4:'th',5:'f',6:'s'}
 ###
   Absolute diff from "yesterday" till now
 ###
-api.daysSince = (yesterday, options = {}) ->
+api.daysSince = (lastCron, options = {}) ->
   o = sanitizeOptions options
-  ReturnValue = Math.abs api.startOfDay(_.defaults {now:yesterday}, o).diff(o.now, 'days')
-  HourCheck = moment(yesterday).zone(o.timezoneOffset)
-  if HourCheck.hour() < o.dayStart and o.now.hour() >= o.dayStart then ReturnValue++
-  if HourCheck.hour() < o.dayStart and o.now.hour() < o.dayStart and HourCheck.diff(o.now,'d') != 0 then ReturnValue++
-  return ReturnValue
+  ct = Math.ceil(moment(o.now).diff(lastCron, 'hours') / 24) # Switching from diff('days') to ceil(diff('hours')/24) is the primary fixing change!
+  ct = Math.abs ct # In case the switch timezones into the future, gotta figure out how to handle that
+  if 0 < o.now.hour() < o.dayStart then ct--
+  ct=0 if ct < 0
+  return ct
 
 ###
   Should the user do this taks on this date, given the task's repeat options and user.preferences.dayStart?
