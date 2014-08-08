@@ -1206,6 +1206,8 @@ api.wrap = (user, main=true) ->
 
       # Tally each task
       todoTally = 0
+      actionedDailyTally = 0
+      dateLastActioned = moment(now).subtract('days', daysMissed) 
       user.party.quest.progress.down ?= 0
       user.todos.concat(user.dailys).forEach (task) ->
         return unless task
@@ -1214,6 +1216,9 @@ api.wrap = (user, main=true) ->
 
         return if (type is 'daily') && !completed && user.stats.buffs.stealth && user.stats.buffs.stealth-- # User "evades" a certain number of uncompleted dailies
 
+        # Count number of Daily tasks actually actioned by the user, not just "completed" (greyed-out) because it's a day when they are not active (note: this does NOT count grey-dailies that were actioned anyway).
+        # ASSUME a Daily was completed yesterday (i.e., not before yesterday if the user hasn't logged on for a while)
+        actionedDailyTally++ if (type is 'daily') && completed && api.shouldDo(dateLastActioned, task.repeat, options.dayStart)
 
         # Deduct experience for missed Daily tasks, but not for Todos (just increase todo's value)
         unless completed
@@ -1260,7 +1265,7 @@ api.wrap = (user, main=true) ->
       user.markModified? 'history'
       user.markModified? 'dailys' # covers dailys.*.history
       user.stats.buffs =
-        if perfect
+        if perfect and actionedDailyTally   # it's only perfect if they did their daily tasks, not just greyed them all out by disabling them
           user.achievements.perfect ?= 0
           user.achievements.perfect++
           if user.stats.lvl < 100
