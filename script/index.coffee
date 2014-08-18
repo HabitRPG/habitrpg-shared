@@ -1005,7 +1005,7 @@ api.wrap = (user, main=true) ->
       chance = _.min([Math.abs(task.value - 21.27),37.5])/150+.02   # Base drop chance is a percentage based on task value. Typical fresh task: 15%. Very ripe task: 25%. Very blue task: 2%.
 
       chance *=
-        task.weight *                                 # TODO EFIM: change comment; Task priority: +50% for Medium, +100% for Hard
+        task.weight *                                 # Task weight == difficulty * priority; Priority: *1.5 for Normal, *2 for High; Difficulty: *0.5 for Easy, *2 for Hard;
         (1 + (task.streak / 100 or 0)) *                # Streak bonus: +1% per streak
         (1 + (user._statsComputed.per / 100)) *         # PERception: +1% per point
         (1 + (user.contributor.level / 40 or 0)) *      # Contrib levels: +2.5% per level
