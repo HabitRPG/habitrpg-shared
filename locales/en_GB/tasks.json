@@ -26,6 +26,7 @@
     "low": "Low",
     "normal": "Normal",
     "high": "High",
+    "trivial": "Trivial",
     "attributes": "Attributes",
     "physical": "Physical",
     "mental": "Mental",
