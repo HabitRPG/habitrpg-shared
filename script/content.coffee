@@ -675,6 +675,11 @@ api.pets = _.transform api.dropEggs, (m, egg) ->
 api.questPets = _.transform api.questEggs, (m, egg) ->
   _.defaults m, _.transform api.hatchingPotions, (m2, pot) ->
     m2[egg.key + "-" + pot.key] = true
+    
+api.questMounts = 
+  evolve = ->
+  questPets = -1
+  user.items.mounts[pet] = true
 
 api.food =
   Meat:             text: t('foodMeat'), target: 'Base', article: ''
