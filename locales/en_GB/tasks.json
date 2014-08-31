@@ -1,4 +1,4 @@
-	{
+{
     "clearCompleted": "Delete Completed",
     "lotOfToDos": "Completed To-Dos are automatically archived after 3 days. You can access them from Options > Settings > Data Export.",
     "deleteToDosExplanation": "If you click the button below, all of your completed To-Dos and archived To-Dos will be permanently deleted. Export them first if you want to keep a record of them.",
@@ -16,7 +16,7 @@
     "advancedOptions": "Advanced Options",
     "difficulty": "Difficulty",
     "difficultyHelpTitle": "How difficult is this task?",
-    "difficultyHelpContent": "This multiplies its point value. Use sparingly, rely instead on our organic value-adjustment algorithms. But some tasks are grossly more hard while equally valuable (Cooking Dinner for Whole Family vs Making Meal for Yourself).Click for more info.",
+    "difficultyHelpContent": "This multiplies its point value. Use sparingly, rely instead on our organic value-adjustment algorithms. But some tasks are grossly more valuable (Write Thesis vs Floss Teeth). Click for more info.",
     "easy": "Easy",
     "medium": "Medium",
     "hard": "Hard",
