@@ -11876,6 +11876,7 @@ api.quests = {
     notes: t('questVice1Notes'),
     value: 4,
     lvl: 30,
+    chain: true,
     boss: {
       name: t('questVice1Boss'),
       hp: 750,
@@ -11883,6 +11884,13 @@ api.quests = {
     },
     drop: {
       items: [
+        {
+          type: 'eggs',
+          key: 'Gryphon',
+          text: t('questVice3DropDragonEgg')
+        }
+      ],
+      itemsForOwner: [
         {
           type: 'quests',
           key: "vice2",
@@ -11898,6 +11906,8 @@ api.quests = {
     notes: t('questVice2Notes'),
     value: 4,
     lvl: 35,
+    chain: true,
+    canBuy: false,
     previous: 'vice1',
     collect: {
       lightCrystal: {
@@ -11906,7 +11916,8 @@ api.quests = {
       }
     },
     drop: {
-      items: [
+      items: [],
+      itemsForOwner: [
         {
           type: 'quests',
           key: 'vice3',
@@ -11921,6 +11932,8 @@ api.quests = {
     text: t('questVice3Text'),
     notes: t('questVice3Notes'),
     completion: t('questVice3Completion'),
+    chain: true,
+    canBuy: false,
     previous: 'vice2',
     value: 4,
     lvl: 40,

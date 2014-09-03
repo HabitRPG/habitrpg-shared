@@ -851,12 +851,16 @@ api.quests =
     notes: t('questVice1Notes')
     value: 4
     lvl: 30
+    chain: true
     boss:
       name: t('questVice1Boss')
       hp: 750
       str: 1.5
     drop:
       items: [
+        {type: 'eggs', key: 'Gryphon', text: t('questVice3DropDragonEgg')}
+      ]
+      itemsForOwner: [
         {type: 'quests', key: "vice2", text: t('questVice1DropVice2Quest')}
       ]
       gp: 20
@@ -867,11 +871,15 @@ api.quests =
     notes: t('questVice2Notes')
     value: 4
     lvl: 35
+    chain: true
+    canBuy: false
     previous: 'vice1'
     collect:
       lightCrystal: text: t('questVice2CollectLightCrystal'), count: 45
     drop:
       items: [
+      ]
+      itemsForOwner: [
         {type: 'quests', key: 'vice3', text: t('questVice2DropVice3Quest')}
       ]
       gp: 20
@@ -881,6 +889,8 @@ api.quests =
     text: t('questVice3Text')
     notes: t('questVice3Notes')
     completion: t('questVice3Completion')
+    chain: true
+    canBuy: false
     previous: 'vice2'
     value: 4
     lvl: 40

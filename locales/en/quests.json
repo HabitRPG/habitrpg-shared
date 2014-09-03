@@ -15,6 +15,8 @@
     "begin": "Begin",
     "bossHP": "Boss Health",
     "collected": "Collected",
+    "rewardsAllParticipants": "Rewards for all Quest Participants",
+    "rewardsQuestOwner": "Rewards for Quest Owner",
     "bossDmg1": "To hurt a boss, complete your Dailies and To-Dos. Higher task damage means higher boss damage (completing reds, Mage spells, Warrior attacks, etc). The boss will deal damage to every quest participant for every Daily you've missed (multiplied by the boss's Strength) in addition to your regular damage, so keep your party healthy by completing your dailies! <strong>All damage to and from a boss is tallied on cron (your day roll-over).</strong>",
     "bossDmg2": "Only participants will fight the boss and share in the quest loot.",
     "tavernBossInfo": "To hurt a world boss, complete your Dailies and To-Dos. Higher task damage means higher boss damage (completing reds, Mage spells, Warrior attacks, etc). For each Daily you've missed (multiplied by the boss's Strength), the boss's Rage will increase. Once his Rage reaches max, something bad will happen - so complete your dailies! <strong>All damage to and from a boss is tallied on cron (your day roll-over).</strong>",
