@@ -995,7 +995,7 @@ api.quests =
     collect:
       soapBars: text: t('questAtom1CollectSoapBars'), count: 20
     drop:
-      items: [
+      itemsForOwner: [
         {type: 'quests', key: "atom2", text: t('questAtom1Drop')}
       ]
       gp: 7
@@ -1011,7 +1011,7 @@ api.quests =
       hp: 300
       str: 1
     drop:
-      items: [
+      itemsForOwner: [
         {type: 'quests', key: "atom3", text: t('questAtom2Drop')}
       ]
       gp: 20

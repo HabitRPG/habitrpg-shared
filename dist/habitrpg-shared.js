@@ -12132,7 +12132,7 @@ api.quests = {
       }
     },
     drop: {
-      items: [
+      itemsForOwner: [
         {
           type: 'quests',
           key: "atom2",
@@ -12155,7 +12155,7 @@ api.quests = {
       str: 1
     },
     drop: {
-      items: [
+      itemsForOwner: [
         {
           type: 'quests',
           key: "atom3",
