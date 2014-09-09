@@ -11876,20 +11876,12 @@ api.quests = {
     notes: t('questVice1Notes'),
     value: 4,
     lvl: 30,
-    chain: true,
     boss: {
       name: t('questVice1Boss'),
       hp: 750,
       str: 1.5
     },
     drop: {
-      items: [
-        {
-          type: 'eggs',
-          key: 'Gryphon',
-          text: t('questVice3DropDragonEgg')
-        }
-      ],
       itemsForOwner: [
         {
           type: 'quests',
@@ -11906,7 +11898,6 @@ api.quests = {
     notes: t('questVice2Notes'),
     value: 4,
     lvl: 35,
-    chain: true,
     canBuy: false,
     previous: 'vice1',
     collect: {
@@ -11916,7 +11907,6 @@ api.quests = {
       }
     },
     drop: {
-      items: [],
       itemsForOwner: [
         {
           type: 'quests',
@@ -11932,7 +11922,6 @@ api.quests = {
     text: t('questVice3Text'),
     notes: t('questVice3Notes'),
     completion: t('questVice3Completion'),
-    chain: true,
     canBuy: false,
     previous: 'vice2',
     value: 4,
@@ -12146,6 +12135,7 @@ api.quests = {
   atom2: {
     text: t('questAtom2Text'),
     notes: t('questAtom2Notes'),
+    canBuy: false,
     previous: 'atom1',
     value: 4,
     lvl: 15,
@@ -12169,6 +12159,7 @@ api.quests = {
   atom3: {
     text: t('questAtom3Text'),
     notes: t('questAtom3Notes'),
+    canBuy: false,
     previous: 'atom2',
     completion: t('questAtom3Completion'),
     value: 4,
@@ -13533,6 +13524,12 @@ api.wrap = function(user, main) {
           return typeof cb === "function" ? cb({
             code: 401,
             message: i18n.t('messageNotEnoughGold', req.language)
+          }) : void 0;
+        }
+        if ((item.canOwn != null) && !item.canOwn(user)) {
+          return typeof cb === "function" ? cb({
+            code: 401,
+            message: "You can't own this item"
           }) : void 0;
         }
         if (item.key === 'potion') {
