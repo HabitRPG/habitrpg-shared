@@ -6,7 +6,7 @@
     "weaponWarrior1Text": "Schwert",
     "weaponWarrior1Notes": "Bei gewöhnlichen Soldaten verbreitetes Schwert. Erhöht Stärke um <%= str %>.",
     "weaponWarrior2Text": "Axt",
-    "weaponWarrior2Notes": "Zweischneidige Stretaxt. Erhöht Stärke um 6.",
+    "weaponWarrior2Notes": "Zweischneidige Streitaxt. Erhöht Stärke um 6.",
     "weaponWarrior3Text": "Morgenstern",
     "weaponWarrior3Notes": "Schwere Schlagwaffe mit Dornen besetzt. Erhöht Stärke um <%= str %>.",
     "weaponWarrior4Text": "Saphirklinge",
