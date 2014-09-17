@@ -6,7 +6,7 @@
     "weaponWarrior1Text": "Schwert",
     "weaponWarrior1Notes": "Bei gewöhnlichen Soldaten verbreitetes Schwert. Erhöht Stärke um <%= str %>.",
     "weaponWarrior2Text": "Axt",
-    "weaponWarrior2Notes": "Zweischneidige Stretaxt. Erhöht Stärke um 6.",
+    "weaponWarrior2Notes": "Zweischneidige Streitaxt. Erhöht Stärke um 6.",
     "weaponWarrior3Text": "Morgenstern",
     "weaponWarrior3Notes": "Schwere Schlagwaffe mit Dornen besetzt. Erhöht Stärke um <%= str %>.",
     "weaponWarrior4Text": "Saphirklinge",
@@ -342,7 +342,7 @@
     "headAccessorySpecialSummerRogueText": "Schurkische Augenklappe",
     "headAccessorySpecialSummerRogueNotes": "Limited Edition 2014 Sommer-Set. Man muss kein Halunke sein um zu sehen, wie stilvoll das ist! Kein Attributbonus.",
     "headAccessorySpecialSummerWarriorText": "Schneidige Augenklappe",
-    "headAccessorySpecialSummerWarriorNotes": "Limited Edition 2014 Sommer-Set.  Man muss kein Schlingel sein um zu sehen, wie stilvoll das ist! Kein Attributbonus.",
+    "headAccessorySpecialSummerWarriorNotes": "Limited Edition 2014 Sommer-Set. Man muss kein Schlingel sein um zu sehen, wie stilvoll das ist! Kein Attributbonus.",
     "headAccessorySpecialWonderconRedText": "Mächtige Maske",
     "headAccessorySpecialWonderconRedNotes": "Was für ein beeindruckender Kopfschmuck! Special Edition Kongress Rüstung.",
     "headAccessorySpecialWonderconBlackText": "Tückische Maske",
@@ -350,5 +350,5 @@
     "headAccessoryMystery201403Text": "Waldwanderergeweih",
     "headAccessoryMystery201403Notes": "Das Geweih schimmert von Moos und Flechten.",
     "headAccessoryMystery201404Text": "Schmetterlingsfühler des Zwielichts",
-    "headAccessoryMystery201404Notes": "Die Fühler helfen dem Träger gefährlichen Ablenkungen ausziweichen."
+    "headAccessoryMystery201404Notes": "Die Fühler helfen dem Träger gefährlichen Ablenkungen auszuweichen."
 }
