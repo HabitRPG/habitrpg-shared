@@ -42,7 +42,7 @@ api.startOfWeek = api.startOfWeek = (options={}) ->
 
 api.startOfDay = (options={}) ->
   o = sanitizeOptions(options)
-  moment(o.now).startOf('day').add('h', o.dayStart)
+  moment(o.now).startOf('day').add(o.dayStart, 'h')
 
 api.dayMapping = {0:'su',1:'m',2:'t',3:'w',4:'th',5:'f',6:'s'}
 
