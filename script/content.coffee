@@ -408,6 +408,8 @@ api.gearTypes = gearTypes
 #
 diminishingReturns = (bonus, max, halfway=max/2) -> max*(bonus/(bonus+halfway))
 
+calculateBonus = (value, stat, crit=1, stat_scale=0.5) -> (if value < 0 then 1 else value+1) + (stat * stat_scale * crit)
+
 api.spells =
 
   wizard:
@@ -418,13 +420,13 @@ api.spells =
       target: 'task'
       notes: t('spellWizardFireballNotes')
       cast: (user, target) ->
-        # I seriously have no idea what I'm doing here. I'm just mashing buttons until numbers seem right-ish. Anyone know math?
-        bonus = user._statsComputed.int * user.fns.crit('per')
-        target.value += diminishingReturns(bonus*.02, 4)
-        bonus *= Math.ceil ((if target.value < 0 then 1 else target.value+1) *.075)
-        #console.log {bonus, expBonus:bonus,upBonus:bonus*.1}
-        user.stats.exp += diminishingReturns(bonus,75)
-        user.party.quest.progress.up += diminishingReturns(bonus*.1,50,30) if user.party.quest.key
+        _crit = user.fns.crit('per')
+        bonus = user._statsComputed.int * _crit
+        target.value += diminishingReturns(bonus, 2.5, 35)
+
+        bonus = calculateBonus(target.value, user._statsComputed.int, _crit)
+        user.stats.exp += diminishingReturns(bonus,75, 50)
+        user.party.quest.progress.up += diminishingReturns(bonus,25,55) if user.party.quest.key
 
     mpheal:
       text: t('spellWizardMPHealText')
@@ -466,8 +468,9 @@ api.spells =
       target: 'task'
       notes: t('spellWarriorSmashNotes')
       cast: (user, target) ->
-        target.value += 2.5 * (user._statsComputed.str / (user._statsComputed.str + 50)) * user.fns.crit('con')
-        user.party.quest.progress.up += Math.ceil(user._statsComputed.str * .2) if user.party.quest.key
+        bonus = user._statsComputed.str * user.fns.crit('con')
+        target.value += diminishingReturns(bonus, 2.5, 35)
+        user.party.quest.progress.up += diminishingReturns(bonus, 55, 70) if user.party.quest.key
     defensiveStance:
       text: t('spellWarriorDefensiveStanceText')
       mana: 25
@@ -506,8 +509,8 @@ api.spells =
       target: 'task'
       notes: t('spellRoguePickPocketNotes')
       cast: (user, target) ->
-        bonus = (if target.value < 0 then 1 else target.value+2) + (user._statsComputed.per * 0.5)
-        user.stats.gp += 25 * (bonus / (bonus + 75))
+        bonus = calculateBonus(target.value, user._statsComputed.per)
+        user.stats.gp += diminishingReturns(bonus, 25, 75)
     backStab:
       text: t('spellRogueBackStabText')
       mana: 15
@@ -517,9 +520,9 @@ api.spells =
       cast: (user, target) ->
         _crit = user.fns.crit('str', .3)
         target.value += _crit * .03
-        bonus =  (if target.value < 0 then 1 else target.value+1) * _crit
-        user.stats.exp += bonus
-        user.stats.gp += bonus
+        bonus = calculateBonus(target.value, user._statsComputed.str, _crit)
+        user.stats.exp += diminishingReturns(bonus, 75, 50)
+        user.stats.gp += diminishingReturns(bonus, 18, 75)
         # user.party.quest.progress.up += bonus if user.party.quest.key # remove hurting bosses for rogues, seems OP for now
     toolsOfTrade:
       text: t('spellRogueToolsOfTradeText')
@@ -562,7 +565,7 @@ api.spells =
       cast: (user, target) ->
         _.each user.tasks, (target) ->
           return if target.type is 'reward'
-          target.value += 1.5 * (user._statsComputed.int / (user._statsComputed.int + 40))
+          target.value += diminishingReturns(user._statsComputed.int, 1.5, 35)
     protectAura:
       text: t('spellHealerProtectAuraText')
       mana: 30
