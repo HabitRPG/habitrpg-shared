@@ -240,9 +240,6 @@ api.taskClasses = (task, filters=[], dayStart=0, lastCron=+new Date, showComplet
   return unless task
   {type, completed, value, repeat} = task
 
-  # completed / remaining toggle
-  return 'hidden' if (type is 'todo' and completed != showCompleted) and main
-
   # Filters
   if main # only show when on your own list
     if !task._editing # always show task being edited (even when tag removed)
@@ -1220,7 +1217,7 @@ api.wrap = (user, main=true) ->
       user.stats.gp = if stats.gp >= 0 then stats.gp else 0
 
       tnl = api.tnl(user.stats.lvl)
-      
+
       # level up & carry-over exp
       if stats.exp >= tnl
       #silent = true # push through the negative xp silently
@@ -1381,7 +1378,7 @@ api.wrap = (user, main=true) ->
         else clearBuffs
 
       # Add 10 MP, or 10% of max MP if that'd be more. Perform this after Perfect Day for maximum benefit
-      
+
       user.stats.mp += _.max([10,.1 * user._statsComputed.maxMP])
       user.stats.mp = user._statsComputed.maxMP if user.stats.mp > user._statsComputed.maxMP
 
