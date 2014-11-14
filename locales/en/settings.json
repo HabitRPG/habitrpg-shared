@@ -69,7 +69,8 @@
     "fillAll": "Please fill out all fields",
     "passSuccess": "Password successfully changed",
     "usernameSuccess": "Username successfully changed",
-    "difficulty": "Difficulty",
     "data": "Data",
-    "exportData": "Export Data"
+    "exportData": "Export Data",
+    "difficulty": "Difficulty",
+    "difficultyText": "Here are some options for adjusting the difficulty of HabitRPG."
 }
