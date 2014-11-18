@@ -12767,7 +12767,7 @@ api.quests = {
       str: 1.5
     },
     drop: {
-      items: [
+      itemsForOwner: [
         {
           type: 'quests',
           key: "vice2",
@@ -12783,6 +12783,7 @@ api.quests = {
     notes: t('questVice2Notes'),
     value: 4,
     lvl: 35,
+    canBuy: false,
     previous: 'vice1',
     collect: {
       lightCrystal: {
@@ -12791,7 +12792,7 @@ api.quests = {
       }
     },
     drop: {
-      items: [
+      itemsForOwner: [
         {
           type: 'quests',
           key: 'vice3',
@@ -12806,6 +12807,7 @@ api.quests = {
     text: t('questVice3Text'),
     notes: t('questVice3Notes'),
     completion: t('questVice3Completion'),
+    canBuy: false,
     previous: 'vice2',
     value: 4,
     lvl: 40,
@@ -13004,7 +13006,7 @@ api.quests = {
       }
     },
     drop: {
-      items: [
+      itemsForOwner: [
         {
           type: 'quests',
           key: "atom2",
@@ -13018,6 +13020,7 @@ api.quests = {
   atom2: {
     text: t('questAtom2Text'),
     notes: t('questAtom2Notes'),
+    canBuy: false,
     previous: 'atom1',
     value: 4,
     lvl: 15,
@@ -13027,7 +13030,7 @@ api.quests = {
       str: 1
     },
     drop: {
-      items: [
+      itemsForOwner: [
         {
           type: 'quests',
           key: "atom3",
@@ -13041,6 +13044,7 @@ api.quests = {
   atom3: {
     text: t('questAtom3Text'),
     notes: t('questAtom3Notes'),
+    canBuy: false,
     previous: 'atom2',
     completion: t('questAtom3Completion'),
     value: 4,
