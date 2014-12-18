@@ -278,8 +278,6 @@ api.taskClasses = (task, filters=[], dayStart=0, lastCron=+new Date, showComplet
       classes += " completed"
     else
       classes += " uncompleted"
-  else if type is 'habit'
-    classes += ' habit-wide' if task.down and task.up
 
   if value < -20
     classes += ' color-worst'
