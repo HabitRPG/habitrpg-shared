@@ -5780,10 +5780,10 @@ api.wrap = function(user, main) {
       sell: function(req, cb) {
         var key, type, _ref;
         _ref = req.params, key = _ref.key, type = _ref.type;
-        if (type !== 'eggs' && type !== 'hatchingPotions' && type !== 'food') {
+        if (type !== 'eggs' && type !== 'hatchingPotions' && type !== 'food' && type !== 'quests') {
           return typeof cb === "function" ? cb({
             code: 404,
-            message: ":type not found. Must bes in [eggs, hatchingPotions, food]"
+            message: ":type not found. Must be in [eggs, hatchingPotions, food, quests]"
           }) : void 0;
         }
         if (!user.items[type][key]) {
