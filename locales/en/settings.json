@@ -72,5 +72,7 @@
     "data": "Data",
     "exportData": "Export Data",
     "difficulty": "Difficulty",
-    "difficultyText": "Here are some options for adjusting the difficulty of HabitRPG."
+    "difficultyText": "Here are some options for adjusting the difficulty of HabitRPG.",
+    "hidePotionHealing": "Hide Health Potion",
+    "hidePotionHealingPop": "The Health Potion will not appear in your Rewards column."
 }
