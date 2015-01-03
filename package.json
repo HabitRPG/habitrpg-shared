@@ -6,8 +6,7 @@
     "coffee-script": "1.7.1",
     "coffeeify": "0.6.0",
     "lodash": "~2.4.1",
-    "moment": "~2.8.3",
-    "grunt-spritesmith": "~3.5.0"
+    "moment": "~2.8.3"
   },
   "devDependencies": {
     "coffee-coverage": "~0.4.2",
@@ -20,7 +19,8 @@
     "grunt-contrib-clean": "~0.5.0",
     "habitrpg": "git://github.com/HabitRPG/habitrpg.git#develop",
     "image-size": "~0.3.2",
-    "phantomjssmith": "~0.5.4"
+    "phantomjssmith": "~0.5.4",
+    "grunt-spritesmith": "~3.5.0"
   },
   "scripts": {
     "test": "mocha",
