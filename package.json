@@ -20,7 +20,7 @@
     "grunt-contrib-clean": "~0.5.0",
     "habitrpg": "git://github.com/HabitRPG/habitrpg.git#develop",
     "image-size": "~0.3.2",
-    "phantomjssmith": "~0.5.4",
+    "phantomjssmith": "~0.5.4"
   },
   "scripts": {
     "test": "mocha",
