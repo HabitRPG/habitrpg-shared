@@ -791,7 +791,7 @@ api.wrap = (user, main=true) ->
 
       sell: (req, cb) ->
         {key, type} = req.params
-        return cb?({code:404,message:":type not found. Must bes in [eggs, hatchingPotions, food]"}) unless type in ['eggs','hatchingPotions', 'food']
+        return cb?({code:404,message:":type not found. Must be in [eggs, hatchingPotions, food, quests]"}) unless type in ['eggs','hatchingPotions', 'food', 'quests']
         return cb?({code:404,message:":key not found for user.items.#{type}"}) unless user.items[type][key]
         user.items[type][key]--
         user.stats.gp += content[type][key].value
