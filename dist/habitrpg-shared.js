@@ -1027,7 +1027,7 @@ gear = {
         event: events.winter,
         specialClass: 'rogue',
         text: t('armorSpecialSkiText'),
-        notes: t('armorSpecialSkiText', {
+        notes: t('armorSpecialSkiNotes', {
           per: 15
         }),
         per: 15,
@@ -1715,6 +1715,14 @@ gear = {
         }),
         value: 60,
         int: 7
+      },
+      nye2014: {
+        text: t('headSpecialNye2014Text'),
+        notes: t('headSpecialNye2014Notes'),
+        value: 0,
+        canOwn: (function(u) {
+          return u.items.gear.owned.head_special_nye2014 != null;
+        })
       },
       gaymerx: {
         event: events.gaymerx,
@@ -2481,9 +2489,7 @@ api.spells = {
         target.value += diminishingReturns(bonus * .02, 4);
         bonus *= Math.ceil((target.value < 0 ? 1 : target.value + 1) * .075);
         user.stats.exp += diminishingReturns(bonus, 75);
-        if (user.party.quest.key) {
-          return user.party.quest.progress.up += diminishingReturns(bonus * .1, 50, 30);
-        }
+        return user.party.quest.progress.up += diminishingReturns(bonus * .1, 50, 30);
       }
     },
     mpheal: {
@@ -2539,9 +2545,7 @@ api.spells = {
       notes: t('spellWarriorSmashNotes'),
       cast: function(user, target) {
         target.value += 2.5 * (user._statsComputed.str / (user._statsComputed.str + 50)) * user.fns.crit('con');
-        if (user.party.quest.key) {
-          return user.party.quest.progress.up += Math.ceil(user._statsComputed.str * .2);
-        }
+        return user.party.quest.progress.up += Math.ceil(user._statsComputed.str * .2);
       }
     },
     defensiveStance: {
@@ -2715,7 +2719,7 @@ api.spells = {
     snowball: {
       text: t('spellSpecialSnowballAuraText'),
       mana: 0,
-      value: 1,
+      value: 15,
       target: 'user',
       notes: t('spellSpecialSnowballAuraNotes'),
       cast: function(user, target) {
@@ -2732,6 +2736,7 @@ api.spells = {
       text: t('spellSpecialSaltText'),
       mana: 0,
       value: 5,
+      immediateUse: true,
       target: 'self',
       notes: t('spellSpecialSaltNotes'),
       cast: function(user, target) {
@@ -2759,11 +2764,45 @@ api.spells = {
       text: t('spellSpecialOpaquePotionText'),
       mana: 0,
       value: 5,
+      immediateUse: true,
       target: 'self',
       notes: t('spellSpecialOpaquePotionNotes'),
       cast: function(user, target) {
         user.stats.buffs.spookDust = false;
         return user.stats.gp -= 5;
+      }
+    },
+    nye: {
+      text: t('nyeCard'),
+      mana: 0,
+      value: 10,
+      immediateUse: true,
+      target: 'user',
+      notes: t('nyeCardNotes'),
+      cast: function(user, target) {
+        var _base;
+        if (user === target) {
+          if ((_base = user.achievements).nye == null) {
+            _base.nye = 0;
+          }
+          user.achievements.nye++;
+        } else {
+          _.each([user, target], function(t) {
+            var _base1;
+            if ((_base1 = t.achievements).nye == null) {
+              _base1.nye = 0;
+            }
+            return t.achievements.nye++;
+          });
+        }
+        if (!target.items.special.nyeReceived) {
+          target.items.special.nyeReceived = [];
+        }
+        target.items.special.nyeReceived.push(user.profile.name);
+        if (typeof target.markModified === "function") {
+          target.markModified('items.special.nyeReceived');
+        }
+        return user.stats.gp -= 10;
       }
     }
   }
@@ -2932,14 +2971,16 @@ api.specialPets = {
   'Turkey-Base': 'turkey',
   'BearCub-Polar': 'polarBearPup',
   'MantisShrimp-Base': 'mantisShrimp',
-  'JackOLantern-Base': 'jackolantern'
+  'JackOLantern-Base': 'jackolantern',
+  'Mammoth-Base': 'mammoth'
 };
 
 api.specialMounts = {
   'BearCub-Polar': 'polarBear',
   'LionCub-Ethereal': 'etherealLion',
   'MantisShrimp-Base': 'mantisShrimp',
-  'Turkey-Base': 'turkey'
+  'Turkey-Base': 'turkey',
+  'Mammoth-Base': 'mammoth'
 };
 
 api.hatchingPotions = {
@@ -3266,6 +3307,83 @@ api.quests = {
           type: 'mounts',
           key: 'MantisShrimp-Base',
           text: t('questDilatoryDropMantisShrimpMount')
+        }, {
+          type: 'food',
+          key: 'Meat',
+          text: t('foodMeat')
+        }, {
+          type: 'food',
+          key: 'Milk',
+          text: t('foodMilk')
+        }, {
+          type: 'food',
+          key: 'Potatoe',
+          text: t('foodPotatoe')
+        }, {
+          type: 'food',
+          key: 'Strawberry',
+          text: t('foodStrawberry')
+        }, {
+          type: 'food',
+          key: 'Chocolate',
+          text: t('foodChocolate')
+        }, {
+          type: 'food',
+          key: 'Fish',
+          text: t('foodFish')
+        }, {
+          type: 'food',
+          key: 'RottenMeat',
+          text: t('foodRottenMeat')
+        }, {
+          type: 'food',
+          key: 'CottonCandyPink',
+          text: t('foodCottonCandyPink')
+        }, {
+          type: 'food',
+          key: 'CottonCandyBlue',
+          text: t('foodCottonCandyBlue')
+        }, {
+          type: 'food',
+          key: 'Honey',
+          text: t('foodHoney')
+        }
+      ],
+      gp: 0,
+      exp: 0
+    }
+  },
+  stressbeast: {
+    text: t("questStressbeastText"),
+    notes: t("questStressbeastNotes"),
+    completion: t("questStressbeastCompletion"),
+    completionChat: t("questStressbeastCompletionChat"),
+    value: 0,
+    canBuy: false,
+    boss: {
+      name: t("questStressbeastBoss"),
+      hp: 2750000,
+      str: 1,
+      def: 1,
+      rage: {
+        title: t("questStressbeastBossRageTitle"),
+        description: t("questStressbeastBossRageDescription"),
+        value: 1450000,
+        stables: t('questStressbeastBossRageStables'),
+        bailey: t('questStressbeastBossRageBailey'),
+        guide: t('questStressbeastBossRageGuide')
+      }
+    },
+    drop: {
+      items: [
+        {
+          type: 'pets',
+          key: 'Mammoth-Base',
+          text: t('questStressbeastDropMammothPet')
+        }, {
+          type: 'mounts',
+          key: 'Mammoth-Base',
+          text: t('questStressbeastDropMammothMount')
         }, {
           type: 'food',
           key: 'Meat',
@@ -4247,31 +4365,51 @@ api.backgrounds = {
       text: t('backgroundSouthPoleText'),
       notes: t('backgroundSouthPoleNotes')
     }
+  },
+  backgrounds012015: {
+    ice_cave: {
+      text: t('backgroundIceCaveText'),
+      notes: t('backgroundIceCaveNotes')
+    },
+    frigid_peak: {
+      text: t('backgroundFrigidPeakText'),
+      notes: t('backgroundFrigidPeakNotes')
+    },
+    snowy_pines: {
+      text: t('backgroundSnowyPinesText'),
+      notes: t('backgroundSnowyPinesNotes')
+    }
   }
 };
 
 api.subscriptionBlocks = {
-  "1": {
+  basic_earned: {
     months: 1,
-    price: 5,
-    key: 'basic_earned'
+    price: 5
   },
-  "3": {
+  basic_3mo: {
     months: 3,
-    price: 15,
-    key: 'basic_3mo'
+    price: 15
   },
-  "6": {
+  basic_6mo: {
     months: 6,
-    price: 30,
-    key: 'basic_6mo'
+    price: 30
   },
-  "12": {
+  google_6mo: {
+    months: 6,
+    price: 24,
+    discount: true,
+    original: 30
+  },
+  basic_12mo: {
     months: 12,
-    price: 48,
-    key: 'basic_12mo'
+    price: 48
   }
 };
+
+_.each(api.subscriptionBlocks, function(b, k) {
+  return b.key = k;
+});
 
 repeat = {
   m: true,
@@ -4549,14 +4687,20 @@ api.startOfWeek = api.startOfWeek = function(options) {
 };
 
 api.startOfDay = function(options) {
-  var o;
+  var dayStart, o;
   if (options == null) {
     options = {};
   }
   o = sanitizeOptions(options);
-  return moment(o.now).startOf('day').add({
+  dayStart = moment(o.now).startOf('day').add({
     hours: o.dayStart
   });
+  if (moment(o.now).hour() < o.dayStart) {
+    dayStart.subtract({
+      days: 1
+    });
+  }
+  return dayStart;
 };
 
 api.dayMapping = {
@@ -4582,7 +4726,9 @@ api.daysSince = function(yesterday, options) {
   o = sanitizeOptions(options);
   return Math.abs(api.startOfDay(_.defaults({
     now: yesterday
-  }, o)).diff(o.now, 'days'));
+  }, o)).diff(api.startOfDay(_.defaults({
+    now: o.now
+  }, o)), 'days'));
 };
 
 
@@ -4591,7 +4737,7 @@ api.daysSince = function(yesterday, options) {
  */
 
 api.shouldDo = function(day, repeat, options) {
-  var o, selected, yesterday;
+  var o, selected;
   if (options == null) {
     options = {};
   }
@@ -4602,17 +4748,7 @@ api.shouldDo = function(day, repeat, options) {
   selected = repeat[api.dayMapping[api.startOfDay(_.defaults({
     now: day
   }, o)).day()]];
-  if (!moment(day).zone(o.timezoneOffset).isSame(o.now, 'd')) {
-    return selected;
-  }
-  if (options.dayStart <= o.now.hour()) {
-    return selected;
-  } else {
-    yesterday = moment(o.now).subtract({
-      days: 1
-    }).day();
-    return repeat[api.dayMapping[yesterday]];
-  }
+  return selected;
 };
 
 
@@ -5567,9 +5703,10 @@ api.wrap = function(user, main) {
           message: message
         }, userPets[pet]) : void 0;
       },
-      buySpookDust: function(req, cb) {
-        var item, _base;
-        item = content.special.spookDust;
+      buySpecialSpell: function(req, cb) {
+        var item, key, message, _base;
+        key = req.params.key;
+        item = content.special[key];
         if (user.stats.gp < item.value) {
           return typeof cb === "function" ? cb({
             code: 401,
@@ -5577,14 +5714,20 @@ api.wrap = function(user, main) {
           }) : void 0;
         }
         user.stats.gp -= item.value;
-        if ((_base = user.items.special).spookDust == null) {
-          _base.spookDust = 0;
+        if ((_base = user.items.special)[key] == null) {
+          _base[key] = 0;
         }
-        user.items.special.spookDust++;
+        user.items.special[key]++;
         if (typeof user.markModified === "function") {
           user.markModified('items.special');
         }
-        return typeof cb === "function" ? cb(null, _.pick(user, $w('items stats'))) : void 0;
+        message = i18n.t('messageBought', {
+          itemText: item.text(req.language)
+        }, req.language);
+        return typeof cb === "function" ? cb({
+          code: 200,
+          message: message
+        }, _.pick(user, $w('items stats'))) : void 0;
       },
       purchase: function(req, cb, ga) {
         var convCap, convRate, item, key, price, type, _ref, _ref1, _ref2, _ref3;
@@ -6010,6 +6153,13 @@ api.wrap = function(user, main) {
           };
         }
         return typeof cb === "function" ? cb(null, user.items.gear.owned) : void 0;
+      },
+      readNYE: function(req, cb) {
+        user.items.special.nyeReceived.shift();
+        if (typeof user.markModified === "function") {
+          user.markModified('items.special.nyeReceived');
+        }
+        return typeof cb === "function" ? cb(null, 'items.special') : void 0;
       },
       score: function(req, cb) {
         var addPoints, calculateDelta, calculateReverseDelta, changeTaskValue, delta, direction, id, mpDelta, multiplier, num, options, stats, subtractPoints, task, th, _ref;

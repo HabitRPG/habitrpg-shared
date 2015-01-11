@@ -35,7 +35,7 @@
     "neverMind": "Ho cambiato idea",
     "buyMoreGems": "Compra altre Gemme",
     "notEnoughGems": "Non hai abbastanza Gemme",
-    "alreadyHave": "Whoops! You already have this item. No need to buy it again!",
+    "alreadyHave": "Oops! Possiedi già questo oggetto. Non c'è bisogno di acquistarlo di nuovo!",
     "delete": "Elimina",
     "gems": "Gemme",
     "moreInfo": "Maggiori informazioni",
@@ -47,9 +47,9 @@
     "habitBirthday": "Compleanno 2014 di HabitRPG",
     "habitBirthdayText": "Ha partecipato al compleanno 2014 di HabitRPG.",
     "achievementDilatory": "Eroe dei Dilatori",
-    "achievementDilatoryText": "Ha contribuito a sconfiggere il Drago Terrore dei Dilatori durante il 2014 Summer Splash Event!",
+    "achievementDilatoryText": "Ha contribuito a sconfiggere il Drago Terrore dei Dilatori durante l'evento Summer Splash 2014!",
     "costumeContest": "Gara Mascherata 2014",
-    "costumeContestText": "Hai partecipato alla Gara Mascherata di Halloween 2014. guarda alcuni dei partecipanti sul sito blog.habitrpg.com/tagged/cosplay! ",
+    "costumeContestText": "Ha partecipato alla Gara Mascherata di Halloween 2014. Puoi trovare alcune foto su blog.habitrpg.com/tagged/cosplay! ",
     "memberSince": "- Membro dal:",
     "lastLoggedIn": "- Ultimo accesso:",
     "notPorted": "Questa funzionalità non è ancora stata trasposta dal sito originale.",
@@ -84,5 +84,6 @@
     "September": "settembre",
     "October": "ottobre",
     "November": "novembre",
-    "December": "dicembre"
+    "December": "dicembre",
+    "dateFormat": "Formato data"
 }

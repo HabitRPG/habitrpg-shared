@@ -57,7 +57,10 @@ api.startOfWeek = api.startOfWeek = (options={}) ->
 
 api.startOfDay = (options={}) ->
   o = sanitizeOptions(options)
-  moment(o.now).startOf('day').add({hours:o.dayStart})
+  dayStart = moment(o.now).startOf('day').add({hours:o.dayStart})
+  if moment(o.now).hour() < o.dayStart
+    dayStart.subtract({days:1})
+  dayStart
 
 api.dayMapping = {0:'su',1:'m',2:'t',3:'w',4:'th',5:'f',6:'s'}
 
@@ -66,7 +69,7 @@ api.dayMapping = {0:'su',1:'m',2:'t',3:'w',4:'th',5:'f',6:'s'}
 ###
 api.daysSince = (yesterday, options = {}) ->
   o = sanitizeOptions options
-  Math.abs api.startOfDay(_.defaults {now:yesterday}, o).diff(o.now, 'days')
+  Math.abs api.startOfDay(_.defaults {now:yesterday}, o).diff(api.startOfDay(_.defaults {now:o.now}, o), 'days')
 
 ###
   Should the user do this taks on this date, given the task's repeat options and user.preferences.dayStart?
@@ -75,12 +78,7 @@ api.shouldDo = (day, repeat, options={}) ->
   return false unless repeat
   o = sanitizeOptions options
   selected = repeat[api.dayMapping[api.startOfDay(_.defaults {now:day}, o).day()]]
-  return selected unless moment(day).zone(o.timezoneOffset).isSame(o.now,'d')
-  if options.dayStart <= o.now.hour() # we're past the dayStart mark, is it due today?
-    return selected
-  else # we're not past dayStart mark, check if it was due "yesterday"
-    yesterday = moment(o.now).subtract({days:1}).day() # have to wrap o.now so as not to modify original
-    return repeat[api.dayMapping[yesterday]] # FIXME is this correct?? Do I need to do any timezone calcaulation here?
+  return selected
 
 ###
   ------------------------------------------------------
@@ -688,15 +686,16 @@ api.wrap = (user, main=true) ->
         user.items.food[food.key]--
         cb? {code:200, message}, userPets[pet]
 
-      #FIXME stupid method of special-handling spookDust, since it can be purchased with gold and the system only accomodates gem-purchasable holiday spells
-      buySpookDust: (req,cb) ->
-        item = content.special.spookDust
+      buySpecialSpell: (req,cb) ->
+        {key} = req.params
+        item = content.special[key]
         return cb?({code:401, message: i18n.t('messageNotEnoughGold', req.language)}) if user.stats.gp < item.value
         user.stats.gp -= item.value
-        user.items.special.spookDust ?= 0
-        user.items.special.spookDust++
+        user.items.special[key] ?= 0
+        user.items.special[key]++
         user.markModified? 'items.special'
-        cb? null, _.pick(user,$w 'items stats')
+        message = i18n.t('messageBought', {itemText: item.text(req.language)}, req.language)
+        cb? {code:200,message}, _.pick(user,$w 'items stats')
 
       # buy is for using Gold, purchase is for Gems (I know, I know...)
       purchase: (req, cb, ga) ->
@@ -930,6 +929,11 @@ api.wrap = (user, main=true) ->
         (user._tmp?={}).drop = {type: 'gear', dialog: "#{item.text(req.language)} inside!"} if typeof window != 'undefined'
         #cb? {code:200, message:"#{item.text} inside!"}, user.items.gear.owned
         cb? null, user.items.gear.owned
+
+      readNYE: (req,cb) ->
+        user.items.special.nyeReceived.shift()
+        user.markModified? 'items.special.nyeReceived'
+        cb? null, 'items.special'
 
       # ------
       # Score

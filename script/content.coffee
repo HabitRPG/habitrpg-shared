@@ -162,7 +162,7 @@ gear =
       2: text: t('armorSpecial2Text'), notes: t('armorSpecial2Notes', {attrs: 25}), int: 25, con: 25, value:200, canOwn: ((u)-> +u.backer?.tier >= 300 or u.items.gear.owned.armor_special_2?)
       #Winter event
       yeti:       event: events.winter, specialClass: 'warrior', text: t('armorSpecialYetiText'), notes: t('armorSpecialYetiNotes', {con: 9}), con: 9, value:90
-      ski:        event: events.winter, specialClass: 'rogue', text: t('armorSpecialSkiText'), notes: t('armorSpecialSkiText', {per: 15}), per: 15, value:90
+      ski:        event: events.winter, specialClass: 'rogue', text: t('armorSpecialSkiText'), notes: t('armorSpecialSkiNotes', {per: 15}), per: 15, value:90
       candycane:  event: events.winter, specialClass: 'wizard', text: t('armorSpecialCandycaneText'), notes: t('armorSpecialCandycaneNotes', {int: 9}), int: 9, value:90
       snowflake:  event: events.winter, specialClass: 'healer', text: t('armorSpecialSnowflakeText'), notes: t('armorSpecialSnowflakeNotes', {con: 15}), con: 15, value:90
       birthday:   event: events.birthday, text: t('armorSpecialBirthdayText'), notes: t('armorSpecialBirthdayNotes'), value: 0
@@ -260,7 +260,8 @@ gear =
       winter2015Rogue:    event: events.winter2015, specialClass: 'rogue',   text: t('headSpecialWinter2015RogueText'), notes: t('headSpecialWinter2015RogueNotes', {per: 9}),value: 60,per: 9
       winter2015Warrior:  event: events.winter2015, specialClass: 'warrior', text: t('headSpecialWinter2015WarriorText'), notes: t('headSpecialWinter2015WarriorNotes', {str: 9}),value: 60,str: 9
       winter2015Mage:     event: events.winter2015, specialClass: 'wizard',    text: t('headSpecialWinter2015MageText'), notes: t('headSpecialWinter2015MageNotes', {per: 7}),value: 60,per: 7
-      winter2015Healer:   event: events.winter2015, specialClass: 'healer',  text: t('headSpecialWinter2015HealerText'), notes: t('headSpecialWinter2015HealerNotes', {int: 7}), value: 60, int: 7      
+      winter2015Healer:   event: events.winter2015, specialClass: 'healer',  text: t('headSpecialWinter2015HealerText'), notes: t('headSpecialWinter2015HealerNotes', {int: 7}), value: 60, int: 7
+      nye2014:      text: t('headSpecialNye2014Text'), notes: t('headSpecialNye2014Notes'), value: 0, canOwn: ((u)-> u.items.gear.owned.head_special_nye2014?)
       # Other
       gaymerx:        event: events.gaymerx, text: t('headSpecialGaymerxText'), notes: t('headSpecialGaymerxNotes'), value: 0
     mystery:
@@ -484,7 +485,7 @@ api.spells =
         bonus *= Math.ceil ((if target.value < 0 then 1 else target.value+1) *.075)
         #console.log {bonus, expBonus:bonus,upBonus:bonus*.1}
         user.stats.exp += diminishingReturns(bonus,75)
-        user.party.quest.progress.up += diminishingReturns(bonus*.1,50,30) if user.party.quest.key
+        user.party.quest.progress.up += diminishingReturns(bonus*.1,50,30)
 
     mpheal:
       text: t('spellWizardMPHealText')
@@ -527,7 +528,7 @@ api.spells =
       notes: t('spellWarriorSmashNotes')
       cast: (user, target) ->
         target.value += 2.5 * (user._statsComputed.str / (user._statsComputed.str + 50)) * user.fns.crit('con')
-        user.party.quest.progress.up += Math.ceil(user._statsComputed.str * .2) if user.party.quest.key
+        user.party.quest.progress.up += Math.ceil(user._statsComputed.str * .2)
     defensiveStance:
       text: t('spellWarriorDefensiveStanceText')
       mana: 25
@@ -649,7 +650,7 @@ api.spells =
     snowball:
       text: t('spellSpecialSnowballAuraText')
       mana: 0
-      value: 1
+      value: 15
       target: 'user'
       notes: t('spellSpecialSnowballAuraNotes')
       cast: (user, target) ->
@@ -662,6 +663,7 @@ api.spells =
       text: t('spellSpecialSaltText')
       mana: 0
       value: 5
+      immediateUse: true
       target: 'self'
       notes: t('spellSpecialSaltNotes')
       cast: (user, target) ->
@@ -684,11 +686,34 @@ api.spells =
       text: t('spellSpecialOpaquePotionText')
       mana: 0
       value: 5
+      immediateUse: true
       target: 'self'
       notes: t('spellSpecialOpaquePotionNotes')
       cast: (user, target) ->
         user.stats.buffs.spookDust = false
         user.stats.gp -= 5
+
+    nye:
+      text: t('nyeCard')
+      mana: 0
+      value: 10
+      immediateUse: true
+      target: 'user'
+      notes: t('nyeCardNotes')
+      cast: (user, target) ->
+        if user == target
+          user.achievements.nye ?= 0
+          user.achievements.nye++
+        else
+          _.each [user,target], (t)->
+            t.achievements.nye ?= 0
+            t.achievements.nye++
+        if !target.items.special.nyeReceived
+          target.items.special.nyeReceived = []
+        target.items.special.nyeReceived.push user.profile.name
+
+        target.markModified? 'items.special.nyeReceived'
+        user.stats.gp -= 10
 
 # Intercept all spells to reduce user.stats.mp after casting the spell
 _.each api.spells, (spellClass) ->
@@ -761,12 +786,14 @@ api.specialPets =
   'BearCub-Polar':      'polarBearPup'
   'MantisShrimp-Base':  'mantisShrimp'
   'JackOLantern-Base':  'jackolantern'
+  'Mammoth-Base':       'mammoth'
 
 api.specialMounts =
   'BearCub-Polar':	'polarBear'
   'LionCub-Ethereal':	'etherealLion'
   'MantisShrimp-Base':	'mantisShrimp'
   'Turkey-Base': 'turkey'
+  'Mammoth-Base': 'mammoth'
 
 api.hatchingPotions =
   Base:             value: 2, text: t('hatchingPotionBase')
@@ -860,6 +887,45 @@ api.quests =
       items: [
         {type: 'pets', key: 'MantisShrimp-Base', text: t('questDilatoryDropMantisShrimpPet')}
         {type: 'mounts', key: 'MantisShrimp-Base', text: t('questDilatoryDropMantisShrimpMount')}
+
+        {type: 'food', key: 'Meat', text: t('foodMeat')}
+        {type: 'food', key: 'Milk', text: t('foodMilk')}
+        {type: 'food', key: 'Potatoe', text: t('foodPotatoe')}
+        {type: 'food', key: 'Strawberry', text: t('foodStrawberry')}
+        {type: 'food', key: 'Chocolate', text: t('foodChocolate')}
+        {type: 'food', key: 'Fish', text: t('foodFish')}
+        {type: 'food', key: 'RottenMeat', text: t('foodRottenMeat')}
+        {type: 'food', key: 'CottonCandyPink', text: t('foodCottonCandyPink')}
+        {type: 'food', key: 'CottonCandyBlue', text: t('foodCottonCandyBlue')}
+        {type: 'food', key: 'Honey', text: t('foodHoney')}
+      ]
+      gp: 0
+      exp: 0
+
+  stressbeast:
+    text: t("questStressbeastText")
+    notes: t("questStressbeastNotes")
+    completion: t("questStressbeastCompletion")
+    completionChat: t("questStressbeastCompletionChat")
+    value: 0
+    canBuy: false
+    boss:
+      name: t("questStressbeastBoss")
+      hp: 2750000
+      str: 1
+      def: 1
+      rage:
+        title: t("questStressbeastBossRageTitle")
+        description: t("questStressbeastBossRageDescription")
+        value: 1450000
+
+        stables:t('questStressbeastBossRageStables')
+        bailey:t('questStressbeastBossRageBailey')
+        guide:t('questStressbeastBossRageGuide')
+    drop:
+      items: [
+        {type: 'pets', key: 'Mammoth-Base', text: t('questStressbeastDropMammothPet')}
+        {type: 'mounts', key: 'Mammoth-Base', text: t('questStressbeastDropMammothMount')}
 
         {type: 'food', key: 'Meat', text: t('foodMeat')}
         {type: 'food', key: 'Milk', text: t('foodMilk')}
@@ -1436,12 +1502,24 @@ api.backgrounds =
     south_pole:
       text:  t('backgroundSouthPoleText')
       notes: t('backgroundSouthPoleNotes')
+  backgrounds012015:
+    ice_cave:
+      text: t('backgroundIceCaveText')
+      notes: t('backgroundIceCaveNotes')
+    frigid_peak:
+      text: t('backgroundFrigidPeakText')
+      notes: t('backgroundFrigidPeakNotes')
+    snowy_pines:
+      text: t('backgroundSnowyPinesText')
+      notes: t('backgroundSnowyPinesNotes')
 
 api.subscriptionBlocks =
-  "1": months:1, price:5, key: 'basic_earned'
-  "3": months:3, price:15, key: 'basic_3mo'
-  "6": months:6, price:30, key: 'basic_6mo'
-  "12": months:12, price:48, key: 'basic_12mo'
+  basic_earned: months:1, price:5
+  basic_3mo: months:3, price:15
+  basic_6mo: months:6, price:30
+  google_6mo: months:6, price:24, discount:true, original:30
+  basic_12mo: months:12, price:48
+_.each api.subscriptionBlocks, (b,k)->b.key = k
 
 repeat = {m:true,t:true,w:true,th:true,f:true,s:true,su:true}
 api.userDefaults =
