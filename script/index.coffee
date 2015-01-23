@@ -630,6 +630,17 @@ api.wrap = (user, main=true) ->
         cb? null, user.preferences.webhooks
 
       # ------
+      # Push Devices
+      # ------
+      addPushDevice: (req, cb) ->
+        pd = user.preferences.pushDevices
+        console.info(pd, user.preferences, user.preferences.pushDevices);
+
+        api.refPush(pd, {regId:req.body.regId, type:req.body.type})
+        user.markModified? 'preferences.pushDevices'
+        cb? null, user.preferences.pushDevices
+
+      # ------
       # Inbox
       # ------
       clearPMs: (req, cb) ->
