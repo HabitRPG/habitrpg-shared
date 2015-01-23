@@ -642,12 +642,15 @@ api.wrap = (user, main=true) ->
       # Push Devices
       # ------
       addPushDevice: (req, cb) ->
-        pd = user.preferences.pushDevices
-        console.info(pd, user.preferences, user.preferences.pushDevices);
+        user.pushDevices = [] unless user.pushDevices
+        pd = user.pushDevices
+        item = {regId:req.body.regId, type:req.body.type};
+        i = _.findIndex pd, {regId: item.regId}
 
-        api.refPush(pd, {regId:req.body.regId, type:req.body.type})
-        user.markModified? 'preferences.pushDevices'
-        cb? null, user.preferences.pushDevices
+        pd.push(item) unless i != -1
+
+        user.markModified? 'pushDevices'
+        cb? null, user.pushDevices
 
       # ------
       # Inbox
