@@ -14851,6 +14851,9 @@ api.taskClasses = function(task, filters, dayStart, lastCron, showCompleted, mai
     return;
   }
   type = task.type, completed = task.completed, value = task.value, repeat = task.repeat;
+  if ((type === 'todo' && completed !== showCompleted) && main) {
+    return 'hidden';
+  }
   if (main) {
     if (!task._editing) {
       for (filter in filters) {
@@ -15176,11 +15179,7 @@ api.wrap = function(user, main) {
         if (user.stats.lvl < 100) {
           user.balance -= 2;
         }
-        if (user.stats.lvl < 100) {
-          lvl = user.stats.lvl;
-        } else {
-          lvl = 100;
-        }
+        lvl = user.stats.lvl;
         _.each(user.tasks, function(task) {
           if (task.type !== 'reward') {
             task.value = 0;
@@ -15243,9 +15242,11 @@ api.wrap = function(user, main) {
         if (!user.achievements.rebirths) {
           user.achievements.rebirths = 1;
           user.achievements.rebirthLevel = lvl;
-        } else if (lvl > user.achievements.rebirthLevel || lvl === 100) {
-          user.achievements.rebirths++;
+        } else if (lvl > user.achievements.rebirthLevel) {
           user.achievements.rebirthLevel = lvl;
+        }
+        if (lvl >= 100) {
+          user.achievements.rebirths++;
         }
         user.stats.buffs = {};
         if (typeof cb === "function") {
@@ -16800,5 +16801,5 @@ api.wrap = function(user, main) {
 };
 
 
-}).call(this,require("/home/sabrecat/habitrpg-shared/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
-},{"./content.coffee":5,"./i18n.coffee":6,"/home/sabrecat/habitrpg-shared/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":2,"lodash":3,"moment":4}]},{},[1])
+}).call(this,require("/home/ryan/Repos/habitrpg/node_modules/habitrpg-shared/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js"))
+},{"./content.coffee":5,"./i18n.coffee":6,"/home/ryan/Repos/habitrpg/node_modules/habitrpg-shared/node_modules/browserify/node_modules/insert-module-globals/node_modules/process/browser.js":2,"lodash":3,"moment":4}]},{},[1])
