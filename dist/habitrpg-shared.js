@@ -14850,6 +14850,7 @@ api.taskClasses = function(task, filters, dayStart, lastCron, showCompleted, mai
   if (!task) {
     return;
   }
+  type = task.type, completed = task.completed, value = task.value, repeat = task.repeat;
   if (main) {
     if (!task._editing) {
       for (filter in filters) {
