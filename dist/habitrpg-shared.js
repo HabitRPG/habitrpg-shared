@@ -14850,10 +14850,6 @@ api.taskClasses = function(task, filters, dayStart, lastCron, showCompleted, mai
   if (!task) {
     return;
   }
-  type = task.type, completed = task.completed, value = task.value, repeat = task.repeat;
-  if ((type === 'todo' && completed !== showCompleted) && main) {
-    return 'hidden';
-  }
   if (main) {
     if (!task._editing) {
       for (filter in filters) {
