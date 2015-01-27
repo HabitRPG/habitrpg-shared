@@ -469,10 +469,7 @@ api.wrap = (user, main=true) ->
         if user.stats.lvl < 100
           user.balance -= 2
         # Save off user's level, for calculating achievement eligibility later
-        if user.stats.lvl < 100
-          lvl = user.stats.lvl
-        else
-          lvl = 100
+        lvl = user.stats.lvl
         # Turn tasks yellow, zero out streaks
         _.each user.tasks, (task) ->
           unless task.type is 'reward'
@@ -510,13 +507,14 @@ api.wrap = (user, main=true) ->
         flags.dropsEnabled = false
         flags.classSelected = false
         flags.levelDrops = {}
-        # Award an achievement if this is their first Rebirth, or if they made it further than last time
+        # Award an achievement if this is their first Rebirth, or if they made it further than last time, or if they hit over 100
         if not (user.achievements.rebirths)
           user.achievements.rebirths = 1
           user.achievements.rebirthLevel = lvl
-        else if (lvl > user.achievements.rebirthLevel or lvl is 100)
-          user.achievements.rebirths++
+        else if (lvl > user.achievements.rebirthLevel)
           user.achievements.rebirthLevel = lvl
+        if (lvl >= 100)
+          user.achievements.rebirths++
         user.stats.buffs = {}
         # user.markModified? 'stats'
         cb? null, user
