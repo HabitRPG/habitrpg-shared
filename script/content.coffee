@@ -755,6 +755,7 @@ _.each api.spells, (spellClass) ->
       #return if spell.target and spell.target != (if target.type then 'task' else 'user')
       _cast(user,target)
       user.stats.mp -= spell.mana
+      user.fns.updateStats user.stats
 
 api.special = api.spells.special
 
