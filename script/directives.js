@@ -43,9 +43,12 @@
           .replace(/"/g, '&quot;')
           .replace(/'/g, '&#39;');
       };
+      var cleanUrl = function(dirtyUrl) {
+        return (/^https?:\/\//.test(dirtyUrl) ? dirtyUrl : '');
+      };
       if (cap[0].charAt(0) !== '!') {
         return '<a class="markdown-link" target="_blank" href="'
-          + escape(link.href)
+          + cleanUrl(escape(link.href))
           + '"'
           + (link.title
           ? ' title="'
@@ -65,7 +68,7 @@
           + '"'
           : '')
           + '><img class="markdown-img" src="'
-          + escape(link.href)
+          + cleanUrl(escape(link.href))
           + '" alt="'
           + escape(cap[1])
           + '"'
