@@ -438,6 +438,7 @@ api.wrap = (user, main=true) ->
         user.dailys = []
         user.todos = []
         user.rewards = []
+        user.challenges = []
         user.stats.hp = 50
         user.stats.lvl = 1
         user.stats.gp = 0
