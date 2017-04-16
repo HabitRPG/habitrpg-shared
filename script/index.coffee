@@ -192,6 +192,8 @@ api.taskDefaults = (task={}) ->
     text: if task.id? then task.id else ''
     notes: ''
     priority: 1
+    difficulty: 1
+    weight: 1
     challenge: {}
     attribute: 'str'
     dateCreated: new Date()
@@ -203,6 +205,8 @@ api.taskDefaults = (task={}) ->
   task._id = task.id # may need this for TaskSchema if we go back to using it, see http://goo.gl/a5irq4
   task.value ?= if task.type is 'reward' then 10 else 0
   task.priority = 1 unless _.isNumber(task.priority) # hotfix for apiv1. once we're off apiv1, we can remove this
+  task.difficulty = 1 unless _.isNumber(task.difficulty) # same as above
+  task.weight = task.difficulty * task.priority;
   task
 
 api.percent = (x,y, dir) ->
@@ -978,7 +982,7 @@ api.wrap = (user, main=true) ->
 
         # TODO do we need this fail-safe casting anymore? Are we safe now we're off Derby?
         stats = {gp: +user.stats.gp, hp: +user.stats.hp, exp: +user.stats.exp}
-        task.value = +task.value; task.streak = ~~task.streak; task.priority ?= 1
+        task.value = +task.value; task.streak = ~~task.streak; task.priority ?= 1; task.difficulty ?= 1; task.weight = task.difficulty * task.priority;
 
         # If they're trying to purhcase a too-expensive reward, don't allow them to do that.
         if task.value > stats.gp and task.type is 'reward'
@@ -1072,13 +1076,13 @@ api.wrap = (user, main=true) ->
           # ===== Intelligence =====
           # TODO Increases Experience gain by .2% per point.
           intBonus = 1 + (user._statsComputed.int * .025)
-          stats.exp += Math.round (delta * intBonus * task.priority * _crit * 6)
+          stats.exp += Math.round (delta * intBonus * task.weight * _crit * 6)
 
           # GP modifier
           # ===== PERCEPTION =====
           # TODO Increases Gold gained from tasks by .3% per point.
           perBonus = (1 + user._statsComputed.per *.02)
-          gpMod = (delta * task.priority * _crit * perBonus)
+          gpMod = (delta * task.weight * _crit * perBonus)
           stats.gp +=
             if task.streak
               currStreak = if direction is 'down' then task.streak-1 else task.streak
@@ -1095,7 +1099,7 @@ api.wrap = (user, main=true) ->
           # TODO Decreases HP loss from bad habits / missed dailies by 0.5% per point.
           conBonus = 1 - (user._statsComputed.con / 250)
           conBonus = 0.1 if conBonus < .1
-          hpMod = delta * conBonus * task.priority * 2 # constant 2 multiplier for better results
+          hpMod = delta * conBonus * task.weight * 2 # constant 2 multiplier for better results
           stats.hp += Math.round(hpMod * 10) / 10 # round to 1dp
 
         switch task.type
@@ -1241,7 +1245,7 @@ api.wrap = (user, main=true) ->
       chance = _.min([Math.abs(task.value - 21.27),37.5])/150+.02   # Base drop chance is a percentage based on task value. Typical fresh task: 15%. Very ripe task: 25%. Very blue task: 2%.
 
       chance *=
-        task.priority *                                 # Task priority: +50% for Medium, +100% for Hard
+        task.weight *                                 # Task weight == difficulty * priority; Priority: *1.5 for Normal, *2 for High; Difficulty: *0.5 for Easy, *2 for Hard;
         (1 + (task.streak / 100 or 0)) *                # Streak bonus: +1% per streak
         (1 + (user._statsComputed.per / 100)) *         # PERception: +1% per point
         (1 + (user.contributor.level / 40 or 0)) *      # Contrib levels: +2.5% per level
