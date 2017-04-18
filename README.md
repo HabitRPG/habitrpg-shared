@@ -8,7 +8,7 @@ Shared resources useful for the multiple HabitRPG repositories, that way all the
  * View helper functions that may come in handy for multiple client MVCs
  * Item definitions - weapons, armor, pets 
 
-##Installation
+## Installation
 * `npm install`
 * `grunt` - after you've made modifications and want to compile the dist files for browser
 
@@ -23,10 +23,10 @@ Shared resources useful for the multiple HabitRPG repositories, that way all the
   * `algos.score(user, task, direction)`, etc
   * TODO document all the functions
 
-##Tests
+## Tests
 * `npm test`
 
-##CSS
+## CSS
 Shared CSS between the website and the mobile app is a fuzzy area. Spritesheets definitely go in habitrpg-shared (since mobile
 uses them too). Other things, like customizer buttons, *may* want to go here? As you find sharable components, (1) move them
 from the website into habitrpg-shared, (2) remove from website & make sure all html/css references are updated.
